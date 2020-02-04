@@ -1,20 +1,3 @@
 <template>
-  <mode-display :mode="this" />
+  <p>Take a cab!</p>
 </template>
-<script>
-import ModeBase from './ModeBase.vue';
-
-export default {
-  extends: ModeBase,
-  data() {
-    return {
-      title: 'Taxi',
-    };
-  },
-  computed: {
-    summary() {
-      return '22 minutes (Arrow Taxis)';
-    },
-  },
-};
-</script>

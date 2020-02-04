@@ -1,5 +1,5 @@
 <template>
-  <mode-display :mode="this">
+  <section>
     <p>Did you know that there are Metro cards available for staff to use? <a href="">Find out more</a>.</p>
     <p>Bus and train options:</p>
     <ul>
@@ -27,19 +27,5 @@
         ><h2>No Metro Card nearby</h2><p>Find out how to request that your department gets a Metro card for bus and train travel within West Yorkshire.</p></a>
       </li>
     </ul>
-  </mode-display>
+  </section>
 </template>
-<script>
-import ModeBase from './ModeBase.vue';
-export default {
-  extends: ModeBase,
-  data() {
-    return {
-      title: 'Bus/train',
-    };
-  },
-  computed: {
-    summary() { return '23 minutes by train or 28 minutes by bus (2 Metro cards are available nearby)'; },
-  },
-};
-</script>

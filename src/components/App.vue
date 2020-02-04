@@ -11,26 +11,12 @@
         <search-form />
       </div>
       <ol class="c6-bg">
-        <li id="1" class="mode1">
-          <mode-tele-conf />
-        </li>
-        <li id="2" class="mode2">
-          <mode-walk-cycle />
-        </li>
-        <li id="3" class="mode3">
-          <mode-bus-train />  
-        </li>
-        <li id="4" class="mode4">
-          <mode-pool-vehicle />
-        </li>
-        <li id="5" class="mode5">
-          <mode-car-club />
-        </li>
-        <li id="6" class="mode6">
-          <mode-taxi />
-        </li>
-        <li id="7" class="mode7">
-          <mode-self-drive />
+        <li
+          v-for="(mode, i) in modes"
+          :key="i"
+          :class="'mode' + (i + 1)"
+        >
+          <component :is="mode" />
         </li>
       </ol>
     </div>
@@ -38,12 +24,16 @@
 </template>
 <script>
 import SearchForm from './Search.vue';
-import modes from './modes';
 
 export default {
   components: {
     SearchForm,
-    ...modes,
+  },
+  props: {
+    modes: {
+      type: Array,
+      default: () => [],
+    },
   },
 };
 </script>

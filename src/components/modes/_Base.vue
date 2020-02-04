@@ -2,15 +2,14 @@
   <section @click="toggleView()">
     <div>
       <div v-if="viewState ==='closed'" class="open">more info</div>
-      <h3>{{ mode.title }}</h3>
-      <p>{{ mode.summary }}</p>
+      <h3>{{ title }}</h3>
+      <p>{{ summary }}</p>
     </div>
-    <slot v-if="viewState ==='open'" />
-  </section>
+    <component :is="details" v-if="viewState ==='open'" />
+  </section>  
 </template>
 <script>
 export default {
-  props: [ 'mode' ],
   data: function () {
     return {
       viewState: 'closed',
