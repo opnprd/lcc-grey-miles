@@ -150,6 +150,7 @@
     //
     //
     //
+    //
     var script = {
       props: {
         title: {
@@ -168,6 +169,10 @@
               return null;
             };
           }
+        },
+        costFn: {
+          type: Function,
+          required: true
         }
       },
       data: function data() {
@@ -179,6 +184,9 @@
         summary: function summary() {
           // Ultimately this should wire up to a vuex store...
           return this.summarise(this.$root.journey);
+        },
+        cost: function cost() {
+          return this.costFn(this.$root.journey);
         }
       },
       methods: {
@@ -214,7 +222,9 @@
             _vm._v(" "),
             _c("h3", [_vm._v(_vm._s(_vm.title))]),
             _vm._v(" "),
-            _c("p", [_vm._v(_vm._s(_vm.summary))])
+            _c("p", [_vm._v(_vm._s(_vm.summary))]),
+            _vm._v(" "),
+            _c("p", [_vm._v("£" + _vm._s(_vm.cost))])
           ]),
           _vm._v(" "),
           _vm.viewState === "open"
@@ -960,42 +970,68 @@
       details: __vue_component__$6,
       summarise: function summarise(j) {
         return "Skype facilities at ".concat(j.source);
+      },
+      costFn: function costFn(j) {
+        return 0;
       }
     }, {
       title: 'Walk/Cycle',
       details: __vue_component__$7,
       summarise: function summarise(j) {
         return "30-40 minutes by bike (2 ebikes nearby at ".concat(j.source, ")");
+      },
+      costFn: function costFn(j) {
+        return 0;
       }
     }, {
       title: 'Bus/train',
       details: __vue_component__$3,
       summarise: function summarise(j) {
-        return '23 minutes by train or 28 minutes by bus (2 Metro cards are available nearby)';
+        return "".concat(j.time.train, " minutes by train or ").concat(j.time.bus, " minutes by bus (2 Metro cards are available nearby)");
+      },
+      costFn: function costFn(j) {
+        // TODO Need to calculate cost with/without metro card
+        return 5;
       }
     }, {
       title: 'Pool vehicle',
       details: __vue_component__$5,
       summarise: function summarise(j) {
-        return '22 minutes drive (needs booking in advance)';
+        return "".concat(j.time.drive, " minutes drive (needs booking in advance)");
+      },
+      costFn: function costFn(j) {
+        // TODO How is this calculated?
+        return 10;
       }
     }, {
       title: 'Car club',
       details: __vue_component__$4,
       summarise: function summarise(j) {
-        return '22 minutes drive (20 cars at Cookridge Street)';
+        return "".concat(j.time.drive, " minutes drive (20 cars at Cookridge Street)");
+      },
+      costFn: function costFn(j) {
+        // TODO How is this calculated?
+        return (10 * j.time.drive / 30).toFixed(2);
       }
     }, {
       title: 'Taxi',
       details: __vue_component__$8,
-      summarise: function summarise() {
-        return '22 minutes (Arrow Taxis)';
+      summarise: function summarise(j) {
+        return "".concat(j.time.drive, " minutes (Arrow Taxis)");
+      },
+      costFn: function costFn(j) {
+        // TODO How is this calculated?
+        return (0.50 * j.time.drive).toFixed(2);
       }
     }, {
       title: 'Self drive',
       details: __vue_component__$9,
-      summarise: function summarise() {
-        return '22 minutes';
+      summarise: function summarise(j) {
+        return "".concat(j.time.drive, " minutes");
+      },
+      costFn: function costFn(j) {
+        // TODO How is this calculated?
+        return 0.5 * j.time.drive;
       }
     }];
 
@@ -1003,7 +1039,13 @@
       el: '#app',
       data: {
         journey: {
-          source: 'Merrion House'
+          source: 'Merrion House',
+          destination: 'Hough Top',
+          time: {
+            drive: 22,
+            bus: 28,
+            train: 23
+          }
         }
       },
       render: function render(h) {

@@ -8,6 +8,12 @@ new Vue({
   data: {
     journey: {
       source: 'Merrion House',
+      destination: 'Hough Top',
+      time: {
+        drive: 22,
+        bus: 28,
+        train: 23,
+      },
     },
   },
   render: (h) => h(App, { props: { modes } }),

@@ -4,6 +4,7 @@
       <div v-if="viewState ==='closed'" class="open">more info</div>
       <h3>{{ title }}</h3>
       <p>{{ summary }}</p>
+      <p>£{{ cost }}</p>
     </div>
     <component :is="details" v-if="viewState ==='open'" />
   </section>  
@@ -24,6 +25,10 @@ export default {
       type: Function,
       default: () => () => null,
     },
+    costFn: {
+      type: Function,
+      required: true,
+    },
   },
   data: function () {
     return {
@@ -33,7 +38,10 @@ export default {
   computed: {
     summary() {
       // Ultimately this should wire up to a vuex store...
-      return this.summarise(this.$root.journey );
+      return this.summarise(this.$root.journey);
+    },
+    cost() {
+      return this.costFn(this.$root.journey);
     },
   },
   methods: {
