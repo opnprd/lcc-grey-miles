@@ -141,16 +141,50 @@
       );
 
     //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
     var script = {
-      components: {
-        SearchForm: __vue_component__
-      },
       props: {
-        modes: {
-          type: Array,
+        title: {
+          type: String,
+          required: true
+        },
+        details: {
+          type: Object,
+          required: false,
+          "default": function _default() {}
+        },
+        summarise: {
+          type: Function,
           "default": function _default() {
-            return [];
+            return function () {
+              return null;
+            };
           }
+        }
+      },
+      data: function data() {
+        return {
+          viewState: 'closed'
+        };
+      },
+      computed: {
+        summary: function summary() {
+          // Ultimately this should wire up to a vuex store...
+          return this.summarise(this.$root.journey);
+        }
+      },
+      methods: {
+        toggleView: function toggleView() {
+          var currentState = this.viewState;
+          this.viewState = currentState === 'open' ? 'closed' : 'open';
         }
       }
     };
@@ -163,55 +197,34 @@
       var _vm = this;
       var _h = _vm.$createElement;
       var _c = _vm._self._c || _h;
-      return _c("article", [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("div", { attrs: { id: "main" } }, [
-          _c(
-            "div",
-            { staticClass: "main c6-bg" },
-            [
-              _c("p", { staticClass: "intro" }, [
-                _vm._v(
-                  "Can you make your journey cleaner? Move up Leeds City Council's travel hierarchy to reduce your emissions and help tackle the #ClimateEmergency"
-                )
-              ]),
-              _vm._v(" "),
-              _c("search-form")
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "ol",
-            { staticClass: "c6-bg" },
-            _vm._l(_vm.modes, function(mode, i) {
-              return _c(
-                "li",
-                { key: i, class: "mode" + (i + 1) },
-                [_c(mode, { tag: "component" })],
-                1
-              )
-            }),
-            0
-          )
-        ])
-      ])
-    };
-    var __vue_staticRenderFns__$1 = [
-      function() {
-        var _vm = this;
-        var _h = _vm.$createElement;
-        var _c = _vm._self._c || _h;
-        return _c("header", { staticClass: "c6-bg" }, [
-          _c("p", { staticClass: "b1-bg" }, [
-            _vm._v("Towards a lower emissions city")
+      return _c(
+        "section",
+        {
+          on: {
+            click: function($event) {
+              return _vm.toggleView()
+            }
+          }
+        },
+        [
+          _c("div", [
+            _vm.viewState === "closed"
+              ? _c("div", { staticClass: "open" }, [_vm._v("more info")])
+              : _vm._e(),
+            _vm._v(" "),
+            _c("h3", [_vm._v(_vm._s(_vm.title))]),
+            _vm._v(" "),
+            _c("p", [_vm._v(_vm._s(_vm.summary))])
           ]),
           _vm._v(" "),
-          _c("h1", [_vm._v("Leeds Council Staff Travel Options")])
-        ])
-      }
-    ];
+          _vm.viewState === "open"
+            ? _c(_vm.details, { tag: "component" })
+            : _vm._e()
+        ],
+        1
+      )
+    };
+    var __vue_staticRenderFns__$1 = [];
     __vue_render__$1._withStripped = true;
 
       /* style */
@@ -244,25 +257,23 @@
       );
 
     //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
     var script$1 = {
-      data: function data() {
-        return {
-          viewState: 'closed'
-        };
+      components: {
+        SearchForm: __vue_component__,
+        ModeOfTransport: __vue_component__$1
       },
-      methods: {
-        toggleView: function toggleView() {
-          var currentState = this.viewState;
-          this.viewState = currentState === 'open' ? 'closed' : 'open';
+      props: {
+        modes: {
+          type: Array,
+          "default": function _default() {
+            return [];
+          }
+        },
+        rawModes: {
+          type: Array,
+          "default": function _default() {
+            return [];
+          }
         }
       }
     };
@@ -275,34 +286,60 @@
       var _vm = this;
       var _h = _vm.$createElement;
       var _c = _vm._self._c || _h;
-      return _c(
-        "section",
-        {
-          on: {
-            click: function($event) {
-              return _vm.toggleView()
-            }
-          }
-        },
-        [
-          _c("div", [
-            _vm.viewState === "closed"
-              ? _c("div", { staticClass: "open" }, [_vm._v("more info")])
-              : _vm._e(),
-            _vm._v(" "),
-            _c("h3", [_vm._v(_vm._s(_vm.title))]),
-            _vm._v(" "),
-            _c("p", [_vm._v(_vm._s(_vm.summary))])
+      return _c("article", [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { attrs: { id: "main" } }, [
+          _c(
+            "div",
+            { staticClass: "main c6-bg" },
+            [
+              _c("p", { staticClass: "intro" }, [
+                _vm._v(
+                  "Can you make your journey cleaner? Move up Leeds City Council's travel hierarchy to reduce your emissions and help tackle the #ClimateEmergency"
+                )
+              ]),
+              _vm._v(" "),
+              _c("search-form")
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "ol",
+            { staticClass: "c6-bg" },
+            _vm._l(_vm.modes, function(mode, i) {
+              return _c(
+                "li",
+                { key: i, class: "mode" + (i + 1) },
+                [
+                  _c(
+                    "mode-of-transport",
+                    _vm._b({}, "mode-of-transport", mode, false)
+                  )
+                ],
+                1
+              )
+            }),
+            0
+          )
+        ])
+      ])
+    };
+    var __vue_staticRenderFns__$2 = [
+      function() {
+        var _vm = this;
+        var _h = _vm.$createElement;
+        var _c = _vm._self._c || _h;
+        return _c("header", { staticClass: "c6-bg" }, [
+          _c("p", { staticClass: "b1-bg" }, [
+            _vm._v("Towards a lower emissions city")
           ]),
           _vm._v(" "),
-          _vm.viewState === "open"
-            ? _c(_vm.details, { tag: "component" })
-            : _vm._e()
-        ],
-        1
-      )
-    };
-    var __vue_staticRenderFns__$2 = [];
+          _c("h1", [_vm._v("Leeds Council Staff Travel Options")])
+        ])
+      }
+    ];
     __vue_render__$2._withStripped = true;
 
       /* style */
@@ -449,21 +486,6 @@
         undefined
       );
 
-    var BusTrain = {
-      "extends": __vue_component__$2,
-      data: function data() {
-        return {
-          title: 'Bus/train',
-          details: __vue_component__$3
-        };
-      },
-      computed: {
-        summary: function summary() {
-          return '23 minutes by train or 28 minutes by bus (2 Metro cards are available nearby)';
-        }
-      }
-    };
-
     /* script */
 
     /* template */
@@ -533,21 +555,6 @@
         undefined,
         undefined
       );
-
-    var CarClub = {
-      "extends": __vue_component__$2,
-      data: function data() {
-        return {
-          title: 'Car club',
-          details: __vue_component__$4
-        };
-      },
-      computed: {
-        summary: function summary() {
-          return '22 minutes drive (20 cars at Cookridge Street)';
-        }
-      }
-    };
 
     /* script */
 
@@ -632,21 +639,6 @@
         undefined
       );
 
-    var PoolVehicle = {
-      "extends": __vue_component__$2,
-      data: function data() {
-        return {
-          title: 'Pool vehicle',
-          details: __vue_component__$5
-        };
-      },
-      computed: {
-        summary: function summary() {
-          return '22 minutes drive (needs booking in advance)';
-        }
-      }
-    };
-
     /* script */
 
     /* template */
@@ -720,21 +712,6 @@
         undefined,
         undefined
       );
-
-    var TeleConf = {
-      "extends": __vue_component__$2,
-      data: function data() {
-        return {
-          title: 'Tele/videoconference',
-          details: __vue_component__$6
-        };
-      },
-      computed: {
-        summary: function summary() {
-          return 'Skype facilities at Merrion House (50 metres away)';
-        }
-      }
-    };
 
     /* script */
 
@@ -859,21 +836,6 @@
         undefined
       );
 
-    var WalkCycle = {
-      "extends": __vue_component__$2,
-      data: function data() {
-        return {
-          title: 'Walk/cycle',
-          details: __vue_component__$7
-        };
-      },
-      computed: {
-        summary: function summary() {
-          return '30-40 minutes by bike (2 ebikes nearby at Merrion House)';
-        }
-      }
-    };
-
     /* script */
 
     /* template */
@@ -914,21 +876,6 @@
         undefined,
         undefined
       );
-
-    var Taxi = {
-      "extends": __vue_component__$2,
-      data: function data() {
-        return {
-          title: 'Taxi',
-          details: __vue_component__$8
-        };
-      },
-      computed: {
-        summary: function summary() {
-          return '22 minutes (Arrow Taxis)';
-        }
-      }
-    };
 
     /* script */
 
@@ -1008,27 +955,59 @@
         undefined
       );
 
-    var SelfDrive = {
-      "extends": __vue_component__$2,
-      data: function data() {
-        return {
-          title: 'Self drive',
-          details: __vue_component__$9
-        };
-      },
-      computed: {
-        summary: function summary() {
-          return '22 minutes';
-        }
+    var modes = [{
+      title: 'Tele/videoconference',
+      details: __vue_component__$6,
+      summarise: function summarise(j) {
+        return "Skype facilities at ".concat(j.source);
       }
-    };
-
-    var modes = [TeleConf, WalkCycle, BusTrain, PoolVehicle, CarClub, Taxi, SelfDrive];
+    }, {
+      title: 'Walk/Cycle',
+      details: __vue_component__$7,
+      summarise: function summarise(j) {
+        return "30-40 minutes by bike (2 ebikes nearby at ".concat(j.source, ")");
+      }
+    }, {
+      title: 'Bus/train',
+      details: __vue_component__$3,
+      summarise: function summarise(j) {
+        return '23 minutes by train or 28 minutes by bus (2 Metro cards are available nearby)';
+      }
+    }, {
+      title: 'Pool vehicle',
+      details: __vue_component__$5,
+      summarise: function summarise(j) {
+        return '22 minutes drive (needs booking in advance)';
+      }
+    }, {
+      title: 'Car club',
+      details: __vue_component__$4,
+      summarise: function summarise(j) {
+        return '22 minutes drive (20 cars at Cookridge Street)';
+      }
+    }, {
+      title: 'Taxi',
+      details: __vue_component__$8,
+      summarise: function summarise() {
+        return '22 minutes (Arrow Taxis)';
+      }
+    }, {
+      title: 'Self drive',
+      details: __vue_component__$9,
+      summarise: function summarise() {
+        return '22 minutes';
+      }
+    }];
 
     new Vue({
       el: '#app',
+      data: {
+        journey: {
+          source: 'Merrion House'
+        }
+      },
       render: function render(h) {
-        return h(__vue_component__$1, {
+        return h(__vue_component__$2, {
           props: {
             modes: modes
           }

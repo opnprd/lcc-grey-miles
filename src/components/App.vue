@@ -16,7 +16,7 @@
           :key="i"
           :class="'mode' + (i + 1)"
         >
-          <component :is="mode" />
+          <mode-of-transport v-bind="mode" />
         </li>
       </ol>
     </div>
@@ -24,13 +24,19 @@
 </template>
 <script>
 import SearchForm from './Search.vue';
+import ModeOfTransport from './ModeOfTransport.vue';
 
 export default {
   components: {
     SearchForm,
+    ModeOfTransport,
   },
   props: {
     modes: {
+      type: Array,
+      default: () => [],
+    },
+    rawModes: {
       type: Array,
       default: () => [],
     },

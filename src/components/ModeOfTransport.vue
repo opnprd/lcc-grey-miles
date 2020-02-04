@@ -10,10 +10,31 @@
 </template>
 <script>
 export default {
+  props: {
+    title: {
+      type: String,
+      required: true,
+    },
+    details: {
+      type: Object,
+      required: false,
+      default: () => {},
+    },
+    summarise: {
+      type: Function,
+      default: () => () => null,
+    },
+  },
   data: function () {
     return {
       viewState: 'closed',
     };
+  },
+  computed: {
+    summary() {
+      // Ultimately this should wire up to a vuex store...
+      return this.summarise(this.$root.journey );
+    },
   },
   methods: {
     toggleView() {
