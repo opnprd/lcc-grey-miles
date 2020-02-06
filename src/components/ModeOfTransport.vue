@@ -9,6 +9,14 @@
     <component :is="details" v-if="viewState ==='open'" />
   </section>  
 </template>
+<style scoped>
+.open {
+  display: inline-block;
+  float: right;
+  padding-right: 1em;
+  line-height: 1.5em;
+}
+</style>
 <script>
 export default {
   props: {

@@ -2,6 +2,7 @@ import babel from 'rollup-plugin-babel';
 import commonjs from 'rollup-plugin-commonjs';
 import copy from 'rollup-plugin-copy';
 import resolve from 'rollup-plugin-node-resolve';
+import scss from 'rollup-plugin-scss';
 import vue from 'rollup-plugin-vue';
 import { terser } from 'rollup-plugin-terser';
 
@@ -32,6 +33,9 @@ export default {
     }),
     terser({
       include: [/^.+\.min\.js$/, '*esm*'], 
+    }),
+    scss({
+      includePaths: ['./src/scss'],
     }),
     copy({
       targets: [

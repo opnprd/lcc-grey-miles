@@ -3,6 +3,8 @@ import Vue from 'vue';
 import App from './components/App.vue';
 import modes from './modes';
 
+import './wireframe.scss';
+
 new Vue({
   el: '#app',
   data: {

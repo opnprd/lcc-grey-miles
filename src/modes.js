@@ -28,7 +28,7 @@ export default [
     title: 'Walk/Cycle',
     details: WalkCycle,
     summarise(j) {
-      return `30-40 minutes by bike (2 ebikes nearby at ${j.source})`;
+      return `30-40 minutes by bike (xx ebikes nearby at ${j.source})`;
     },
     costFn(j) {
       return 0;
@@ -38,7 +38,7 @@ export default [
     title: 'Bus/train',
     details: BusTrain,
     summarise(j) {
-      return `${j.time.train} minutes by train or ${j.time.bus} minutes by bus (2 Metro cards are available nearby)`;
+      return `${j.time.train} minutes by train or ${j.time.bus} minutes by bus (xx Metro cards are available nearby)`;
     },
     costFn(j) {
       // TODO Need to calculate cost with/without metro card
@@ -60,7 +60,7 @@ export default [
     title: 'Car club',
     details: CarClub,
     summarise(j) {
-      return `${j.time.drive} minutes drive (20 cars at Cookridge Street)`;
+      return `${j.time.drive} minutes drive (xx cars at Cookridge Street)`;
     },
     costFn(j) {
       // TODO How is this calculated?
@@ -71,7 +71,7 @@ export default [
     title: 'Taxi',
     details: Taxi,
     summarise(j) {
-      return `${j.time.drive} minutes (Arrow Taxis)`;
+      return `${j.time.drive} minutes (AAA Taxis)`;
     },
     costFn(j) {
       // TODO How is this calculated?

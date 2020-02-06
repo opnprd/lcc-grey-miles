@@ -151,6 +151,14 @@
     //
     //
     //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
     var script = {
       props: {
         title: {
@@ -197,6 +205,59 @@
       }
     };
 
+    const isOldIE = typeof navigator !== 'undefined' &&
+        /msie [6-9]\\b/.test(navigator.userAgent.toLowerCase());
+    function createInjector(context) {
+        return (id, style) => addStyle(id, style);
+    }
+    let HEAD;
+    const styles = {};
+    function addStyle(id, css) {
+        const group = isOldIE ? css.media || 'default' : id;
+        const style = styles[group] || (styles[group] = { ids: new Set(), styles: [] });
+        if (!style.ids.has(id)) {
+            style.ids.add(id);
+            let code = css.source;
+            if (css.map) {
+                // https://developer.chrome.com/devtools/docs/javascript-debugging
+                // this makes source maps inside style tags work properly in Chrome
+                code += '\n/*# sourceURL=' + css.map.sources[0] + ' */';
+                // http://stackoverflow.com/a/26603875
+                code +=
+                    '\n/*# sourceMappingURL=data:application/json;base64,' +
+                        btoa(unescape(encodeURIComponent(JSON.stringify(css.map)))) +
+                        ' */';
+            }
+            if (!style.element) {
+                style.element = document.createElement('style');
+                style.element.type = 'text/css';
+                if (css.media)
+                    style.element.setAttribute('media', css.media);
+                if (HEAD === undefined) {
+                    HEAD = document.head || document.getElementsByTagName('head')[0];
+                }
+                HEAD.appendChild(style.element);
+            }
+            if ('styleSheet' in style.element) {
+                style.styles.push(code);
+                style.element.styleSheet.cssText = style.styles
+                    .filter(Boolean)
+                    .join('\n');
+            }
+            else {
+                const index = style.ids.size - 1;
+                const textNode = document.createTextNode(code);
+                const nodes = style.element.childNodes;
+                if (nodes[index])
+                    style.element.removeChild(nodes[index]);
+                if (nodes.length)
+                    style.element.insertBefore(textNode, nodes[index]);
+                else
+                    style.element.appendChild(textNode);
+            }
+        }
+    }
+
     /* script */
     const __vue_script__ = script;
 
@@ -238,15 +299,17 @@
     __vue_render__$1._withStripped = true;
 
       /* style */
-      const __vue_inject_styles__$1 = undefined;
+      const __vue_inject_styles__$1 = function (inject) {
+        if (!inject) return
+        inject("data-v-379a0546_0", { source: "\n.open[data-v-379a0546] {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n", map: {"version":3,"sources":["/Users/gilesdring/src/opnprd/greymiles/src/components/ModeOfTransport.vue"],"names":[],"mappings":";AAYA;EACA,qBAAA;EACA,YAAA;EACA,kBAAA;EACA,kBAAA;AACA","file":"ModeOfTransport.vue","sourcesContent":["<template>\n  <section @click=\"toggleView()\">\n    <div>\n      <div v-if=\"viewState ==='closed'\" class=\"open\">more info</div>\n      <h3>{{ title }}</h3>\n      <p>{{ summary }}</p>\n      <p>£{{ cost }}</p>\n    </div>\n    <component :is=\"details\" v-if=\"viewState ==='open'\" />\n  </section>  \n</template>\n<style scoped>\n.open {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n</style>\n<script>\nexport default {\n  props: {\n    title: {\n      type: String,\n      required: true,\n    },\n    details: {\n      type: Object,\n      required: false,\n      default: () => {},\n    },\n    summarise: {\n      type: Function,\n      default: () => () => null,\n    },\n    costFn: {\n      type: Function,\n      required: true,\n    },\n  },\n  data: function () {\n    return {\n      viewState: 'closed',\n    };\n  },\n  computed: {\n    summary() {\n      // Ultimately this should wire up to a vuex store...\n      return this.summarise(this.$root.journey);\n    },\n    cost() {\n      return this.costFn(this.$root.journey);\n    },\n  },\n  methods: {\n    toggleView() {\n      const currentState = this.viewState;\n      this.viewState = currentState === 'open' ? 'closed' : 'open';\n    },\n  },\n};\n</script>"]}, media: undefined });
+
+      };
       /* scoped */
-      const __vue_scope_id__$1 = undefined;
+      const __vue_scope_id__$1 = "data-v-379a0546";
       /* module identifier */
       const __vue_module_identifier__$1 = undefined;
       /* functional template */
       const __vue_is_functional_template__$1 = false;
-      /* style inject */
-      
       /* style inject SSR */
       
       /* style inject shadow dom */
@@ -261,7 +324,7 @@
         __vue_is_functional_template__$1,
         __vue_module_identifier__$1,
         false,
-        undefined,
+        createInjector,
         undefined,
         undefined
       );
@@ -296,15 +359,14 @@
       var _vm = this;
       var _h = _vm.$createElement;
       var _c = _vm._self._c || _h;
-      return _c("article", [
+      return _c("article", { attrs: { id: "app" } }, [
         _vm._m(0),
         _vm._v(" "),
         _c("div", { attrs: { id: "main" } }, [
           _c(
-            "div",
-            { staticClass: "main c6-bg" },
+            "section",
             [
-              _c("p", { staticClass: "intro" }, [
+              _c("p", [
                 _vm._v(
                   "Can you make your journey cleaner? Move up Leeds City Council's travel hierarchy to reduce your emissions and help tackle the #ClimateEmergency"
                 )
@@ -317,7 +379,6 @@
           _vm._v(" "),
           _c(
             "ol",
-            { staticClass: "c6-bg" },
             _vm._l(_vm.modes, function(mode, i) {
               return _c(
                 "li",
@@ -341,10 +402,8 @@
         var _vm = this;
         var _h = _vm.$createElement;
         var _c = _vm._self._c || _h;
-        return _c("header", { staticClass: "c6-bg" }, [
-          _c("p", { staticClass: "b1-bg" }, [
-            _vm._v("Towards a lower emissions city")
-          ]),
+        return _c("header", [
+          _c("p", [_vm._v("Towards a lower emissions city")]),
           _vm._v(" "),
           _c("h1", [_vm._v("Leeds Council Staff Travel Options")])
         ])
@@ -986,7 +1045,7 @@
       title: 'Walk/Cycle',
       details: __vue_component__$7,
       summarise: function summarise(j) {
-        return "30-40 minutes by bike (2 ebikes nearby at ".concat(j.source, ")");
+        return "30-40 minutes by bike (xx ebikes nearby at ".concat(j.source, ")");
       },
       costFn: function costFn(j) {
         return 0;
@@ -995,7 +1054,7 @@
       title: 'Bus/train',
       details: __vue_component__$3,
       summarise: function summarise(j) {
-        return "".concat(j.time.train, " minutes by train or ").concat(j.time.bus, " minutes by bus (2 Metro cards are available nearby)");
+        return "".concat(j.time.train, " minutes by train or ").concat(j.time.bus, " minutes by bus (xx Metro cards are available nearby)");
       },
       costFn: function costFn(j) {
         // TODO Need to calculate cost with/without metro card
@@ -1015,7 +1074,7 @@
       title: 'Car club',
       details: __vue_component__$4,
       summarise: function summarise(j) {
-        return "".concat(j.time.drive, " minutes drive (20 cars at Cookridge Street)");
+        return "".concat(j.time.drive, " minutes drive (xx cars at Cookridge Street)");
       },
       costFn: function costFn(j) {
         // TODO How is this calculated?
@@ -1025,7 +1084,7 @@
       title: 'Taxi',
       details: __vue_component__$8,
       summarise: function summarise(j) {
-        return "".concat(j.time.drive, " minutes (Arrow Taxis)");
+        return "".concat(j.time.drive, " minutes (AAA Taxis)");
       },
       costFn: function costFn(j) {
         // TODO How is this calculated?

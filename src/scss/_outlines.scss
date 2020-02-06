@@ -1,0 +1,29 @@
+%outline {
+  border: 1px solid #888;
+}
+%spacing {
+  padding: 1em;
+}
+
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono&display=swap');
+
+#app {
+  font-family: 'IBM Plex Mono', monospace;
+
+  section, form {
+    @extend %outline;
+    @extend %spacing;
+  }
+  section section {
+    border: none;
+    padding: 0;
+  }
+  header {
+    @extend %spacing;
+    text-align: center;
+  }
+  h1 {
+    font-weight: bold;
+    font-size: 2em;
+  }
+}
