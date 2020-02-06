@@ -32,10 +32,5 @@
       <input id="carrying" name="carrying" type="checkbox">
       <label for="carrying">I am transporting a lot of stuff</label>
     </div>
-    <div class="row">
-      <label for="travellers">Number of people travelling</label>
-      <input id="travellers" name="travellers" type="number">
-    </div>
-
   </form>
 </template>

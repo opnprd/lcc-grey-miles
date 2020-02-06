@@ -145,16 +145,6 @@
             _c("label", { attrs: { for: "carrying" } }, [
               _vm._v("I am transporting a lot of stuff")
             ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("label", { attrs: { for: "travellers" } }, [
-              _vm._v("Number of people travelling")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              attrs: { id: "travellers", name: "travellers", type: "number" }
-            })
           ])
         ])
       }
