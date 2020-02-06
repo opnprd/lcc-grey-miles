@@ -105,6 +105,56 @@
             _c("label", { attrs: { for: "to" } }, [_vm._v("To:")]),
             _vm._v(" "),
             _c("input", { attrs: { id: "from", type: "text", value: "Hough Top" } })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("input", {
+              attrs: { id: "roundtrip", name: "roundtrip", type: "checkbox" }
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "roundtrip" } }, [
+              _vm._v("I am going and then coming back again")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("label", { attrs: { for: "roundtriptime" } }, [
+              _vm._v("Hours spent at location")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              attrs: { id: "roundtriptime", name: "roundtrip", type: "number" }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("input", {
+              attrs: { id: "presence", name: "presence", type: "checkbox" }
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "presence" } }, [
+              _vm._v("I need to travel to the destination")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("input", {
+              attrs: { id: "carrying", name: "carrying", type: "checkbox" }
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "carrying" } }, [
+              _vm._v("I am transporting a lot of stuff")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("label", { attrs: { for: "travellers" } }, [
+              _vm._v("Number of people travelling")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              attrs: { id: "travellers", name: "travellers", type: "number" }
+            })
           ])
         ])
       }
