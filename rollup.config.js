@@ -27,9 +27,6 @@ export default {
     { file: `${outputDir}/${jsFile}`, format: 'iife', globals },
   ],
   plugins: [
-    watch && browsersync({
-      server: 'docs',
-    }),
     clear({
       targets: [ outputDir ],
     }),
@@ -64,6 +61,12 @@ export default {
           dest: `${outputDir}/vendor`,
         },
       ],
+      hook: 'buildStart',
+      copyOnce: true,
+    }),
+    watch && browsersync({
+      server: 'docs',
+      reloadDebounce: 1000,
     }),
   ],
 };
