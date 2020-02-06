@@ -6,6 +6,13 @@ import WalkCycle from './components/modes/WalkCycle.vue';
 import Taxi from './components/modes/Taxi.vue';
 import SelfDrive from './components/modes/SelfDrive.vue';
 
+/**
+ * Each mode of transport is described below. The fields are as follows:
+ * * title: Display name of the mode of transport
+ * * details: A Vue component to render for detailed information
+ * * summarise: A function to present the summary of the function
+ * * costFn: A function to calculate the cost of travel
+ */
 export default [
   {
     title: 'Tele/videoconference',
