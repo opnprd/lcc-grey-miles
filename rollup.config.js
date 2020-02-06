@@ -1,4 +1,5 @@
 import babel from 'rollup-plugin-babel';
+import clear from 'rollup-plugin-clear'
 import commonjs from 'rollup-plugin-commonjs';
 import copy from 'rollup-plugin-copy';
 import resolve from 'rollup-plugin-node-resolve';
@@ -9,6 +10,11 @@ import { terser } from 'rollup-plugin-terser';
 const entrypoint = 'app';
 const outputDir = 'docs';
 
+// Optimise for production delivery
+const { NODE_ENV: environment = 'production' } = process.env;
+const jsMin = environment === 'development' ? '' : '.min';
+const jsFile = `${entrypoint}${jsMin}.js`;
+
 const globals = {
   vue: 'Vue',
 };
@@ -17,10 +23,12 @@ export default {
   input: `src/${entrypoint}.js`,
   external: [ 'vue' ],
   output: [
-    { file: `${outputDir}/${entrypoint}.js`, format: 'iife', globals },
-    { file: `${outputDir}/${entrypoint}.min.js`, format: 'iife', globals },
+    { file: `${outputDir}/${jsFile}`, format: 'iife', globals },
   ],
   plugins: [
+    clear({
+      targets: [ outputDir ],
+    }),
     resolve(),
     commonjs(),
     vue(),
@@ -35,14 +43,19 @@ export default {
       include: [/^.+\.min\.js$/, '*esm*'], 
     }),
     scss({
+      output: `${outputDir}/style.css`,
       includePaths: ['./src/scss'],
     }),
     copy({
       targets: [
-        { src: 'src/index.html', dest: outputDir },
+        {
+          src: 'src/index.html',
+          dest: outputDir,
+          transform: (x) => x.toString().replace('__SCRIPT__', jsFile).replace('__MIN__', jsMin),
+        },
         {
           src: [
-            'node_modules/vue/dist/vue.js',
+            `node_modules/vue/dist/vue${jsMin}.js`,
           ],
           dest: `${outputDir}/vendor`,
         },
