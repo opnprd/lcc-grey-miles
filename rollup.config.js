@@ -6,7 +6,7 @@ import vue from 'rollup-plugin-vue';
 import { terser } from 'rollup-plugin-terser';
 
 const entrypoint = 'app';
-const outputDir = 'dist';
+const outputDir = 'docs';
 
 const globals = {
   vue: 'Vue',
@@ -35,7 +35,7 @@ export default {
     }),
     copy({
       targets: [
-        { src: 'src/index.html', dest: 'dist' },
+        { src: 'src/index.html', dest: outputDir },
         {
           src: [
             'node_modules/vue/dist/vue.js',

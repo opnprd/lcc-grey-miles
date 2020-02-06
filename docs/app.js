@@ -965,6 +965,14 @@
         undefined
       );
 
+    /**
+     * Each mode of transport is described below. The fields are as follows:
+     * * title: Display name of the mode of transport
+     * * details: A Vue component to render for detailed information
+     * * summarise: A function to present the summary of the function
+     * * costFn: A function to calculate the cost of travel
+     */
+
     var modes = [{
       title: 'Tele/videoconference',
       details: __vue_component__$6,
