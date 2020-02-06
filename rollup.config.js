@@ -1,4 +1,5 @@
 import babel from 'rollup-plugin-babel';
+import browsersync from 'rollup-plugin-browsersync'
 import clear from 'rollup-plugin-clear'
 import commonjs from 'rollup-plugin-commonjs';
 import copy from 'rollup-plugin-copy';
@@ -11,7 +12,7 @@ const entrypoint = 'app';
 const outputDir = 'docs';
 
 // Optimise for production delivery
-const { NODE_ENV: environment = 'production' } = process.env;
+const { NODE_ENV: environment = 'production', ROLLUP_WATCH: watch = false } = process.env;
 const jsMin = environment === 'development' ? '' : '.min';
 const jsFile = `${entrypoint}${jsMin}.js`;
 
@@ -26,6 +27,9 @@ export default {
     { file: `${outputDir}/${jsFile}`, format: 'iife', globals },
   ],
   plugins: [
+    watch && browsersync({
+      server: 'docs',
+    }),
     clear({
       targets: [ outputDir ],
     }),
