@@ -17,13 +17,11 @@
       <li>
         <a
           href=""
-          class="c12-bg"
         ><h2>Access a council Metro Card</h2><p>Do this</p></a>
       </li>
       <li>
         <a
           href=""
-          class="c12-bg"
         ><h2>No Metro Card nearby</h2><p>Find out how to request that your department gets a Metro card for bus and train travel within West Yorkshire.</p></a>
       </li>
     </ul>
