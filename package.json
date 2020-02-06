@@ -17,7 +17,7 @@
     "vue-template-compiler": "^2.6.11"
   },
   "scripts": {
-    "bundle": "rollup --config rollup.config.js",
+    "bundle": "NODE_ENV=development rollup --config rollup.config.js",
     "dev": "NODE_ENV=development npm run bundle -- --watch"
   },
   "dependencies": {
