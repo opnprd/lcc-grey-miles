@@ -45,11 +45,10 @@ export default {
   },
   computed: {
     summary() {
-      // Ultimately this should wire up to a vuex store...
-      return this.summarise(this.$root.journey);
+      return this.summarise(this.$store.getters.journey);
     },
     cost() {
-      return this.costFn(this.$root.journey);
+      return this.costFn(this.$store.getters.journey);
     },
   },
   methods: {

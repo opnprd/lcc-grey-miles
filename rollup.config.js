@@ -18,11 +18,12 @@ const jsFile = `${entrypoint}${jsMin}.js`;
 
 const globals = {
   vue: 'Vue',
+  vuex: 'Vuex',
 };
 
 export default {
   input: `src/${entrypoint}.js`,
-  external: [ 'vue' ],
+  external: [ 'vue', 'vuex' ],
   output: [
     { file: `${outputDir}/${jsFile}`, format: 'iife', globals },
   ],
@@ -52,17 +53,17 @@ export default {
         {
           src: 'src/index.html',
           dest: outputDir,
-          transform: (x) => x.toString().replace('__SCRIPT__', jsFile).replace('__MIN__', jsMin),
+          transform: (x) => x.toString().replace(/__SCRIPT__/g, jsFile).replace(/__MIN__/g, jsMin),
         },
         {
           src: [
             `node_modules/vue/dist/vue${jsMin}.js`,
+            `node_modules/vuex/dist/vuex${jsMin}.js`,
           ],
           dest: `${outputDir}/vendor`,
         },
       ],
       hook: 'buildStart',
-      copyOnce: true,
     }),
     watch && browsersync({
       server: 'docs',
