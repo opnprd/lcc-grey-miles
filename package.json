@@ -5,6 +5,7 @@
     "eslint": "^6.8.0",
     "eslint-plugin-vue": "^6.2.2",
     "jest": "^25.1.0",
+    "node-fetch": "^2.6.0",
     "rollup": "^2.1.0",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-browsersync": "^1.1.0",
