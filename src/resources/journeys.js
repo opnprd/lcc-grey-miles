@@ -16,10 +16,12 @@ async function getOtherMethod(from, to, profileName) {
   let [fromCoords, toCoords] = geoCode(from, to);
   const response = await fetch(`https://api.openrouteservice.org/v2/directions/${profileName}?api_key=${key}&start=${fromCoords.toString()}&end=${toCoords.toString()}`);
   let journeyData = await response.json();
-  let summary = journeyData.features[0].properties.summary;
+  // Grab summary via destructuring assignment
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/
+  const { features: [ { properties: { summary: { distance, duration } } } ] } = journeyData;
   return {
-    distance: { value: summary.distance / 1000, unit: 'km' },
-    time: { value: summary.duration / 60, unit: 'minutes' },
+    distance: { value: (distance / 1000).toFixed(2), unit: 'km' },
+    time: { value: (duration / 60).toFixed(1), unit: 'minutes' },
   };
 }
 
