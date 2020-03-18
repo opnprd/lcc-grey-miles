@@ -1,5 +1,8 @@
 import fetch from 'node-fetch';
 import journeys from './journeys';
+import geocode from './geocode';
+
+jest.mock('./geocode');
 
 // API https://jestjs.io/docs/en/api
 // Expect functions https://jestjs.io/docs/en/expect
@@ -10,11 +13,21 @@ describe('journey calculation', () => {
   beforeEach(() => {
     // TODO Replace this with a mock function to save backend calls
     global.fetch = fetch;
-    // TODO Add mock for geocode which returns a known sequence of results
+
+    /**
+     * Mocked geocode which returns a known sequence of results
+     * These are added using the mockResolvedValueOnce which mimics async function calls
+     * The first call will return the first registered value
+     * The second call will return the second one
+     */
+    geocode
+      .mockResolvedValueOnce([8.681495,49.41461])
+      .mockResolvedValueOnce([8.687872,49.420318]);
   });
 
   afterAll(() => {
     delete global.fetch;
+    geocode.mockRestore();
   });
 
   // Better to run before each test, in case we end up mocking the implementation
