@@ -1,8 +1,8 @@
 (function (Vue, Vuex) {
     'use strict';
 
-    Vue = Vue && Vue.hasOwnProperty('default') ? Vue['default'] : Vue;
-    Vuex = Vuex && Vuex.hasOwnProperty('default') ? Vuex['default'] : Vuex;
+    Vue = Vue && Object.prototype.hasOwnProperty.call(Vue, 'default') ? Vue['default'] : Vue;
+    Vuex = Vuex && Object.prototype.hasOwnProperty.call(Vuex, 'default') ? Vuex['default'] : Vuex;
 
     function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
         if (typeof shadowMode !== 'boolean') {

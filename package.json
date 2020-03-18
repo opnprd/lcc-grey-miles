@@ -1,19 +1,19 @@
 {
   "devDependencies": {
-    "@babel/core": "^7.6.2",
-    "@babel/preset-env": "^7.6.2",
+    "@babel/core": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
     "eslint": "^6.8.0",
-    "eslint-plugin-vue": "^6.1.2",
+    "eslint-plugin-vue": "^6.2.2",
     "jest": "^25.1.0",
-    "rollup": "^1.22.0",
-    "rollup-plugin-babel": "^4.3.3",
+    "rollup": "^2.1.0",
+    "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-browsersync": "^1.1.0",
     "rollup-plugin-clear": "^2.0.7",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-copy": "^3.3.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-scss": "^2.1.0",
-    "rollup-plugin-terser": "^5.1.2",
+    "rollup-plugin-terser": "^5.3.0",
     "rollup-plugin-vue": "^5.1.6",
     "vue-template-compiler": "^2.6.11"
   },
@@ -24,6 +24,6 @@
   },
   "dependencies": {
     "vue": "^2.6.11",
-    "vuex": "^3.1.2"
+    "vuex": "^3.1.3"
   }
 }

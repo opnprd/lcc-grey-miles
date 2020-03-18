@@ -1,5 +1,12 @@
 # lcc-grey-miles
 
+## Building
+
+Do this before committing changes
+
+```
+npm run bundle
+```
 
 ## Development
 
