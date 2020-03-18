@@ -6,24 +6,28 @@ import journeys from './journeys';
 describe('journey calculation', () => {
   let result;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     result = await journeys();
   });
 
   test('it should return the public transport distance and time', async () => {
-    expect(result).toHaveProperty('publicTransport.distance.value');
-    expect(result).toHaveProperty('publicTransport.time.value');
+    expect(result).toHaveProperty('publicTransport.distance.value', 100);
+    expect(result).toHaveProperty('publicTransport.time.value', 30);
   });
 
   test('it should return the driving distance and time', async () => {
-    expect(result).toHaveProperty('driving.distance.value', 100);
+    expect(result).toHaveProperty('driving.distance.value');
     expect(result).toHaveProperty('driving.distance.unit', 'km');
-    expect(result).toHaveProperty('driving.distance.time');
+    expect(result).toHaveProperty('driving.time.value');
   });
 
   test('it should return the walking distance and time', async () => {
     expect(result).toHaveProperty('walking.distance.value');
-    expect(result).toHaveProperty('walking.distance.time');
+    expect(result).toHaveProperty('walking.time.value');
   });
 
+  test('it should return the cycling distance and time', async () => {
+    expect(result).toHaveProperty('cycling.distance.value');
+    expect(result).toHaveProperty('cycling.time.value');
+  });
 });
