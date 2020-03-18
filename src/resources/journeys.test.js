@@ -1,3 +1,4 @@
+import fetch from 'node-fetch';
 import journeys from './journeys';
 
 // API https://jestjs.io/docs/en/api
@@ -6,7 +7,18 @@ import journeys from './journeys';
 describe('journey calculation', () => {
   let result;
 
-  beforeAll(async () => {
+  beforeEach(() => {
+    // TODO Replace this with a mock function to save backend calls
+    global.fetch = fetch;
+    // TODO Add mock for geocode which returns a known sequence of results
+  });
+
+  afterAll(() => {
+    delete global.fetch;
+  });
+
+  // Better to run before each test, in case we end up mocking the implementation
+  beforeEach(async () => {
     result = await journeys();
   });
 

@@ -1,5 +1,3 @@
-const fetch = require('node-fetch'); // only for testing outside of browser
-
 async function getPublicTransport(from, to) {
   return {
     distance: { value: 100, unit: 'km' },
