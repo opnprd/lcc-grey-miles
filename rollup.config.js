@@ -38,7 +38,7 @@ export default {
       configFile: false,
       exclude: 'node_modules/**',
       presets: [
-        ['@babel/preset-env', { modules: false }],
+        ['@babel/preset-env', { modules: false, useBuiltIns: 'usage', corejs: '3'}],
       ],
     }),
     terser({
