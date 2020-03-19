@@ -32,5 +32,15 @@
       <input id="carrying" name="carrying" type="checkbox">
       <label for="carrying">I am transporting a lot of stuff</label>
     </div>
+    <button @click="calculate()">Calculate</button>
   </form>
 </template>
+<script>
+export default {
+  methods: {
+    calculate() {
+      this.$store.dispatch('planTravel');
+    },
+  },
+};
+</script>

@@ -10,7 +10,7 @@
         <p>Can you make your journey cleaner? Move up Leeds City Council's travel hierarchy to reduce your emissions and help tackle the #ClimateEmergency</p>
         <search-form />
       </section>
-      <ol>
+      <!-- <ol>
         <li
           v-for="(mode, i) in modes"
           :key="i"
@@ -18,7 +18,7 @@
         >
           <mode-of-transport v-bind="mode" />
         </li>
-      </ol>
+      </ol> -->
     </div>
   </article>
 </template>
