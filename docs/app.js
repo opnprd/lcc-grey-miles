@@ -4221,10 +4221,37 @@
 
   function _geoCode() {
     _geoCode = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(location) {
+      var key, response, results, _results$features, _results$features$0$g, lon, lat;
+
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
+              if (location) {
+                _context.next = 4;
+                break;
+              }
+
+              throw new Error('No location supplied');
+
+            case 4:
+              key = '5b3ce3597851110001cf6248104657ec14464cc68a8aaaf62a878b74';
+              _context.next = 7;
+              return fetch("https://api.openrouteservice.org/geocode/search?api_key=".concat(key, "&text=").concat(encodeURIComponent(location), "&boundary.country=GB"));
+
+            case 7:
+              response = _context.sent;
+              _context.next = 10;
+              return response.json();
+
+            case 10:
+              results = _context.sent;
+              // Only take 1st result from the search for now - should allow user to choose from results
+              _results$features = _slicedToArray(results.features, 1), _results$features$0$g = _slicedToArray(_results$features[0].geometry.coordinates, 2), lon = _results$features$0$g[0], lat = _results$features$0$g[1];
+              console.log([lon, lat]);
+              return _context.abrupt("return", [lon, lat]);
+
+            case 14:
             case "end":
               return _context.stop();
           }
@@ -4334,7 +4361,7 @@
               toCoords = _ref3[1];
               _context3.next = 8;
               return Promise.all([getPublicTransport(fromCoords, toCoords), queryOpenRouteService(fromCoords, toCoords, 'driving-car'), // mode names for the openrouteservice api - could perhaps be in modes.js file
-              queryOpenRouteService(fromCoords, toCoords, 'cycling-regular'), queryOpenRouteService(fromCoords, toCoords, 'foot-walking')]);
+              queryOpenRouteService(fromCoords, toCoords, 'cycling-road'), queryOpenRouteService(fromCoords, toCoords, 'foot-walking')]);
 
             case 8:
               _ref4 = _context3.sent;

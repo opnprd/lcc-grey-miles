@@ -32,7 +32,7 @@ export default async function(from, to) {
   ] = await Promise.all([
     getPublicTransport(fromCoords, toCoords),
     queryOpenRouteService(fromCoords, toCoords, 'driving-car'), // mode names for the openrouteservice api - could perhaps be in modes.js file
-    queryOpenRouteService(fromCoords, toCoords, 'cycling-regular'),
+    queryOpenRouteService(fromCoords, toCoords, 'cycling-road'),
     queryOpenRouteService(fromCoords, toCoords, 'foot-walking'),
   ]);
 
