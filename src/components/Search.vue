@@ -32,7 +32,7 @@
       <input id="carrying" name="carrying" type="checkbox">
       <label for="carrying">I am transporting a lot of stuff</label>
     </div>
-    <button @click="calculate()">Calculate</button>
+    <button type="button" @click="calculate()">Calculate</button>
   </form>
 </template>
 <script>
