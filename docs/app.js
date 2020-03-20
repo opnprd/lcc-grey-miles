@@ -42,6 +42,56 @@
   //
   //
   var script = {
+    computed: {
+      origin: {
+        get: function get() {
+          return this.$store.state.source;
+        },
+        set: function set(value) {
+          this.$store.commit('updateSource', value);
+        }
+      },
+      destination: {
+        get: function get() {
+          return this.$store.state.destination;
+        },
+        set: function set(value) {
+          this.$store.commit('updateDestination', value);
+        }
+      },
+      isRoundTrip: {
+        get: function get() {
+          return this.$store.state.isRoundTrip;
+        },
+        set: function set(value) {
+          this.$store.commit('updateIsRoundTrip', value);
+        }
+      },
+      roundTripTime: {
+        get: function get() {
+          return this.$store.state.roundTripTime;
+        },
+        set: function set(value) {
+          this.$store.commit('updateRoundTripTime', value);
+        }
+      },
+      presenceRequired: {
+        get: function get() {
+          return this.$store.state.presenceRequired;
+        },
+        set: function set(value) {
+          this.$store.commit('updatePresenceRequired', value);
+        }
+      },
+      carrying: {
+        get: function get() {
+          return this.$store.state.carrying;
+        },
+        set: function set(value) {
+          this.$store.commit('updateCarrying', value);
+        }
+      }
+    },
     methods: {
       calculate: function calculate() {
         this.$store.dispatch('planTravel');
@@ -133,17 +183,212 @@
     var _h = _vm.$createElement;
     var _c = _vm._self._c || _h;
     return _c("form", [
-      _vm._m(0),
+      _c("div", { staticClass: "row" }, [
+        _c("label", { attrs: { for: "from" } }, [_vm._v("From:")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.origin,
+              expression: "origin"
+            }
+          ],
+          attrs: { id: "from", type: "text" },
+          domProps: { value: _vm.origin },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.origin = $event.target.value;
+            }
+          }
+        })
+      ]),
       _vm._v(" "),
-      _vm._m(1),
+      _c("div", { staticClass: "row" }, [
+        _c("label", { attrs: { for: "to" } }, [_vm._v("To:")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.destination,
+              expression: "destination"
+            }
+          ],
+          attrs: { id: "to", type: "text" },
+          domProps: { value: _vm.destination },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.destination = $event.target.value;
+            }
+          }
+        })
+      ]),
       _vm._v(" "),
-      _vm._m(2),
+      _c("div", { staticClass: "row" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.isRoundTrip,
+              expression: "isRoundTrip"
+            }
+          ],
+          attrs: { id: "roundtrip", name: "roundtrip", type: "checkbox" },
+          domProps: {
+            checked: Array.isArray(_vm.isRoundTrip)
+              ? _vm._i(_vm.isRoundTrip, null) > -1
+              : _vm.isRoundTrip
+          },
+          on: {
+            change: function($event) {
+              var $$a = _vm.isRoundTrip,
+                $$el = $event.target,
+                $$c = $$el.checked ? true : false;
+              if (Array.isArray($$a)) {
+                var $$v = null,
+                  $$i = _vm._i($$a, $$v);
+                if ($$el.checked) {
+                  $$i < 0 && (_vm.isRoundTrip = $$a.concat([$$v]));
+                } else {
+                  $$i > -1 &&
+                    (_vm.isRoundTrip = $$a
+                      .slice(0, $$i)
+                      .concat($$a.slice($$i + 1)));
+                }
+              } else {
+                _vm.isRoundTrip = $$c;
+              }
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("label", { attrs: { for: "roundtrip" } }, [
+          _vm._v("I am going and then coming back again")
+        ])
+      ]),
       _vm._v(" "),
-      _vm._m(3),
+      _c("div", { staticClass: "row" }, [
+        _c("label", { attrs: { for: "roundtriptime" } }, [
+          _vm._v("Hours spent at location")
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.roundTripTime,
+              expression: "roundTripTime"
+            }
+          ],
+          attrs: { id: "roundtriptime", name: "roundtrip", type: "number" },
+          domProps: { value: _vm.roundTripTime },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.roundTripTime = $event.target.value;
+            }
+          }
+        })
+      ]),
       _vm._v(" "),
-      _vm._m(4),
+      _c("div", { staticClass: "row" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.presenceRequired,
+              expression: "presenceRequired"
+            }
+          ],
+          attrs: { id: "presence", name: "presence", type: "checkbox" },
+          domProps: {
+            checked: Array.isArray(_vm.presenceRequired)
+              ? _vm._i(_vm.presenceRequired, null) > -1
+              : _vm.presenceRequired
+          },
+          on: {
+            change: function($event) {
+              var $$a = _vm.presenceRequired,
+                $$el = $event.target,
+                $$c = $$el.checked ? true : false;
+              if (Array.isArray($$a)) {
+                var $$v = null,
+                  $$i = _vm._i($$a, $$v);
+                if ($$el.checked) {
+                  $$i < 0 && (_vm.presenceRequired = $$a.concat([$$v]));
+                } else {
+                  $$i > -1 &&
+                    (_vm.presenceRequired = $$a
+                      .slice(0, $$i)
+                      .concat($$a.slice($$i + 1)));
+                }
+              } else {
+                _vm.presenceRequired = $$c;
+              }
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("label", { attrs: { for: "presence" } }, [
+          _vm._v("I need to travel to the destination")
+        ])
+      ]),
       _vm._v(" "),
-      _vm._m(5),
+      _c("div", { staticClass: "row" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.carrying,
+              expression: "carrying"
+            }
+          ],
+          attrs: { id: "carrying", name: "carrying", type: "checkbox" },
+          domProps: {
+            checked: Array.isArray(_vm.carrying)
+              ? _vm._i(_vm.carrying, null) > -1
+              : _vm.carrying
+          },
+          on: {
+            change: function($event) {
+              var $$a = _vm.carrying,
+                $$el = $event.target,
+                $$c = $$el.checked ? true : false;
+              if (Array.isArray($$a)) {
+                var $$v = null,
+                  $$i = _vm._i($$a, $$v);
+                if ($$el.checked) {
+                  $$i < 0 && (_vm.carrying = $$a.concat([$$v]));
+                } else {
+                  $$i > -1 &&
+                    (_vm.carrying = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+                }
+              } else {
+                _vm.carrying = $$c;
+              }
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("label", { attrs: { for: "carrying" } }, [
+          _vm._v("I am transporting a lot of stuff")
+        ])
+      ]),
       _vm._v(" "),
       _c(
         "button",
@@ -159,86 +404,7 @@
       )
     ])
   };
-  var __vue_staticRenderFns__ = [
-    function() {
-      var _vm = this;
-      var _h = _vm.$createElement;
-      var _c = _vm._self._c || _h;
-      return _c("div", { staticClass: "row" }, [
-        _c("label", { attrs: { for: "from" } }, [_vm._v("From:")]),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { id: "from", type: "text", value: "Merrion House" }
-        })
-      ])
-    },
-    function() {
-      var _vm = this;
-      var _h = _vm.$createElement;
-      var _c = _vm._self._c || _h;
-      return _c("div", { staticClass: "row" }, [
-        _c("label", { attrs: { for: "to" } }, [_vm._v("To:")]),
-        _vm._v(" "),
-        _c("input", { attrs: { id: "from", type: "text", value: "Hough Top" } })
-      ])
-    },
-    function() {
-      var _vm = this;
-      var _h = _vm.$createElement;
-      var _c = _vm._self._c || _h;
-      return _c("div", { staticClass: "row" }, [
-        _c("input", {
-          attrs: { id: "roundtrip", name: "roundtrip", type: "checkbox" }
-        }),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "roundtrip" } }, [
-          _vm._v("I am going and then coming back again")
-        ])
-      ])
-    },
-    function() {
-      var _vm = this;
-      var _h = _vm.$createElement;
-      var _c = _vm._self._c || _h;
-      return _c("div", { staticClass: "row" }, [
-        _c("label", { attrs: { for: "roundtriptime" } }, [
-          _vm._v("Hours spent at location")
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { id: "roundtriptime", name: "roundtrip", type: "number" }
-        })
-      ])
-    },
-    function() {
-      var _vm = this;
-      var _h = _vm.$createElement;
-      var _c = _vm._self._c || _h;
-      return _c("div", { staticClass: "row" }, [
-        _c("input", {
-          attrs: { id: "presence", name: "presence", type: "checkbox" }
-        }),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "presence" } }, [
-          _vm._v("I need to travel to the destination")
-        ])
-      ])
-    },
-    function() {
-      var _vm = this;
-      var _h = _vm.$createElement;
-      var _c = _vm._self._c || _h;
-      return _c("div", { staticClass: "row" }, [
-        _c("input", {
-          attrs: { id: "carrying", name: "carrying", type: "checkbox" }
-        }),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "carrying" } }, [
-          _vm._v("I am transporting a lot of stuff")
-        ])
-      ])
-    }
-  ];
+  var __vue_staticRenderFns__ = [];
   __vue_render__._withStripped = true;
 
     /* style */
@@ -4237,7 +4403,7 @@
             case 4:
               key = '5b3ce3597851110001cf6248104657ec14464cc68a8aaaf62a878b74';
               _context.next = 7;
-              return fetch("https://api.openrouteservice.org/geocode/search?api_key=".concat(key, "&text=").concat(encodeURIComponent(location), "&boundary.country=GB"));
+              return fetch("https://api.openrouteservice.org/geocode/search?api_key=".concat(key, "&text=").concat(encodeURIComponent(location), "&boundary.circle.lon=-1.548&boundary.circle.lat=53.801&boundary.circle.radius=30&boundary.country=GB"));
 
             case 7:
               response = _context.sent;
@@ -4361,7 +4527,7 @@
               toCoords = _ref3[1];
               _context3.next = 8;
               return Promise.all([getPublicTransport(fromCoords, toCoords), queryOpenRouteService(fromCoords, toCoords, 'driving-car'), // mode names for the openrouteservice api - could perhaps be in modes.js file
-              queryOpenRouteService(fromCoords, toCoords, 'cycling-road'), queryOpenRouteService(fromCoords, toCoords, 'foot-walking')]);
+              queryOpenRouteService(fromCoords, toCoords, 'cycling-regular'), queryOpenRouteService(fromCoords, toCoords, 'foot-walking')]);
 
             case 8:
               _ref4 = _context3.sent;
@@ -4440,9 +4606,40 @@
     state.publicTransport = null;
   }
 
+  function updateSource(state, update) {
+    console.log('triggered');
+    state.source = update;
+  }
+
+  function updateDestination(state, update) {
+    state.destination = update;
+  }
+
+  function updateIsRoundTrip(state, update) {
+    state.isRoundTrip = update;
+  }
+
+  function updateRoundTripTime(state, update) {
+    state.timeAtDest = update;
+  }
+
+  function updatePresenceRequired(state, update) {
+    state.presenceRequired = update;
+  }
+
+  function updateCarrying(state, update) {
+    state.carrying = update;
+  }
+
   var mutations = {
     clearTravelDetails: clearTravelDetails,
-    setTravelDetails: setTravelDetails
+    setTravelDetails: setTravelDetails,
+    updateSource: updateSource,
+    updateDestination: updateDestination,
+    updateIsRoundTrip: updateIsRoundTrip,
+    updateRoundTripTime: updateRoundTripTime,
+    updatePresenceRequired: updatePresenceRequired,
+    updateCarrying: updateCarrying
   };
 
   Vue.use(Vuex);
@@ -4452,6 +4649,10 @@
     state: {
       source: 'Merrion House',
       destination: 'Hough Top',
+      isRoundTrip: false,
+      roundTripTime: null,
+      presenceRequired: false,
+      carrying: false,
       publicTransport: null,
       driving: null,
       cycling: null,

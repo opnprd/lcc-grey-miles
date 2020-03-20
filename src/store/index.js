@@ -12,6 +12,10 @@ export default new Vuex.Store({
   state: {
     source: 'Merrion House',
     destination: 'Hough Top',
+    isRoundTrip: false,
+    roundTripTime: null,
+    presenceRequired: false,
+    carrying: false,
     publicTransport: null,
     driving: null,
     cycling: null,

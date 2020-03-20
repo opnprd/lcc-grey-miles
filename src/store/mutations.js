@@ -13,7 +13,38 @@ function clearTravelDetails(state) {
   state.publicTransport = null;
 }
 
+function updateSource(state, update) {
+  console.log('triggered');
+  state.source = update;
+}
+
+function updateDestination(state, update) {
+  state.destination = update;
+}
+
+function updateIsRoundTrip(state, update) {
+  state.isRoundTrip = update;
+}
+
+function updateRoundTripTime(state, update) {
+  state.timeAtDest = update;
+}
+
+function updatePresenceRequired(state, update) {
+  state.presenceRequired = update;
+}
+
+function updateCarrying(state, update) {
+  state.carrying = update;
+}
+
 export default {
   clearTravelDetails,
   setTravelDetails,
-}
+  updateSource,
+  updateDestination,
+  updateIsRoundTrip,
+  updateRoundTripTime,
+  updatePresenceRequired,
+  updateCarrying,
+};
