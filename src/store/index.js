@@ -13,7 +13,7 @@ export default new Vuex.Store({
     source: 'Merrion House',
     destination: 'Hough Top',
     isRoundTrip: false,
-    roundTripTime: null,
+    timeAtDest: 60,
     presenceRequired: false,
     carrying: false,
     publicTransport: null,

@@ -67,12 +67,12 @@
           this.$store.commit('updateIsRoundTrip', value);
         }
       },
-      roundTripTime: {
+      timeAtDest: {
         get: function get() {
-          return this.$store.state.roundTripTime;
+          return this.$store.state.timeAtDest;
         },
         set: function set(value) {
-          this.$store.commit('updateRoundTripTime', value);
+          this.$store.commit('updateTimeAtDest', value);
         }
       },
       presenceRequired: {
@@ -278,8 +278,8 @@
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "row" }, [
-        _c("label", { attrs: { for: "roundtriptime" } }, [
-          _vm._v("Hours spent at location")
+        _c("label", { attrs: { for: "timeatdest" } }, [
+          _vm._v("Minutes spent at location")
         ]),
         _vm._v(" "),
         _c("input", {
@@ -287,18 +287,18 @@
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.roundTripTime,
-              expression: "roundTripTime"
+              value: _vm.timeAtDest,
+              expression: "timeAtDest"
             }
           ],
-          attrs: { id: "roundtriptime", name: "roundtrip", type: "number" },
-          domProps: { value: _vm.roundTripTime },
+          attrs: { id: "timeatdest", name: "timeAtDest", type: "number" },
+          domProps: { value: _vm.timeAtDest },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.roundTripTime = $event.target.value;
+              _vm.timeAtDest = $event.target.value;
             }
           }
         })
@@ -596,11 +596,11 @@
     /* style */
     const __vue_inject_styles__$1 = function (inject) {
       if (!inject) return
-      inject("data-v-79ede46a_0", { source: "\n.open[data-v-79ede46a] {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/ModeOfTransport.vue"],"names":[],"mappings":";AAYA;EACA,qBAAA;EACA,YAAA;EACA,kBAAA;EACA,kBAAA;AACA","file":"ModeOfTransport.vue","sourcesContent":["<template>\n  <section @click=\"toggleView()\">\n    <div>\n      <div v-if=\"viewState ==='closed'\" class=\"open\">more info</div>\n      <h3>{{ title }}</h3>\n      <p>{{ summary }}</p>\n      <p>£{{ cost }}</p>\n    </div>\n    <component :is=\"details\" v-if=\"viewState ==='open'\" />\n  </section>  \n</template>\n<style scoped>\n.open {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n</style>\n<script>\nexport default {\n  props: {\n    title: {\n      type: String,\n      required: true,\n    },\n    details: {\n      type: Object,\n      required: false,\n      default: () => {},\n    },\n    summarise: {\n      type: Function,\n      default: () => () => null,\n    },\n    costFn: {\n      type: Function,\n      required: true,\n    },\n  },\n  data: function () {\n    return {\n      viewState: 'closed',\n    };\n  },\n  computed: {\n    summary() {\n      return this.summarise(this.$store.getters.journey);\n    },\n    cost() {\n      return this.costFn(this.$store.getters.journey);\n    },\n  },\n  methods: {\n    toggleView() {\n      const currentState = this.viewState;\n      this.viewState = currentState === 'open' ? 'closed' : 'open';\n    },\n  },\n};\n</script>"]}, media: undefined });
+      inject("data-v-db181f58_0", { source: "\n.open[data-v-db181f58] {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n", map: {"version":3,"sources":["/Users/gilesdring/src/opnprd/greymiles/src/components/ModeOfTransport.vue"],"names":[],"mappings":";AAYA;EACA,qBAAA;EACA,YAAA;EACA,kBAAA;EACA,kBAAA;AACA","file":"ModeOfTransport.vue","sourcesContent":["<template>\n  <section @click=\"toggleView()\">\n    <div>\n      <div v-if=\"viewState ==='closed'\" class=\"open\">more info</div>\n      <h3>{{ title }}</h3>\n      <p>{{ summary }}</p>\n      <p>£{{ cost }}</p>\n    </div>\n    <component :is=\"details\" v-if=\"viewState ==='open'\" />\n  </section>  \n</template>\n<style scoped>\n.open {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n</style>\n<script>\nexport default {\n  props: {\n    title: {\n      type: String,\n      required: true,\n    },\n    details: {\n      type: Object,\n      required: false,\n      default: () => {},\n    },\n    summarise: {\n      type: Function,\n      default: () => () => null,\n    },\n    costFn: {\n      type: Function,\n      required: true,\n    },\n  },\n  data: function () {\n    return {\n      viewState: 'closed',\n    };\n  },\n  computed: {\n    summary() {\n      return this.summarise(this.$store.getters.journey);\n    },\n    cost() {\n      return this.costFn(this.$store.getters.journey);\n    },\n  },\n  methods: {\n    toggleView() {\n      const currentState = this.viewState;\n      this.viewState = currentState === 'open' ? 'closed' : 'open';\n    },\n  },\n};\n</script>"]}, media: undefined });
 
     };
     /* scoped */
-    const __vue_scope_id__$1 = "data-v-79ede46a";
+    const __vue_scope_id__$1 = "data-v-db181f58";
     /* module identifier */
     const __vue_module_identifier__$1 = undefined;
     /* functional template */
@@ -4527,7 +4527,7 @@
               toCoords = _ref3[1];
               _context3.next = 8;
               return Promise.all([getPublicTransport(fromCoords, toCoords), queryOpenRouteService(fromCoords, toCoords, 'driving-car'), // mode names for the openrouteservice api - could perhaps be in modes.js file
-              queryOpenRouteService(fromCoords, toCoords, 'cycling-regular'), queryOpenRouteService(fromCoords, toCoords, 'foot-walking')]);
+              queryOpenRouteService(fromCoords, toCoords, 'cycling-road'), queryOpenRouteService(fromCoords, toCoords, 'foot-walking')]);
 
             case 8:
               _ref4 = _context3.sent;
@@ -4588,6 +4588,119 @@
     planTravel: planTravel
   };
 
+  // makes subclassing work correct for wrapped built-ins
+  var inheritIfRequired = function ($this, dummy, Wrapper) {
+    var NewTarget, NewTargetPrototype;
+    if (
+      // it can work only with native `setPrototypeOf`
+      objectSetPrototypeOf &&
+      // we haven't completely correct pre-ES6 way for getting `new.target`, so use this
+      typeof (NewTarget = dummy.constructor) == 'function' &&
+      NewTarget !== Wrapper &&
+      isObject(NewTargetPrototype = NewTarget.prototype) &&
+      NewTargetPrototype !== Wrapper.prototype
+    ) objectSetPrototypeOf($this, NewTargetPrototype);
+    return $this;
+  };
+
+  // a string of all valid unicode whitespaces
+  // eslint-disable-next-line max-len
+  var whitespaces = '\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
+
+  var whitespace = '[' + whitespaces + ']';
+  var ltrim = RegExp('^' + whitespace + whitespace + '*');
+  var rtrim = RegExp(whitespace + whitespace + '*$');
+
+  // `String.prototype.{ trim, trimStart, trimEnd, trimLeft, trimRight }` methods implementation
+  var createMethod$3 = function (TYPE) {
+    return function ($this) {
+      var string = String(requireObjectCoercible($this));
+      if (TYPE & 1) string = string.replace(ltrim, '');
+      if (TYPE & 2) string = string.replace(rtrim, '');
+      return string;
+    };
+  };
+
+  var stringTrim = {
+    // `String.prototype.{ trimLeft, trimStart }` methods
+    // https://tc39.github.io/ecma262/#sec-string.prototype.trimstart
+    start: createMethod$3(1),
+    // `String.prototype.{ trimRight, trimEnd }` methods
+    // https://tc39.github.io/ecma262/#sec-string.prototype.trimend
+    end: createMethod$3(2),
+    // `String.prototype.trim` method
+    // https://tc39.github.io/ecma262/#sec-string.prototype.trim
+    trim: createMethod$3(3)
+  };
+
+  var getOwnPropertyNames = objectGetOwnPropertyNames.f;
+  var getOwnPropertyDescriptor$3 = objectGetOwnPropertyDescriptor.f;
+  var defineProperty$2 = objectDefineProperty.f;
+  var trim = stringTrim.trim;
+
+  var NUMBER = 'Number';
+  var NativeNumber = global_1[NUMBER];
+  var NumberPrototype = NativeNumber.prototype;
+
+  // Opera ~12 has broken Object#toString
+  var BROKEN_CLASSOF = classofRaw(objectCreate(NumberPrototype)) == NUMBER;
+
+  // `ToNumber` abstract operation
+  // https://tc39.github.io/ecma262/#sec-tonumber
+  var toNumber = function (argument) {
+    var it = toPrimitive(argument, false);
+    var first, third, radix, maxCode, digits, length, index, code;
+    if (typeof it == 'string' && it.length > 2) {
+      it = trim(it);
+      first = it.charCodeAt(0);
+      if (first === 43 || first === 45) {
+        third = it.charCodeAt(2);
+        if (third === 88 || third === 120) return NaN; // Number('+0x1') should be NaN, old V8 fix
+      } else if (first === 48) {
+        switch (it.charCodeAt(1)) {
+          case 66: case 98: radix = 2; maxCode = 49; break; // fast equal of /^0b[01]+$/i
+          case 79: case 111: radix = 8; maxCode = 55; break; // fast equal of /^0o[0-7]+$/i
+          default: return +it;
+        }
+        digits = it.slice(2);
+        length = digits.length;
+        for (index = 0; index < length; index++) {
+          code = digits.charCodeAt(index);
+          // parseInt parses a string to a first unavailable symbol
+          // but ToNumber should return NaN if a string contains unavailable symbols
+          if (code < 48 || code > maxCode) return NaN;
+        } return parseInt(digits, radix);
+      }
+    } return +it;
+  };
+
+  // `Number` constructor
+  // https://tc39.github.io/ecma262/#sec-number-constructor
+  if (isForced_1(NUMBER, !NativeNumber(' 0o1') || !NativeNumber('0b1') || NativeNumber('+0x1'))) {
+    var NumberWrapper = function Number(value) {
+      var it = arguments.length < 1 ? 0 : value;
+      var dummy = this;
+      return dummy instanceof NumberWrapper
+        // check on 1..constructor(foo) case
+        && (BROKEN_CLASSOF ? fails(function () { NumberPrototype.valueOf.call(dummy); }) : classofRaw(dummy) != NUMBER)
+          ? inheritIfRequired(new NativeNumber(toNumber(it)), dummy, NumberWrapper) : toNumber(it);
+    };
+    for (var keys$1 = descriptors ? getOwnPropertyNames(NativeNumber) : (
+      // ES3:
+      'MAX_VALUE,MIN_VALUE,NaN,NEGATIVE_INFINITY,POSITIVE_INFINITY,' +
+      // ES2015 (in case, if modules with ES2015 Number statics required before):
+      'EPSILON,isFinite,isInteger,isNaN,isSafeInteger,MAX_SAFE_INTEGER,' +
+      'MIN_SAFE_INTEGER,parseFloat,parseInt,isInteger'
+    ).split(','), j = 0, key; keys$1.length > j; j++) {
+      if (has(NativeNumber, key = keys$1[j]) && !has(NumberWrapper, key)) {
+        defineProperty$2(NumberWrapper, key, getOwnPropertyDescriptor$3(NativeNumber, key));
+      }
+    }
+    NumberWrapper.prototype = NumberPrototype;
+    NumberPrototype.constructor = NumberWrapper;
+    redefine(global_1, NUMBER, NumberWrapper);
+  }
+
   function setTravelDetails(state, update) {
     var driving = update.driving,
         cycling = update.cycling,
@@ -4619,8 +4732,8 @@
     state.isRoundTrip = update;
   }
 
-  function updateRoundTripTime(state, update) {
-    state.timeAtDest = update;
+  function updateTimeAtDest(state, update) {
+    state.timeAtDest = Number(update);
   }
 
   function updatePresenceRequired(state, update) {
@@ -4637,7 +4750,7 @@
     updateSource: updateSource,
     updateDestination: updateDestination,
     updateIsRoundTrip: updateIsRoundTrip,
-    updateRoundTripTime: updateRoundTripTime,
+    updateTimeAtDest: updateTimeAtDest,
     updatePresenceRequired: updatePresenceRequired,
     updateCarrying: updateCarrying
   };
@@ -4650,7 +4763,7 @@
       source: 'Merrion House',
       destination: 'Hough Top',
       isRoundTrip: false,
-      roundTripTime: null,
+      timeAtDest: 60,
       presenceRequired: false,
       carrying: false,
       publicTransport: null,

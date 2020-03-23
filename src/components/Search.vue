@@ -21,8 +21,8 @@
       <label for="roundtrip">I am going and then coming back again</label>
     </div>
     <div class="row">
-      <label for="roundtriptime">Hours spent at location</label>
-      <input id="roundtriptime" name="roundtrip" type="number" v-model="roundTripTime">
+      <label for="timeatdest">Minutes spent at location</label>
+      <input id="timeatdest" name="timeAtDest" type="number" v-model="timeAtDest">
     </div>
     <div class="row">
       <input id="presence" name="presence" type="checkbox" v-model="presenceRequired">
@@ -50,9 +50,9 @@ export default {
       get() { return this.$store.state.isRoundTrip; },
       set(value) { this.$store.commit('updateIsRoundTrip', value); },
     },
-    roundTripTime: {
-      get() { return this.$store.state.roundTripTime; },
-      set(value) { this.$store.commit('updateRoundTripTime', value); },
+    timeAtDest: {
+      get() { return this.$store.state.timeAtDest; },
+      set(value) { this.$store.commit('updateTimeAtDest', value); },
     },
     presenceRequired: {
       get() { return this.$store.state.presenceRequired; },

@@ -26,8 +26,8 @@ function updateIsRoundTrip(state, update) {
   state.isRoundTrip = update;
 }
 
-function updateRoundTripTime(state, update) {
-  state.timeAtDest = update;
+function updateTimeAtDest(state, update) {
+  state.timeAtDest = Number(update);
 }
 
 function updatePresenceRequired(state, update) {
@@ -44,7 +44,7 @@ export default {
   updateSource,
   updateDestination,
   updateIsRoundTrip,
-  updateRoundTripTime,
+  updateTimeAtDest,
   updatePresenceRequired,
   updateCarrying,
 };
