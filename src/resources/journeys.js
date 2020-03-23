@@ -1,6 +1,7 @@
 import geocode from './geocode';
 
 async function getPublicTransport(origin, destination) {
+  console.dir({ origin, destination });
   return {
     distance: { value: 100, unit: 'km' },
     time: { value: 30, unit: 'minutes' },

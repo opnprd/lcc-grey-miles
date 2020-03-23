@@ -5,7 +5,9 @@
     "core-js": "^3.6.4",
     "eslint": "^6.8.0",
     "eslint-plugin-vue": "^6.2.2",
+    "husky": "^4.2.3",
     "jest": "^25.1.0",
+    "lint-staged": "^10.0.8",
     "node-fetch": "^2.6.0",
     "rollup": "^2.1.0",
     "rollup-plugin-babel": "^4.4.0",
@@ -24,6 +26,14 @@
     "dev": "NODE_ENV=development npm run bundle -- --watch",
     "lint": "eslint src",
     "test": "jest"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && npm run bundle && git add docs/"
+    }
+  },
+  "lint-staged": {
+    "*.js": ["eslint --fix"]
   },
   "dependencies": {
     "vue": "^2.6.11",

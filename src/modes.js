@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import BusTrain from './components/modes/BusTrain.vue';
 import CarClub from './components/modes/CarClub.vue';
 import PoolVehicle from './components/modes/PoolVehicle.vue';

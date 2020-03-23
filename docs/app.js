@@ -41,6 +41,31 @@
   //
   //
   //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
   var script = {
     computed: {
       origin: {
@@ -400,7 +425,7 @@
             }
           }
         },
-        [_vm._v("Calculate")]
+        [_vm._v("\n    Calculate\n  ")]
       )
     ])
   };
@@ -4437,6 +4462,10 @@
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
+              console.dir({
+                origin: origin,
+                destination: destination
+              });
               return _context.abrupt("return", {
                 distance: {
                   value: 100,
@@ -4448,7 +4477,7 @@
                 }
               });
 
-            case 1:
+            case 2:
             case "end":
               return _context.stop();
           }
