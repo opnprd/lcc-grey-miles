@@ -22,6 +22,7 @@
   "scripts": {
     "bundle": "NODE_ENV=development rollup --config rollup.config.js",
     "dev": "NODE_ENV=development npm run bundle -- --watch",
+    "lint": "eslint src",
     "test": "jest"
   },
   "dependencies": {

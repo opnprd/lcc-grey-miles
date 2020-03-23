@@ -4,35 +4,60 @@
       <label for="from">From:</label>
       <input
         id="from"
-        type="text"
         v-model="origin"
+        type="text"
       >
     </div>
     <div class="row">
       <label for="to">To:</label>
       <input
         id="to"
-        type="text"
         v-model="destination"
+        type="text"
       >
     </div>
     <div class="row">
-      <input id="roundtrip" name="roundtrip" type="checkbox" v-model="isRoundTrip">
+      <input
+        id="roundtrip"
+        v-model="isRoundTrip"
+        name="roundtrip"
+        type="checkbox"
+      >
       <label for="roundtrip">I am going and then coming back again</label>
     </div>
     <div class="row">
       <label for="timeatdest">Minutes spent at location</label>
-      <input id="timeatdest" name="timeAtDest" type="number" v-model="timeAtDest">
+      <input
+        id="timeatdest"
+        v-model="timeAtDest"
+        name="timeAtDest"
+        type="number"
+      >
     </div>
     <div class="row">
-      <input id="presence" name="presence" type="checkbox" v-model="presenceRequired">
+      <input
+        id="presence"
+        v-model="presenceRequired"
+        name="presence"
+        type="checkbox"
+      >
       <label for="presence">I need to travel to the destination</label>
     </div>
     <div class="row">
-      <input id="carrying" name="carrying" type="checkbox" v-model="carrying">
+      <input
+        id="carrying"
+        v-model="carrying"
+        name="carrying"
+        type="checkbox"
+      >
       <label for="carrying">I am transporting a lot of stuff</label>
     </div>
-    <button type="button" @click="calculate()">Calculate</button>
+    <button
+      type="button"
+      @click="calculate()"
+    >
+      Calculate
+    </button>
   </form>
 </template>
 <script>
