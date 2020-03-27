@@ -1,23 +1,30 @@
 /* eslint-disable no-unused-vars */
+import geoCode from '../resources/geocode';
 import journey from '../resources/journeys';
-
-async function lookupSource(context) {
-  const { state, commit } = context;
-  const { source } = state;
-  // TODO add new commits
-}
 
 async function lookupDestination(context) {
   const { state, commit } = context;
   const { destination } = state;
+  const results = await geoCode(destination);
+  commit('updateDestOptions', results);
+}
 
+async function lookupSource(context) {
+  const { state, commit } = context;
+  const { source } = state;
+  const results = await geoCode(source);
+  commit('updateSourceOptions', results);
 }
 
 async function planTravel(context) {
   console.log('BEING CALLED');
   const { state, commit } = context;
-  const { source, destination } = state;
-  const data = await journey(source, destination);
+  const {
+    sourceDetails: { selected: selectedSource, options: sourceOptions },
+    destinationDetails: { selected: selectedDest, options: destOptions },
+  } = state;
+  const [ from, to ] = [ sourceOptions[selectedSource].latLng, destOptions[selectedDest].latLng ];
+  const data = await journey(from, to);
   commit('setTravelDetails', data);
 }
 
@@ -26,3 +33,7 @@ export default {
   lookupSource,
   planTravel,
 };
+
+// const { sourceDetails, destinationDetails } = state;
+// const sourceLatLng = sourceDetails.options[sourceDetails.selected].latLng;
+// const destLatLng = destinationDetails.options[destinationDetails.selected].latLng;

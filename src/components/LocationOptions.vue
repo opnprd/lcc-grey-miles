@@ -28,3 +28,18 @@ export default {
   },
 };
 </script>
+<style scoped>
+/* Todo - style properly, hide after selection etc */
+ul {
+  margin: 5px 0px;
+  width: max-content;
+  border: 0.75px dashed black;
+}
+li {
+  padding: 4px 10px;
+  font-size: 0.8em;
+}
+.selected {
+  background-color: lightgray;
+}
+</style>

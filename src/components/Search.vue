@@ -7,6 +7,12 @@
         v-model="origin"
         type="text"
       >
+      <button
+        type="button"
+        @click="lookupSource()"
+      >
+        Search
+      </button>
       <location-options
         :options="sourceOptions"
         :action="selectSource"
@@ -20,7 +26,19 @@
         v-model="destination"
         type="text"
       >
+      <button
+        type="button"
+        @click="lookupDestination()"
+      >
+        Search
+      </button>
+      <location-options
+        :options="destinationOptions"
+        :action="selectDestination"
+        :selected="selectedDestination"
+      />
     </div>
+    <div class="row" />
     <div class="row">
       <input
         id="roundtrip"
@@ -98,13 +116,24 @@ export default {
     },
     sourceOptions() { return this.$store.state.sourceDetails.options; },
     selectedSource() { return this.$store.state.sourceDetails.selected; },
+    destinationOptions() { return this.$store.state.destinationDetails.options; },
+    selectedDestination() { return this.$store.state.destinationDetails.selected; },
   },
   methods: {
     calculate() {
       this.$store.dispatch('planTravel');
     },
+    lookupDestination() {
+      this.$store.dispatch('lookupDestination');
+    },
+    lookupSource() {
+      this.$store.dispatch('lookupSource');
+    },
+    selectDestination(key) {
+      this.$store.commit('selectDestination', key);
+    },
     selectSource(key) {
-      console.log(`source ${key}`);
+      this.$store.commit('selectSource', key);
     },
   },
 };

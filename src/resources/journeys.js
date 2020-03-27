@@ -1,5 +1,3 @@
-import geocode from './geocode';
-
 async function getPublicTransport(origin, destination) {
   console.dir({ origin, destination });
   return {
@@ -22,21 +20,16 @@ async function queryOpenRouteService(origin, destination, profileName) {
 }
 
 export default async function(from, to) {
-  // We can expect from and to to be coords now
-  // TODO remove this lookup
-  // Call once per query, rather than every time
-  let [fromCoords, toCoords] = await Promise.all([from, to].map(geocode));
-
   const [
     publicTransport,
     driving,
     cycling,
     walking,
   ] = await Promise.all([
-    getPublicTransport(fromCoords, toCoords),
-    queryOpenRouteService(fromCoords, toCoords, 'driving-car'), // mode names for the openrouteservice api - could perhaps be in modes.js file
-    queryOpenRouteService(fromCoords, toCoords, 'cycling-road'),
-    queryOpenRouteService(fromCoords, toCoords, 'foot-walking'),
+    getPublicTransport(from, to),
+    queryOpenRouteService(from, to, 'driving-car'), // mode names for the openrouteservice api - could perhaps be in modes.js file
+    queryOpenRouteService(from, to, 'cycling-road'),
+    queryOpenRouteService(from, to, 'foot-walking'),
   ]);
 
   return {
