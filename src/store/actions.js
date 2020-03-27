@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import geoCode from '../resources/geocode';
 import journey from '../resources/journeys';
 
@@ -33,7 +32,3 @@ export default {
   lookupSource,
   planTravel,
 };
-
-// const { sourceDetails, destinationDetails } = state;
-// const sourceLatLng = sourceDetails.options[sourceDetails.selected].latLng;
-// const destLatLng = destinationDetails.options[destinationDetails.selected].latLng;

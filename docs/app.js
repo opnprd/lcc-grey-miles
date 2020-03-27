@@ -4955,9 +4955,7 @@
     lookupDestination: lookupDestination,
     lookupSource: lookupSource,
     planTravel: planTravel
-  }; // const { sourceDetails, destinationDetails } = state;
-  // const sourceLatLng = sourceDetails.options[sourceDetails.selected].latLng;
-  // const destLatLng = destinationDetails.options[destinationDetails.selected].latLng;
+  };
 
   function clearTravelDetails(state) {
     state.cycling = null;
