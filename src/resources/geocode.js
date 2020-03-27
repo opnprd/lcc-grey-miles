@@ -7,6 +7,7 @@ export default async function geoCode(location) {
     // Only take 1st result from the search for now - should allow user to choose from results
     const { features: [{geometry: { coordinates: [lon, lat] }}]} = results;
     console.log([lon,lat]);
+    // TODO return full list of results - name + latLng
     return [lon, lat];
   }
 }

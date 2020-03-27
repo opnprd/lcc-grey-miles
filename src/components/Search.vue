@@ -7,6 +7,11 @@
         v-model="origin"
         type="text"
       >
+      <location-options
+        :options="sourceOptions"
+        :action="selectSource"
+        :selected="selectedSource"
+      />
     </div>
     <div class="row">
       <label for="to">To:</label>
@@ -61,7 +66,11 @@
   </form>
 </template>
 <script>
+import LocationOptions from './LocationOptions.vue';
 export default {
+  components: {
+    LocationOptions,
+  },
   computed: {
     origin: {
       get() { return this.$store.state.source; },
@@ -87,10 +96,15 @@ export default {
       get() { return this.$store.state.carrying; },
       set(value) { this.$store.commit('updateCarrying', value); },
     },
+    sourceOptions() { return this.$store.state.sourceDetails.options; },
+    selectedSource() { return this.$store.state.sourceDetails.selected; },
   },
   methods: {
     calculate() {
       this.$store.dispatch('planTravel');
+    },
+    selectSource(key) {
+      console.log(`source ${key}`);
     },
   },
 };

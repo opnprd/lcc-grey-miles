@@ -22,6 +22,8 @@ async function queryOpenRouteService(origin, destination, profileName) {
 }
 
 export default async function(from, to) {
+  // We can expect from and to to be coords now
+  // TODO remove this lookup
   // Call once per query, rather than every time
   let [fromCoords, toCoords] = await Promise.all([from, to].map(geocode));
 
