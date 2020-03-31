@@ -4742,26 +4742,37 @@
 
   function _getPublicTransport() {
     _getPublicTransport = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(origin, destination) {
+      var api, key, response, data, _data$rows$elements, _data$rows$elements$, time, dist;
+
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              console.dir({
-                origin: origin,
-                destination: destination
-              });
+              api = 'https://maps.googleapis.com/maps/api/distancematrix/json';
+              key = 'AIzaSyCCoZtWMbRLwnFrW--yD_bfDf4gkJRt3Mg';
+              _context.next = 4;
+              return fetch("".concat(api, "?units=metric&mode=transit&origins=").concat(origin.toString(), "&destinations=").concat(destination.toString(), "&key=").concat(key));
+
+            case 4:
+              response = _context.sent;
+              _context.next = 7;
+              return response.json();
+
+            case 7:
+              data = _context.sent;
+              _data$rows$elements = _slicedToArray(data.rows.elements, 1), _data$rows$elements$ = _data$rows$elements[0], time = _data$rows$elements$.duration.value, dist = _data$rows$elements$.distance.value;
               return _context.abrupt("return", {
                 distance: {
-                  value: 100,
+                  value: (dist / 1000).toFixed(2),
                   unit: 'km'
                 },
                 time: {
-                  value: 30,
+                  value: (time / 60).toFixed(1),
                   unit: 'minutes'
                 }
               });
 
-            case 2:
+            case 10:
             case "end":
               return _context.stop();
           }
@@ -4777,22 +4788,23 @@
 
   function _queryOpenRouteService() {
     _queryOpenRouteService = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(origin, destination, profileName) {
-      var key, response, journeyData, _journeyData$features, _journeyData$features2, distance, duration;
+      var api, key, response, journeyData, _journeyData$features, _journeyData$features2, distance, duration;
 
       return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
+              api = 'https://api.openrouteservice.org/v2/directions/';
               key = '5b3ce3597851110001cf6248104657ec14464cc68a8aaaf62a878b74';
-              _context2.next = 3;
-              return fetch("https://api.openrouteservice.org/v2/directions/".concat(profileName, "?api_key=").concat(key, "&start=").concat(origin.toString(), "&end=").concat(destination.toString()));
+              _context2.next = 4;
+              return fetch("".concat(api).concat(profileName, "?api_key=").concat(key, "&start=").concat(origin.toString(), "&end=").concat(destination.toString()));
 
-            case 3:
+            case 4:
               response = _context2.sent;
-              _context2.next = 6;
+              _context2.next = 7;
               return response.json();
 
-            case 6:
+            case 7:
               journeyData = _context2.sent;
               // Grab summary via destructuring assignment
               // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/
@@ -4808,7 +4820,7 @@
                 }
               });
 
-            case 9:
+            case 10:
             case "end":
               return _context2.stop();
           }
