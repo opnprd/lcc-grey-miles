@@ -3324,6 +3324,18 @@
     return _arrayWithHoles(arr) || _iterableToArray(arr) || _nonIterableRest();
   }
 
+  function _toConsumableArray(arr) {
+    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
+  }
+
+  function _arrayWithoutHoles(arr) {
+    if (Array.isArray(arr)) {
+      for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+      return arr2;
+    }
+  }
+
   function _arrayWithHoles(arr) {
     if (Array.isArray(arr)) return arr;
   }
@@ -3360,6 +3372,10 @@
     }
 
     return _arr;
+  }
+
+  function _nonIterableSpread() {
+    throw new TypeError("Invalid attempt to spread non-iterable instance");
   }
 
   function _nonIterableRest() {
@@ -4766,7 +4782,7 @@
               api = 'https://maps.googleapis.com/maps/api/distancematrix/json';
               key = 'AIzaSyCCoZtWMbRLwnFrW--yD_bfDf4gkJRt3Mg';
               _context.next = 4;
-              return fetch("".concat(api, "?units=metric&mode=transit&origins=").concat(origin.reverse().toString(), "&destinations=").concat(destination.reverse().toString(), "&key=").concat(key));
+              return fetch("".concat(api, "?units=metric&mode=transit&origins=").concat(_toConsumableArray(origin).reverse().toString(), "&destinations=").concat(_toConsumableArray(destination).reverse().toString(), "&key=").concat(key));
 
             case 4:
               response = _context.sent;
