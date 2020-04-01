@@ -4568,6 +4568,21 @@
   addToUnscopables('values');
   addToUnscopables('entries');
 
+  var nativeReverse = [].reverse;
+  var test$1 = [1, 2];
+
+  // `Array.prototype.reverse` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.reverse
+  // fix for Safari 12.0 bug
+  // https://bugs.webkit.org/show_bug.cgi?id=188794
+  _export({ target: 'Array', proto: true, forced: String(test$1) === String(test$1.reverse()) }, {
+    reverse: function reverse() {
+      // eslint-disable-next-line no-self-assign
+      if (isArray(this)) this.length = this.length;
+      return nativeReverse.call(this);
+    }
+  });
+
   var DatePrototype = Date.prototype;
   var INVALID_DATE = 'Invalid Date';
   var TO_STRING = 'toString';
@@ -4751,7 +4766,7 @@
               api = 'https://maps.googleapis.com/maps/api/distancematrix/json';
               key = 'AIzaSyCCoZtWMbRLwnFrW--yD_bfDf4gkJRt3Mg';
               _context.next = 4;
-              return fetch("".concat(api, "?units=metric&mode=transit&origins=").concat(origin.toString(), "&destinations=").concat(destination.toString(), "&key=").concat(key));
+              return fetch("".concat(api, "?units=metric&mode=transit&origins=").concat(origin.reverse().toString(), "&destinations=").concat(destination.reverse().toString(), "&key=").concat(key));
 
             case 4:
               response = _context.sent;

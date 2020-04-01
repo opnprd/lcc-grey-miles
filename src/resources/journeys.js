@@ -1,7 +1,7 @@
 async function getPublicTransport(origin, destination) {
   const api = 'https://maps.googleapis.com/maps/api/distancematrix/json';
   const key = 'AIzaSyCCoZtWMbRLwnFrW--yD_bfDf4gkJRt3Mg';
-  const response = await fetch(`${api}?units=metric&mode=transit&origins=${origin.toString()}&destinations=${destination.toString()}&key=${key}`);
+  const response = await fetch(`${api}?units=metric&mode=transit&origins=${origin.reverse().toString()}&destinations=${destination.reverse().toString()}&key=${key}`);
   const data = await response.json();
   const { rows: { elements: [ { duration: { value: time }, distance: { value: dist } } ] } } = data;
   return {
