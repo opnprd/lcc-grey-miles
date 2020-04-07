@@ -1,6 +1,6 @@
 import babel from 'rollup-plugin-babel';
-import browsersync from 'rollup-plugin-browsersync'
-import clear from 'rollup-plugin-clear'
+import browsersync from 'rollup-plugin-browsersync';
+import clear from 'rollup-plugin-clear';
 import commonjs from 'rollup-plugin-commonjs';
 import copy from 'rollup-plugin-copy';
 import resolve from 'rollup-plugin-node-resolve';
@@ -19,11 +19,12 @@ const jsFile = `${entrypoint}${jsMin}.js`;
 const globals = {
   vue: 'Vue',
   vuex: 'Vuex',
+  google: 'google',
 };
 
 export default {
   input: `src/${entrypoint}.js`,
-  external: [ 'vue', 'vuex' ],
+  external: [ 'vue', 'vuex', 'google' ],
   output: [
     { file: `${outputDir}/${jsFile}`, format: 'iife', globals },
   ],

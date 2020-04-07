@@ -1,8 +1,9 @@
-(function (Vue, Vuex) {
+(function (Vue, Vuex, google) {
   'use strict';
 
   Vue = Vue && Object.prototype.hasOwnProperty.call(Vue, 'default') ? Vue['default'] : Vue;
   Vuex = Vuex && Object.prototype.hasOwnProperty.call(Vuex, 'default') ? Vuex['default'] : Vuex;
+  google = google && Object.prototype.hasOwnProperty.call(google, 'default') ? google['default'] : google;
 
   var fails = function (exec) {
     try {
@@ -852,25 +853,27 @@
     var _vm = this;
     var _h = _vm.$createElement;
     var _c = _vm._self._c || _h;
-    return _c(
-      "ul",
-      _vm._l(_vm.options, function(o, i) {
-        return _c(
-          "li",
-          {
-            key: i,
-            class: { selected: _vm.selected == i },
-            on: {
-              click: function($event) {
-                return _vm.action(i)
-              }
-            }
-          },
-          [_vm._v("\n    " + _vm._s(o.name) + "\n  ")]
+    return _vm.options.length > 0
+      ? _c(
+          "ul",
+          _vm._l(_vm.options, function(o, i) {
+            return _c(
+              "li",
+              {
+                key: i,
+                class: { selected: _vm.selected == i },
+                on: {
+                  click: function($event) {
+                    return _vm.action(i)
+                  }
+                }
+              },
+              [_vm._v("\n    " + _vm._s(o.name) + "\n  ")]
+            )
+          }),
+          0
         )
-      }),
-      0
-    )
+      : _vm._e()
   };
   var __vue_staticRenderFns__ = [];
   __vue_render__._withStripped = true;
@@ -878,11 +881,11 @@
     /* style */
     const __vue_inject_styles__ = function (inject) {
       if (!inject) return
-      inject("data-v-58258bf3_0", { source: "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Todo - style properly, hide after selection etc */\nul[data-v-58258bf3] {\n  margin: 5px 0px;\n  width: max-content;\n  border: 0.75px dashed black;\n}\nli[data-v-58258bf3] {\n  padding: 4px 10px;\n  font-size: 0.8em;\n}\n.selected[data-v-58258bf3] {\n  background-color: lightgray;\n}\n", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/LocationOptions.vue"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AA+BA,oDAAA;AACA;EACA,eAAA;EACA,kBAAA;EACA,2BAAA;AACA;AACA;EACA,iBAAA;EACA,gBAAA;AACA;AACA;EACA,2BAAA;AACA","file":"LocationOptions.vue","sourcesContent":["<template>\n  <ul>\n    <li\n      v-for=\"(o, i) in options\"\n      :key=\"i\"\n      :class=\"{ selected: (selected == i) }\"\n      @click=\"action(i)\"\n    >\n      {{ o.name }}\n    </li>\n  </ul>\n</template>\n<script>\nexport default {\n  props: {\n    action: {\n      default: () => (i) => console.error(`Unimplemented action click ${i}`),\n      type: Function,\n    },\n    options: {\n      default: () => [],\n      type: Array,\n    },\n    selected: {\n      default: () => null,\n      type: Number,\n    },\n  },\n};\n</script>\n<style scoped>\n/* Todo - style properly, hide after selection etc */\nul {\n  margin: 5px 0px;\n  width: max-content;\n  border: 0.75px dashed black;\n}\nli {\n  padding: 4px 10px;\n  font-size: 0.8em;\n}\n.selected {\n  background-color: lightgray;\n}\n</style>"]}, media: undefined });
+      inject("data-v-ea45625e_0", { source: "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Todo - style properly, hide after selection etc */\nul[data-v-ea45625e] {\n  margin: 5px 0px;\n  width: max-content;\n  border: 1px dashed black;\n}\nli[data-v-ea45625e] {\n  padding: 4px 10px;\n  font-size: 0.8em;\n}\n.selected[data-v-ea45625e] {\n  background-color: lightgray;\n}\n", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/LocationOptions.vue"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AA+BA,oDAAA;AACA;EACA,eAAA;EACA,kBAAA;EACA,wBAAA;AACA;AACA;EACA,iBAAA;EACA,gBAAA;AACA;AACA;EACA,2BAAA;AACA","file":"LocationOptions.vue","sourcesContent":["<template>\n  <ul v-if=\"options.length > 0\">\n    <li\n      v-for=\"(o, i) in options\"\n      :key=\"i\"\n      :class=\"{ selected: (selected == i) }\"\n      @click=\"action(i)\"\n    >\n      {{ o.name }}\n    </li>\n  </ul>\n</template>\n<script>\nexport default {\n  props: {\n    action: {\n      default: () => (i) => console.error(`Unimplemented action click ${i}`),\n      type: Function,\n    },\n    options: {\n      default: () => [],\n      type: Array,\n    },\n    selected: {\n      default: () => null,\n      type: Number,\n    },\n  },\n};\n</script>\n<style scoped>\n/* Todo - style properly, hide after selection etc */\nul {\n  margin: 5px 0px;\n  width: max-content;\n  border: 1px dashed black;\n}\nli {\n  padding: 4px 10px;\n  font-size: 0.8em;\n}\n.selected {\n  background-color: lightgray;\n}\n</style>"]}, media: undefined });
 
     };
     /* scoped */
-    const __vue_scope_id__ = "data-v-58258bf3";
+    const __vue_scope_id__ = "data-v-ea45625e";
     /* module identifier */
     const __vue_module_identifier__ = undefined;
     /* functional template */
@@ -1462,6 +1465,11 @@
           return [];
         }
       }
+    },
+    computed: {
+      showModes: function showModes() {
+        if (this.$store.state.driving != null) return true;else return false;
+      }
     }
   };
 
@@ -1489,7 +1497,27 @@
             _c("search-form")
           ],
           1
-        )
+        ),
+        _vm._v(" "),
+        _vm.showModes
+          ? _c(
+              "ol",
+              _vm._l(_vm.modes, function(mode, i) {
+                return _c(
+                  "li",
+                  { key: i, class: "mode" + (i + 1) },
+                  [
+                    _c(
+                      "mode-of-transport",
+                      _vm._b({}, "mode-of-transport", mode, false)
+                    )
+                  ],
+                  1
+                )
+              }),
+              0
+            )
+          : _vm._e()
       ])
     ])
   };
@@ -2496,7 +2524,7 @@
     title: 'Walk/Cycle',
     details: __vue_component__$8,
     summarise: function summarise(j) {
-      return "30-40 minutes by bike (xx ebikes nearby at ".concat(j.source, ")");
+      return "".concat(formatTime(j.walking.time.value), " walking or ").concat(formatTime(j.cycling.time.value), " by bike (xx ebikes nearby at ").concat(j.source, ")");
     },
     costFn: function costFn(j) {
       return 0;
@@ -2505,7 +2533,7 @@
     title: 'Bus/train',
     details: __vue_component__$4,
     summarise: function summarise(j) {
-      return "".concat(j.time.train, " minutes by train or ").concat(j.time.bus, " minutes by bus (xx Metro cards are available nearby)");
+      return "".concat(formatTime(j.train.time.value), " by train or ").concat(formatTime(j.bus.time.value), " by bus (xx Metro cards are available nearby)");
     },
     costFn: function costFn(j) {
       // TODO Need to calculate cost with/without metro card
@@ -2515,7 +2543,7 @@
     title: 'Pool vehicle',
     details: __vue_component__$6,
     summarise: function summarise(j) {
-      return "".concat(j.time.drive, " minutes drive (needs booking in advance)");
+      return "".concat(formatTime(j.driving.time.value), " drive (needs booking in advance)");
     },
     costFn: function costFn(j) {
       // TODO How is this calculated?
@@ -2525,33 +2553,42 @@
     title: 'Car club',
     details: __vue_component__$5,
     summarise: function summarise(j) {
-      return "".concat(j.time.drive, " minutes drive (xx cars at Cookridge Street)");
+      return "".concat(formatTime(j.driving.time.value), " drive (xx cars at Cookridge Street)");
     },
     costFn: function costFn(j) {
       // TODO How is this calculated?
-      return (10 * j.time.drive / 30).toFixed(2);
+      return (10 * j.driving.time.value / 30).toFixed(2);
     }
   }, {
     title: 'Taxi',
     details: __vue_component__$9,
     summarise: function summarise(j) {
-      return "".concat(j.time.drive, " minutes (AAA Taxis)");
+      return "".concat(formatTime(j.driving.time.value), " (AAA Taxis)");
     },
     costFn: function costFn(j) {
       // TODO How is this calculated?
-      return (0.50 * j.time.drive).toFixed(2);
+      return (0.50 * j.driving.time.value).toFixed(2);
     }
   }, {
     title: 'Self drive',
     details: __vue_component__$a,
     summarise: function summarise(j) {
-      return "".concat(j.time.drive, " minutes");
+      return "".concat(formatTime(j.driving.time.value));
     },
     costFn: function costFn(j) {
       // TODO How is this calculated?
-      return 0.5 * j.time.drive;
+      return 0.5 * j.driving.time.value;
     }
   }];
+
+  var formatTime = function formatTime(value) {
+    value = Number(value);
+    if (value < 60) return "".concat(value.toFixed(0), " minutes");else {
+      var hours = Math.floor(value / 60);
+      var mins = (value % 60).toFixed(0);
+      if (hours == 1) return "".concat(hours, " hour ").concat(mins, " minutes");else return "".concat(hours, " hours ").concat(mins, " minutes");
+    }
+  };
 
   var runtime = createCommonjsModule(function (module) {
   /**
@@ -3324,18 +3361,6 @@
     return _arrayWithHoles(arr) || _iterableToArray(arr) || _nonIterableRest();
   }
 
-  function _toConsumableArray(arr) {
-    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
-  }
-
-  function _arrayWithoutHoles(arr) {
-    if (Array.isArray(arr)) {
-      for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
-
-      return arr2;
-    }
-  }
-
   function _arrayWithHoles(arr) {
     if (Array.isArray(arr)) return arr;
   }
@@ -3372,10 +3397,6 @@
     }
 
     return _arr;
-  }
-
-  function _nonIterableSpread() {
-    throw new TypeError("Invalid attempt to spread non-iterable instance");
   }
 
   function _nonIterableRest() {
@@ -4584,21 +4605,6 @@
   addToUnscopables('values');
   addToUnscopables('entries');
 
-  var nativeReverse = [].reverse;
-  var test$1 = [1, 2];
-
-  // `Array.prototype.reverse` method
-  // https://tc39.github.io/ecma262/#sec-array.prototype.reverse
-  // fix for Safari 12.0 bug
-  // https://bugs.webkit.org/show_bug.cgi?id=188794
-  _export({ target: 'Array', proto: true, forced: String(test$1) === String(test$1.reverse()) }, {
-    reverse: function reverse() {
-      // eslint-disable-next-line no-self-assign
-      if (isArray(this)) this.length = this.length;
-      return nativeReverse.call(this);
-    }
-  });
-
   var DatePrototype = Date.prototype;
   var INVALID_DATE = 'Invalid Date';
   var TO_STRING = 'toString';
@@ -4767,22 +4773,58 @@
     }
   }
 
-  function getPublicTransport(_x, _x2) {
-    return _getPublicTransport.apply(this, arguments);
+  function getPublicTransport(origin, destination, method) {
+    return new Promise(function (resolve, reject) {
+      var from = new google.maps.LatLng(origin[1], origin[0]),
+          to = new google.maps.LatLng(destination[1], destination[0]);
+      var service = new google.maps.DistanceMatrixService();
+      service.getDistanceMatrix({
+        origins: [from],
+        destinations: [to],
+        travelMode: 'TRANSIT',
+        transitOptions: {
+          modes: [method]
+        },
+        unitSystem: google.maps.UnitSystem.METRIC
+      }, function (results, status) {
+        if (status == 'OK') {
+          var _results$rows = _slicedToArray(results.rows, 1),
+              _results$rows$0$eleme = _slicedToArray(_results$rows[0].elements, 1),
+              _results$rows$0$eleme2 = _results$rows$0$eleme[0],
+              dist = _results$rows$0$eleme2.distance.value,
+              time = _results$rows$0$eleme2.duration.value;
+
+          resolve({
+            distance: {
+              value: (dist / 1000).toFixed(2),
+              unit: 'km'
+            },
+            time: {
+              value: (time / 60).toFixed(1),
+              unit: 'minutes'
+            }
+          });
+        } else reject(status);
+      });
+    });
   }
 
-  function _getPublicTransport() {
-    _getPublicTransport = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(origin, destination) {
-      var api, key, response, data, _data$rows$elements, _data$rows$elements$, time, dist;
+  function queryOpenRouteService(_x, _x2, _x3) {
+    return _queryOpenRouteService.apply(this, arguments);
+  }
+
+  function _queryOpenRouteService() {
+    _queryOpenRouteService = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(origin, destination, profileName) {
+      var api, key, response, journeyData, _journeyData$features, _journeyData$features2, distance, duration;
 
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              api = 'https://maps.googleapis.com/maps/api/distancematrix/json';
-              key = 'AIzaSyCCoZtWMbRLwnFrW--yD_bfDf4gkJRt3Mg';
+              api = 'https://api.openrouteservice.org/v2/directions/';
+              key = '5b3ce3597851110001cf6248104657ec14464cc68a8aaaf62a878b74';
               _context.next = 4;
-              return fetch("".concat(api, "?units=metric&mode=transit&origins=").concat(_toConsumableArray(origin).reverse().toString(), "&destinations=").concat(_toConsumableArray(destination).reverse().toString(), "&key=").concat(key));
+              return fetch("".concat(api).concat(profileName, "?api_key=").concat(key, "&start=").concat(origin.toString(), "&end=").concat(destination.toString()));
 
             case 4:
               response = _context.sent;
@@ -4790,57 +4832,11 @@
               return response.json();
 
             case 7:
-              data = _context.sent;
-              _data$rows$elements = _slicedToArray(data.rows.elements, 1), _data$rows$elements$ = _data$rows$elements[0], time = _data$rows$elements$.duration.value, dist = _data$rows$elements$.distance.value;
-              return _context.abrupt("return", {
-                distance: {
-                  value: (dist / 1000).toFixed(2),
-                  unit: 'km'
-                },
-                time: {
-                  value: (time / 60).toFixed(1),
-                  unit: 'minutes'
-                }
-              });
-
-            case 10:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }));
-    return _getPublicTransport.apply(this, arguments);
-  }
-
-  function queryOpenRouteService(_x3, _x4, _x5) {
-    return _queryOpenRouteService.apply(this, arguments);
-  }
-
-  function _queryOpenRouteService() {
-    _queryOpenRouteService = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(origin, destination, profileName) {
-      var api, key, response, journeyData, _journeyData$features, _journeyData$features2, distance, duration;
-
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              api = 'https://api.openrouteservice.org/v2/directions/';
-              key = '5b3ce3597851110001cf6248104657ec14464cc68a8aaaf62a878b74';
-              _context2.next = 4;
-              return fetch("".concat(api).concat(profileName, "?api_key=").concat(key, "&start=").concat(origin.toString(), "&end=").concat(destination.toString()));
-
-            case 4:
-              response = _context2.sent;
-              _context2.next = 7;
-              return response.json();
-
-            case 7:
-              journeyData = _context2.sent;
+              journeyData = _context.sent;
               // Grab summary via destructuring assignment
               // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/
               _journeyData$features = _slicedToArray(journeyData.features, 1), _journeyData$features2 = _journeyData$features[0].properties.summary, distance = _journeyData$features2.distance, duration = _journeyData$features2.duration;
-              return _context2.abrupt("return", {
+              return _context.abrupt("return", {
                 distance: {
                   value: (distance / 1000).toFixed(2),
                   unit: 'km'
@@ -4853,50 +4849,51 @@
 
             case 10:
             case "end":
-              return _context2.stop();
+              return _context.stop();
           }
         }
-      }, _callee2);
+      }, _callee);
     }));
     return _queryOpenRouteService.apply(this, arguments);
   }
 
-  function journey (_x6, _x7) {
+  function journey (_x4, _x5) {
     return _ref.apply(this, arguments);
   }
 
   function _ref() {
-    _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(from, to) {
-      var _ref2, _ref3, publicTransport, driving, cycling, walking;
+    _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(from, to) {
+      var _ref2, _ref3, bus, train, driving, cycling, walking;
 
-      return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
-          switch (_context3.prev = _context3.next) {
+          switch (_context2.prev = _context2.next) {
             case 0:
-              _context3.next = 2;
-              return Promise.all([getPublicTransport(from, to), queryOpenRouteService(from, to, 'driving-car'), // mode names for the openrouteservice api - could perhaps be in modes.js file
-              queryOpenRouteService(from, to, 'cycling-road'), queryOpenRouteService(from, to, 'foot-walking')]);
+              _context2.next = 2;
+              return Promise.all([getPublicTransport(from, to, 'BUS'), getPublicTransport(from, to, 'RAIL'), queryOpenRouteService(from, to, 'driving-car'), queryOpenRouteService(from, to, 'cycling-road'), queryOpenRouteService(from, to, 'foot-walking')]);
 
             case 2:
-              _ref2 = _context3.sent;
-              _ref3 = _slicedToArray(_ref2, 4);
-              publicTransport = _ref3[0];
-              driving = _ref3[1];
-              cycling = _ref3[2];
-              walking = _ref3[3];
-              return _context3.abrupt("return", {
-                publicTransport: publicTransport,
+              _ref2 = _context2.sent;
+              _ref3 = _slicedToArray(_ref2, 5);
+              bus = _ref3[0];
+              train = _ref3[1];
+              driving = _ref3[2];
+              cycling = _ref3[3];
+              walking = _ref3[4];
+              return _context2.abrupt("return", {
+                bus: bus,
+                train: train,
                 driving: driving,
                 cycling: cycling,
                 walking: walking
               });
 
-            case 9:
+            case 10:
             case "end":
-              return _context3.stop();
+              return _context2.stop();
           }
         }
-      }, _callee3);
+      }, _callee2);
     }));
     return _ref.apply(this, arguments);
   }
@@ -5019,11 +5016,13 @@
     var driving = update.driving,
         cycling = update.cycling,
         walking = update.walking,
-        publicTransport = update.publicTransport;
+        bus = update.bus,
+        train = update.train;
     state.cycling = cycling;
     state.driving = driving;
     state.walking = walking;
-    state.publicTransport = publicTransport;
+    state.bus = bus;
+    state.train = train;
   }
 
   function updateCarrying(state, update) {
@@ -5098,7 +5097,8 @@
       timeAtDest: 60,
       presenceRequired: false,
       carrying: false,
-      publicTransport: null,
+      bus: null,
+      train: null,
       driving: null,
       cycling: null,
       walking: null
@@ -5108,14 +5108,16 @@
         // Journey needs to return isRoundTrip, etc
         var source = state.source,
             destination = state.destination,
-            publicTransport = state.publicTransport,
+            bus = state.bus,
+            train = state.train,
             driving = state.driving,
             cycling = state.cycling,
             walking = state.walking;
         return {
           source: source,
           destination: destination,
-          publicTransport: publicTransport,
+          bus: bus,
+          train: train,
           driving: driving,
           cycling: cycling,
           walking: walking
@@ -5136,4 +5138,4 @@
     }
   });
 
-}(Vue, Vuex));
+}(Vue, Vuex, google));

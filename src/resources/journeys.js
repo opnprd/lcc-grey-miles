@@ -1,13 +1,25 @@
-async function getPublicTransport(origin, destination) {
-  const api = 'https://maps.googleapis.com/maps/api/distancematrix/json';
-  const key = 'AIzaSyCCoZtWMbRLwnFrW--yD_bfDf4gkJRt3Mg';
-  const response = await fetch(`${api}?units=metric&mode=transit&origins=${[...origin].reverse().toString()}&destinations=${[...destination].reverse().toString()}&key=${key}`);
-  const data = await response.json();
-  const { rows: { elements: [ { duration: { value: time }, distance: { value: dist } } ] } } = data;
-  return {
-    distance: { value: (dist / 1000).toFixed(2), unit: 'km' },
-    time: { value: (time / 60).toFixed(1), unit: 'minutes' },
-  };
+import google from 'google'; //Global variable included via script tag
+
+function getPublicTransport(origin, destination, method) {
+  return new Promise((resolve, reject) => {
+    const [from, to] = [new google.maps.LatLng(origin[1], origin[0]), new google.maps.LatLng(destination[1], destination[0])];
+    const service = new google.maps.DistanceMatrixService();
+    service.getDistanceMatrix({
+      origins: [ from ],
+      destinations: [ to ],
+      travelMode: 'TRANSIT',
+      transitOptions: { modes: [ method ] },
+      unitSystem: google.maps.UnitSystem.METRIC,
+    }, (results, status) => {
+      if (status == 'OK') {
+        const { rows: [ { elements: [ { distance: { value: dist }, duration: { value: time } } ] } ] } = results;
+        resolve({
+          distance: { value: (dist / 1000).toFixed(2), unit: 'km' },
+          time: { value: (time / 60).toFixed(1), unit: 'minutes' },
+        });
+      } else reject(status);
+    });
+  });
 }
 
 async function queryOpenRouteService(origin, destination, profileName) {
@@ -26,19 +38,22 @@ async function queryOpenRouteService(origin, destination, profileName) {
 
 export default async function(from, to) {
   const [
-    publicTransport,
+    bus,
+    train,
     driving,
     cycling,
     walking,
   ] = await Promise.all([
-    getPublicTransport(from, to),
-    queryOpenRouteService(from, to, 'driving-car'), // mode names for the openrouteservice api - could perhaps be in modes.js file
+    getPublicTransport(from, to, 'BUS'),
+    getPublicTransport(from, to, 'RAIL'),
+    queryOpenRouteService(from, to, 'driving-car'),
     queryOpenRouteService(from, to, 'cycling-road'),
     queryOpenRouteService(from, to, 'foot-walking'),
   ]);
 
   return {
-    publicTransport,
+    bus,
+    train,
     driving,
     cycling,
     walking,
