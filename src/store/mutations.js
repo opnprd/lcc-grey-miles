@@ -14,11 +14,12 @@ function selectSource(state, update) {
 }
 
 function setTravelDetails(state, update) {
-  const { driving, cycling, walking, publicTransport } = update;
+  const { driving, cycling, walking, bus, train } = update;
   state.cycling = cycling;
   state.driving = driving;
   state.walking = walking;
-  state.publicTransport = publicTransport;
+  state.bus = bus;
+  state.train = train;
 }
 
 function updateCarrying(state, update) {
