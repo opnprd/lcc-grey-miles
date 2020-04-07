@@ -1,5 +1,5 @@
 <template>
-  <ul>
+  <ul v-if="options.length > 0">
     <li
       v-for="(o, i) in options"
       :key="i"
@@ -33,7 +33,7 @@ export default {
 ul {
   margin: 5px 0px;
   width: max-content;
-  border: 0.75px dashed black;
+  border: 1px dashed black;
 }
 li {
   padding: 4px 10px;
