@@ -30,7 +30,7 @@ export default [
     title: 'Walk/Cycle',
     details: WalkCycle,
     summarise(j) {
-      return `30-40 minutes by bike (xx ebikes nearby at ${j.source})`;
+      return `${formatTime(j.walking.time.value)} walking or ${formatTime(j.cycling.time.value)} by bike (xx ebikes nearby at ${j.source})`;
     },
     costFn(j) {
       return 0;
@@ -40,7 +40,7 @@ export default [
     title: 'Bus/train',
     details: BusTrain,
     summarise(j) {
-      return `${j.time.train} minutes by train or ${j.time.bus} minutes by bus (xx Metro cards are available nearby)`;
+      return `${formatTime(j.train.time.value)} by train or ${formatTime(j.bus.time.value)} by bus (xx Metro cards are available nearby)`;
     },
     costFn(j) {
       // TODO Need to calculate cost with/without metro card
@@ -51,7 +51,7 @@ export default [
     title: 'Pool vehicle',
     details: PoolVehicle,
     summarise(j) {
-      return `${j.time.drive} minutes drive (needs booking in advance)`;
+      return `${formatTime(j.driving.time.value)} drive (needs booking in advance)`;
     },
     costFn(j) {
       // TODO How is this calculated?
@@ -62,33 +62,44 @@ export default [
     title: 'Car club',
     details: CarClub,
     summarise(j) {
-      return `${j.time.drive} minutes drive (xx cars at Cookridge Street)`;
+      return `${formatTime(j.driving.time.value)} drive (xx cars at Cookridge Street)`;
     },
     costFn(j) {
       // TODO How is this calculated?
-      return (10*j.time.drive/30).toFixed(2);
+      return (10*j.driving.time.value/30).toFixed(2);
     },
   },
   {
     title: 'Taxi',
     details: Taxi,
     summarise(j) {
-      return `${j.time.drive} minutes (AAA Taxis)`;
+      return `${formatTime(j.driving.time.value)} (AAA Taxis)`;
     },
     costFn(j) {
       // TODO How is this calculated?
-      return (0.50*j.time.drive).toFixed(2);
+      return (0.50*j.driving.time.value).toFixed(2);
     },
   },
   {
     title: 'Self drive',
     details: SelfDrive,
     summarise(j) {
-      return `${j.time.drive} minutes`;
+      return `${formatTime(j.driving.time.value)}`;
     },
     costFn(j) {
       // TODO How is this calculated?
-      return 0.5*j.time.drive;
+      return 0.5*j.driving.time.value;
     },
   },
 ];
+
+const formatTime = value => {
+  value = Number(value);
+  if (value < 60) return `${value.toFixed(0)} minutes`;
+  else {
+    let hours = Math.floor(value / 60);
+    let mins = (value % 60).toFixed(0);
+    if (hours == 1) return `${hours} hour ${mins} minutes`;
+    else return `${hours} hours ${mins} minutes`;
+  }
+};

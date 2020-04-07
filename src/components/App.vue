@@ -10,7 +10,7 @@
         <p>Can you make your journey cleaner? Move up Leeds City Council's travel hierarchy to reduce your emissions and help tackle the #ClimateEmergency</p>
         <search-form />
       </section>
-      <!-- <ol>
+      <ol v-if="showModes">
         <li
           v-for="(mode, i) in modes"
           :key="i"
@@ -18,7 +18,7 @@
         >
           <mode-of-transport v-bind="mode" />
         </li>
-      </ol> -->
+      </ol>
     </div>
   </article>
 </template>
@@ -39,6 +39,12 @@ export default {
     rawModes: {
       type: Array,
       default: () => [],
+    },
+  },
+  computed: {
+    showModes() {
+      if (this.$store.state.driving != null) return true;
+      else return false;
     },
   },
 };
