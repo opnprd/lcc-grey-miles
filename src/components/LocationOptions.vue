@@ -32,7 +32,7 @@ export default {
 /* Todo - style properly, hide after selection etc */
 ul {
   margin: 5px 0px;
-  width: max-content;
+  width: min(100%, max-content);
   border: 1px dashed black;
 }
 li {

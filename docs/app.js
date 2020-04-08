@@ -38,26 +38,6 @@
     // eslint-disable-next-line no-new-func
     Function('return this')();
 
-  var replacement = /#|\.prototype\./;
-
-  var isForced = function (feature, detection) {
-    var value = data[normalize(feature)];
-    return value == POLYFILL ? true
-      : value == NATIVE ? false
-      : typeof detection == 'function' ? fails(detection)
-      : !!detection;
-  };
-
-  var normalize = isForced.normalize = function (string) {
-    return String(string).replace(replacement, '.').toLowerCase();
-  };
-
-  var data = isForced.data = {};
-  var NATIVE = isForced.NATIVE = 'N';
-  var POLYFILL = isForced.POLYFILL = 'P';
-
-  var isForced_1 = isForced;
-
   var isObject = function (it) {
     return typeof it === 'object' ? it !== null : typeof it === 'function';
   };
@@ -115,6 +95,48 @@
   var objectDefineProperty = {
   	f: f
   };
+
+  var defineProperty = objectDefineProperty.f;
+
+  var FunctionPrototype = Function.prototype;
+  var FunctionPrototypeToString = FunctionPrototype.toString;
+  var nameRE = /^\s*function ([^ (]*)/;
+  var NAME = 'name';
+
+  // Function instances `.name` property
+  // https://tc39.github.io/ecma262/#sec-function-instances-name
+  if (descriptors && !(NAME in FunctionPrototype)) {
+    defineProperty(FunctionPrototype, NAME, {
+      configurable: true,
+      get: function () {
+        try {
+          return FunctionPrototypeToString.call(this).match(nameRE)[1];
+        } catch (error) {
+          return '';
+        }
+      }
+    });
+  }
+
+  var replacement = /#|\.prototype\./;
+
+  var isForced = function (feature, detection) {
+    var value = data[normalize(feature)];
+    return value == POLYFILL ? true
+      : value == NATIVE ? false
+      : typeof detection == 'function' ? fails(detection)
+      : !!detection;
+  };
+
+  var normalize = isForced.normalize = function (string) {
+    return String(string).replace(replacement, '.').toLowerCase();
+  };
+
+  var data = isForced.data = {};
+  var NATIVE = isForced.NATIVE = 'N';
+  var POLYFILL = isForced.POLYFILL = 'P';
+
+  var isForced_1 = isForced;
 
   var createPropertyDescriptor = function (bitmap, value) {
     return {
@@ -614,7 +636,7 @@
 
   var getOwnPropertyNames = objectGetOwnPropertyNames.f;
   var getOwnPropertyDescriptor$1 = objectGetOwnPropertyDescriptor.f;
-  var defineProperty = objectDefineProperty.f;
+  var defineProperty$1 = objectDefineProperty.f;
   var trim = stringTrim.trim;
 
   var NUMBER = 'Number';
@@ -672,7 +694,7 @@
       'MIN_SAFE_INTEGER,parseFloat,parseInt,isInteger'
     ).split(','), j = 0, key; keys$1.length > j; j++) {
       if (has(NativeNumber, key = keys$1[j]) && !has(NumberWrapper, key)) {
-        defineProperty(NumberWrapper, key, getOwnPropertyDescriptor$1(NativeNumber, key));
+        defineProperty$1(NumberWrapper, key, getOwnPropertyDescriptor$1(NativeNumber, key));
       }
     }
     NumberWrapper.prototype = NumberPrototype;
@@ -881,11 +903,11 @@
     /* style */
     const __vue_inject_styles__ = function (inject) {
       if (!inject) return
-      inject("data-v-ea45625e_0", { source: "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Todo - style properly, hide after selection etc */\nul[data-v-ea45625e] {\n  margin: 5px 0px;\n  width: max-content;\n  border: 1px dashed black;\n}\nli[data-v-ea45625e] {\n  padding: 4px 10px;\n  font-size: 0.8em;\n}\n.selected[data-v-ea45625e] {\n  background-color: lightgray;\n}\n", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/LocationOptions.vue"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AA+BA,oDAAA;AACA;EACA,eAAA;EACA,kBAAA;EACA,wBAAA;AACA;AACA;EACA,iBAAA;EACA,gBAAA;AACA;AACA;EACA,2BAAA;AACA","file":"LocationOptions.vue","sourcesContent":["<template>\n  <ul v-if=\"options.length > 0\">\n    <li\n      v-for=\"(o, i) in options\"\n      :key=\"i\"\n      :class=\"{ selected: (selected == i) }\"\n      @click=\"action(i)\"\n    >\n      {{ o.name }}\n    </li>\n  </ul>\n</template>\n<script>\nexport default {\n  props: {\n    action: {\n      default: () => (i) => console.error(`Unimplemented action click ${i}`),\n      type: Function,\n    },\n    options: {\n      default: () => [],\n      type: Array,\n    },\n    selected: {\n      default: () => null,\n      type: Number,\n    },\n  },\n};\n</script>\n<style scoped>\n/* Todo - style properly, hide after selection etc */\nul {\n  margin: 5px 0px;\n  width: max-content;\n  border: 1px dashed black;\n}\nli {\n  padding: 4px 10px;\n  font-size: 0.8em;\n}\n.selected {\n  background-color: lightgray;\n}\n</style>"]}, media: undefined });
+      inject("data-v-3e785cfa_0", { source: "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Todo - style properly, hide after selection etc */\nul[data-v-3e785cfa] {\n  margin: 5px 0px;\n  width: min(100%, max-content);\n  border: 1px dashed black;\n}\nli[data-v-3e785cfa] {\n  padding: 4px 10px;\n  font-size: 0.8em;\n}\n.selected[data-v-3e785cfa] {\n  background-color: lightgray;\n}\n", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/LocationOptions.vue"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AA+BA,oDAAA;AACA;EACA,eAAA;EACA,6BAAA;EACA,wBAAA;AACA;AACA;EACA,iBAAA;EACA,gBAAA;AACA;AACA;EACA,2BAAA;AACA","file":"LocationOptions.vue","sourcesContent":["<template>\n  <ul v-if=\"options.length > 0\">\n    <li\n      v-for=\"(o, i) in options\"\n      :key=\"i\"\n      :class=\"{ selected: (selected == i) }\"\n      @click=\"action(i)\"\n    >\n      {{ o.name }}\n    </li>\n  </ul>\n</template>\n<script>\nexport default {\n  props: {\n    action: {\n      default: () => (i) => console.error(`Unimplemented action click ${i}`),\n      type: Function,\n    },\n    options: {\n      default: () => [],\n      type: Array,\n    },\n    selected: {\n      default: () => null,\n      type: Number,\n    },\n  },\n};\n</script>\n<style scoped>\n/* Todo - style properly, hide after selection etc */\nul {\n  margin: 5px 0px;\n  width: min(100%, max-content);\n  border: 1px dashed black;\n}\nli {\n  padding: 4px 10px;\n  font-size: 0.8em;\n}\n.selected {\n  background-color: lightgray;\n}\n</style>"]}, media: undefined });
 
     };
     /* scoped */
-    const __vue_scope_id__ = "data-v-ea45625e";
+    const __vue_scope_id__ = "data-v-3e785cfa";
     /* module identifier */
     const __vue_module_identifier__ = undefined;
     /* functional template */
@@ -909,7 +931,6 @@
       undefined
     );
 
-  //
   var script$1 = {
     components: {
       LocationOptions: __vue_component__
@@ -988,9 +1009,11 @@
       },
       selectDestination: function selectDestination(key) {
         this.$store.commit('selectDestination', key);
+        this.destination = this.destinationOptions[key].name;
       },
       selectSource: function selectSource(key) {
         this.$store.commit('selectSource', key);
+        this.origin = this.sourceOptions[key].name;
       }
     }
   };
@@ -3492,7 +3515,7 @@
     findIndex: createMethod$2(6)
   };
 
-  var defineProperty$1 = Object.defineProperty;
+  var defineProperty$2 = Object.defineProperty;
   var cache = {};
 
   var thrower = function (it) { throw it; };
@@ -3509,7 +3532,7 @@
       if (ACCESSORS && !descriptors) return true;
       var O = { length: -1 };
 
-      if (ACCESSORS) defineProperty$1(O, 1, { enumerable: true, get: thrower });
+      if (ACCESSORS) defineProperty$2(O, 1, { enumerable: true, get: thrower });
       else O[1] = 1;
 
       method.call(O, argument0, argument1);
@@ -3620,7 +3643,7 @@
     return target;
   };
 
-  var defineProperty$2 = objectDefineProperty.f;
+  var defineProperty$3 = objectDefineProperty.f;
 
 
 
@@ -3628,7 +3651,7 @@
 
   var setToStringTag = function (it, TAG, STATIC) {
     if (it && !has(it = STATIC ? it : it.prototype, TO_STRING_TAG$2)) {
-      defineProperty$2(it, TO_STRING_TAG$2, { configurable: true, value: TAG });
+      defineProperty$3(it, TO_STRING_TAG$2, { configurable: true, value: TAG });
     }
   };
 
