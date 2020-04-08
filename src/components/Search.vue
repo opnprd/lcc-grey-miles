@@ -131,9 +131,11 @@ export default {
     },
     selectDestination(key) {
       this.$store.commit('selectDestination', key);
+      this.destination = this.destinationOptions[key].name;
     },
     selectSource(key) {
       this.$store.commit('selectSource', key);
+      this.origin = this.sourceOptions[key].name;
     },
   },
 };
