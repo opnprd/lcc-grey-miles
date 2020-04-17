@@ -63,6 +63,10 @@ export default {
           ],
           dest: `${outputDir}/vendor`,
         },
+        {
+          src: 'src/data',
+          dest: `${outputDir}/data`,
+        },
       ],
       hook: 'buildStart',
     }),
