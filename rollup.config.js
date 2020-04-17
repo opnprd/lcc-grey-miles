@@ -65,7 +65,7 @@ export default {
         },
         {
           src: 'src/data',
-          dest: `${outputDir}/data`,
+          dest: `${outputDir}`,
         },
       ],
       hook: 'buildStart',
