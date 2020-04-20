@@ -1,3 +1,11 @@
+function appendDestOptions(state, update) {
+  state.destinationDetails.options = state.destinationDetails.options.concat(update);
+}
+
+function appendSourceOptions(state, update) {
+  state.sourceDetails.options = state.sourceDetails.options.concat(update);
+}
+
 function clearTravelDetails(state) {
   state.cycling = null;
   state.driving = null;
@@ -61,6 +69,8 @@ function updateTimeAtDest(state, update) {
 }
 
 export default {
+  appendDestOptions,
+  appendSourceOptions,
   clearTravelDetails,
   selectDestination,
   selectSource,

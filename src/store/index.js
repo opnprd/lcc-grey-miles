@@ -10,15 +10,15 @@ export default new Vuex.Store({
   actions,
   mutations,
   state: {
-    source: 'Merrion House',
+    source: '',
     sourceDetails: {
       selected: null, // Index to option. Defaults to 0 when search done.
-      options: [], // Array of { name: string, latLng: array }
+      options: [], // Array of { name: string, latLng: array, addr: string } - addr only for council locations
     },
-    destination: 'Hough Top',
+    destination: '',
     destinationDetails: {
       selected: null, // Index to option. Defaults to 0 when search done.
-      options: [], // Array of { name: string, latLng: array }
+      options: [], // Array of { name: string, lngLat: array, addr: string } - addr only for council locations
     },
     councilLocations: [],
     isRoundTrip: false,
