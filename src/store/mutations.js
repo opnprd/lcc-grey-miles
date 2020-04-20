@@ -26,6 +26,10 @@ function updateCarrying(state, update) {
   state.carrying = update;
 }
 
+function updateCouncilLocations(state, update) {
+  state.councilLocations = update;
+}
+
 function updateDestination(state, update) {
   state.destination = update;
 }
@@ -62,6 +66,7 @@ export default {
   selectSource,
   setTravelDetails,
   updateCarrying,
+  updateCouncilLocations,
   updateDestination,
   updateDestOptions,
   updateIsRoundTrip,

@@ -20,6 +20,7 @@ export default new Vuex.Store({
       selected: null, // Index to option. Defaults to 0 when search done.
       options: [], // Array of { name: string, latLng: array }
     },
+    councilLocations: [],
     isRoundTrip: false,
     timeAtDest: 60,
     presenceRequired: false,

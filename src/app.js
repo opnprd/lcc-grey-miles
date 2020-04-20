@@ -9,5 +9,6 @@ import './wireframe.scss';
 new Vue({
   el: '#app',
   store,
+  created() { store.dispatch('getCouncilLocations'); },
   render: (h) => h(App, { props: { modes } }),
 });

@@ -1,6 +1,13 @@
 import geoCode from '../resources/geocode';
 import journey from '../resources/journeys';
 
+async function getCouncilLocations(context) {
+  const { commit } = context;
+  const response = await fetch('data/council-locations.json');
+  const data = await response.json();
+  commit('updateCouncilLocations', data);
+}
+
 async function lookupDestination(context) {
   const { state, commit } = context;
   const { destination } = state;
@@ -28,6 +35,7 @@ async function planTravel(context) {
 }
 
 export default {
+  getCouncilLocations,
   lookupDestination,
   lookupSource,
   planTravel,
