@@ -714,6 +714,10 @@
   //
   //
   //
+  //
+  //
+  //
+  //
   var script = {
     props: {
       action: {
@@ -878,6 +882,7 @@
     return _vm.options.length > 0
       ? _c(
           "ul",
+          { staticClass: "results" },
           _vm._l(_vm.options, function(o, i) {
             return _c(
               "li",
@@ -890,7 +895,12 @@
                   }
                 }
               },
-              [_vm._v("\n    " + _vm._s(o.name) + "\n  ")]
+              [
+                _vm._v("\n    " + _vm._s(o.name) + "\n    "),
+                o.addr
+                  ? _c("span", [_vm._v(" (" + _vm._s(o.addr) + ")")])
+                  : _vm._e()
+              ]
             )
           }),
           0
@@ -903,11 +913,11 @@
     /* style */
     const __vue_inject_styles__ = function (inject) {
       if (!inject) return
-      inject("data-v-3e785cfa_0", { source: "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Todo - style properly, hide after selection etc */\nul[data-v-3e785cfa] {\n  margin: 5px 0px;\n  width: min(100%, max-content);\n  border: 1px dashed black;\n}\nli[data-v-3e785cfa] {\n  padding: 4px 10px;\n  font-size: 0.8em;\n}\n.selected[data-v-3e785cfa] {\n  background-color: lightgray;\n}\n", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/LocationOptions.vue"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AA+BA,oDAAA;AACA;EACA,eAAA;EACA,6BAAA;EACA,wBAAA;AACA;AACA;EACA,iBAAA;EACA,gBAAA;AACA;AACA;EACA,2BAAA;AACA","file":"LocationOptions.vue","sourcesContent":["<template>\n  <ul v-if=\"options.length > 0\">\n    <li\n      v-for=\"(o, i) in options\"\n      :key=\"i\"\n      :class=\"{ selected: (selected == i) }\"\n      @click=\"action(i)\"\n    >\n      {{ o.name }}\n    </li>\n  </ul>\n</template>\n<script>\nexport default {\n  props: {\n    action: {\n      default: () => (i) => console.error(`Unimplemented action click ${i}`),\n      type: Function,\n    },\n    options: {\n      default: () => [],\n      type: Array,\n    },\n    selected: {\n      default: () => null,\n      type: Number,\n    },\n  },\n};\n</script>\n<style scoped>\n/* Todo - style properly, hide after selection etc */\nul {\n  margin: 5px 0px;\n  width: min(100%, max-content);\n  border: 1px dashed black;\n}\nli {\n  padding: 4px 10px;\n  font-size: 0.8em;\n}\n.selected {\n  background-color: lightgray;\n}\n</style>"]}, media: undefined });
+      inject("data-v-c0d17254_0", { source: "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Todo - style properly, hide after selection etc */\n/* ul {\n  margin: 5px 0px;\n  width: min(100%, max-content);\n  border: 1px dashed black;\n}\nli {\n  padding: 4px 10px;\n  font-size: 0.8em;\n}\n.selected {\n  background-color: lightgray;\n} */\n\n", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/LocationOptions.vue"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AAmCA,oDAAA;AACA;;;;;;;;;;;GAWA","file":"LocationOptions.vue","sourcesContent":["<template>\n  <ul\n    v-if=\"options.length > 0\"\n    class=\"results\"\n  >\n    <li\n      v-for=\"(o, i) in options\"\n      :key=\"i\"\n      :class=\"{ selected: (selected == i) }\"\n      @click=\"action(i)\"\n    >\n      {{ o.name }}\n      <span v-if=\"o.addr\"> ({{ o.addr }})</span>\n    </li>\n  </ul>\n</template>\n<script>\nexport default {\n  props: {\n    action: {\n      default: () => (i) => console.error(`Unimplemented action click ${i}`),\n      type: Function,\n    },\n    options: {\n      default: () => [],\n      type: Array,\n    },\n    selected: {\n      default: () => null,\n      type: Number,\n    },\n  },\n};\n</script>\n<style scoped>\n/* Todo - style properly, hide after selection etc */\n/* ul {\n  margin: 5px 0px;\n  width: min(100%, max-content);\n  border: 1px dashed black;\n}\nli {\n  padding: 4px 10px;\n  font-size: 0.8em;\n}\n.selected {\n  background-color: lightgray;\n} */\n\n</style>"]}, media: undefined });
 
     };
     /* scoped */
-    const __vue_scope_id__ = "data-v-3e785cfa";
+    const __vue_scope_id__ = "data-v-c0d17254";
     /* module identifier */
     const __vue_module_identifier__ = undefined;
     /* functional template */
@@ -934,6 +944,14 @@
   var script$1 = {
     components: {
       LocationOptions: __vue_component__
+    },
+    data: function data() {
+      return {
+        showSourceOptions: false,
+        showDestinationOptions: false,
+        showSourceSearchButton: true,
+        showDestinationSearchButton: true
+      };
     },
     computed: {
       origin: {
@@ -1001,19 +1019,61 @@
       calculate: function calculate() {
         this.$store.dispatch('planTravel');
       },
-      lookupDestination: function lookupDestination() {
-        this.$store.dispatch('lookupDestination');
+      lookupCouncilDestination: function lookupCouncilDestination() {
+        if (this.destination.length > 2) {
+          this.$store.dispatch('lookupCouncilDestination');
+          this.showDestinationOptions = true;
+          this.showDestinationSearchButton = true;
+        } else this.showDestinationOptions = false;
       },
-      lookupSource: function lookupSource() {
+      lookupCouncilSource: function lookupCouncilSource() {
+        if (this.origin.length > 2) {
+          this.$store.dispatch('lookupCouncilSource');
+          this.showSourceOptions = true;
+          this.showSourceSearchButton = true;
+        } else this.showSourceOptions = false;
+      },
+      lookupExternalDestination: function lookupExternalDestination() {
+        this.$store.dispatch('lookupDestination');
+        this.showDestinationOptions = true;
+        this.showDestinationSearchButton = false;
+        this.$refs.to.focus(); //keep focus on the input field so that the keyboard can be used to navigate
+      },
+      lookupExternalSource: function lookupExternalSource() {
         this.$store.dispatch('lookupSource');
+        this.showSourceOptions = true;
+        this.showSourceSearchButton = false;
+        this.$refs.from.focus();
       },
       selectDestination: function selectDestination(key) {
+        var hideOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
         this.$store.commit('selectDestination', key);
         this.destination = this.destinationOptions[key].name;
+        if (hideOptions) this.showDestinationOptions = false;
       },
       selectSource: function selectSource(key) {
+        var hideOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
         this.$store.commit('selectSource', key);
         this.origin = this.sourceOptions[key].name;
+        if (hideOptions) this.showSourceOptions = false;
+      },
+      destinationInputKeyPress: function destinationInputKeyPress(event) {
+        //do nothing if the input field is empty
+        if (!this.destination) this.showDestinationOptions = false; //keyboard navigation
+        else if (event.key == 'ArrowDown' && this.selectedDestination < this.destinationOptions.length - 1) this.selectDestination(this.selectedDestination + 1, false);else if (event.key == 'ArrowUp' && this.selectedDestination > 0) this.selectDestination(this.selectedDestination - 1, false);else if (event.key == 'Enter') this.showDestinationOptions = false; //if a character is entered, search the council location list again
+          else if (this.destination.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {
+              this.$store.dispatch('lookupCouncilDestination');
+              this.showDestinationOptions = true;
+              this.showDestinationSearchButton = true;
+            }
+      },
+      sourceInputKeyPress: function sourceInputKeyPress(event) {
+        if (!this.origin) this.showSourceOptions = false;
+        if (event.key == 'ArrowDown' && this.selectedSource < this.sourceOptions.length - 1) this.selectSource(this.selectedSource + 1, false);else if (event.key == 'ArrowUp' && this.selectedSource > 0) this.selectSource(this.selectedSource - 1, false);else if (event.key == 'Enter') this.showSourceOptions = false;else if (this.origin.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {
+          this.$store.dispatch('lookupCouncilSource');
+          this.showSourceOptions = true;
+          this.showSourceSearchButton = true;
+        }
       }
     }
   };
@@ -1027,107 +1087,165 @@
     var _h = _vm.$createElement;
     var _c = _vm._self._c || _h;
     return _c("form", [
-      _c(
-        "div",
-        { staticClass: "row" },
-        [
-          _c("label", { attrs: { for: "from" } }, [_vm._v("From:")]),
-          _vm._v(" "),
-          _c("input", {
+      _c("div", { staticClass: "row" }, [
+        _c("label", { attrs: { for: "from" } }, [_vm._v("From:")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.origin,
+              expression: "origin"
+            }
+          ],
+          ref: "from",
+          attrs: { id: "from", type: "text" },
+          domProps: { value: _vm.origin },
+          on: {
+            keyup: function($event) {
+              return _vm.sourceInputKeyPress($event)
+            },
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.origin = $event.target.value;
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
             directives: [
               {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.origin,
-                expression: "origin"
+                name: "show",
+                rawName: "v-show",
+                value: _vm.showSourceOptions,
+                expression: "showSourceOptions"
               }
             ],
-            attrs: { id: "from", type: "text" },
-            domProps: { value: _vm.origin },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.origin = $event.target.value;
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              attrs: { type: "button" },
+            staticClass: "search-results"
+          },
+          [
+            _c("location-options", {
+              attrs: {
+                options: _vm.sourceOptions,
+                action: _vm.selectSource,
+                selected: _vm.selectedSource
+              },
               on: {
                 click: function($event) {
-                  return _vm.lookupSource()
+                  _vm.showSourceOptions = false;
                 }
               }
-            },
-            [_vm._v("\n      Search\n    ")]
-          ),
-          _vm._v(" "),
-          _c("location-options", {
-            attrs: {
-              options: _vm.sourceOptions,
-              action: _vm.selectSource,
-              selected: _vm.selectedSource
-            }
-          })
-        ],
-        1
-      ),
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.showSourceSearchButton,
+                    expression: "showSourceSearchButton"
+                  }
+                ],
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.lookupExternalSource()
+                  }
+                }
+              },
+              [_vm._v("\n        Search for more locations...\n      ")]
+            )
+          ],
+          1
+        )
+      ]),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "row" },
-        [
-          _c("label", { attrs: { for: "to" } }, [_vm._v("To:")]),
-          _vm._v(" "),
-          _c("input", {
+      _c("div", { staticClass: "row" }, [
+        _c("label", { attrs: { for: "to" } }, [_vm._v("To:")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.destination,
+              expression: "destination"
+            }
+          ],
+          ref: "to",
+          attrs: { id: "to", type: "text" },
+          domProps: { value: _vm.destination },
+          on: {
+            keyup: function($event) {
+              return _vm.destinationInputKeyPress($event)
+            },
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.destination = $event.target.value;
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
             directives: [
               {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.destination,
-                expression: "destination"
+                name: "show",
+                rawName: "v-show",
+                value: _vm.showDestinationOptions,
+                expression: "showDestinationOptions"
               }
             ],
-            attrs: { id: "to", type: "text" },
-            domProps: { value: _vm.destination },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.destination = $event.target.value;
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              attrs: { type: "button" },
+            staticClass: "search-results"
+          },
+          [
+            _c("location-options", {
+              attrs: {
+                options: _vm.destinationOptions,
+                action: _vm.selectDestination,
+                selected: _vm.selectedDestination
+              },
               on: {
                 click: function($event) {
-                  return _vm.lookupDestination()
+                  _vm.showDestinationOptions = false;
                 }
               }
-            },
-            [_vm._v("\n      Search\n    ")]
-          ),
-          _vm._v(" "),
-          _c("location-options", {
-            attrs: {
-              options: _vm.destinationOptions,
-              action: _vm.selectDestination,
-              selected: _vm.selectedDestination
-            }
-          })
-        ],
-        1
-      ),
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.showDestinationSearchButton,
+                    expression: "showDestinationSearchButton"
+                  }
+                ],
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.lookupExternalDestination()
+                  }
+                }
+              },
+              [_vm._v("\n        Search for more locations...\n      ")]
+            )
+          ],
+          1
+        )
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "row" }),
       _vm._v(" "),
@@ -1306,15 +1424,17 @@
   __vue_render__$1._withStripped = true;
 
     /* style */
-    const __vue_inject_styles__$1 = undefined;
+    const __vue_inject_styles__$1 = function (inject) {
+      if (!inject) return
+      inject("data-v-8799a790_0", { source: "\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  position: absolute;\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  width: max-content;\n}\n.search-results li {\n  padding: 8px;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.selected {\n  background-color: #ededed;\n} \n", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/Search.vue"],"names":[],"mappings":";AA6NA;EACA,sBAAA;AACA;AACA;EACA,kBAAA;EACA,YAAA;EACA,uBAAA;EACA,6BAAA;EACA,kBAAA;AACA;AACA;EACA,YAAA;AACA;AACA;EACA,eAAA;EACA,oBAAA;EACA,SAAA;EACA,YAAA;EACA,gBAAA;EACA,0BAAA;EACA,eAAA;AACA;AACA;EACA,yBAAA;AACA","file":"Search.vue","sourcesContent":["<template>\n  <form>\n    <div class=\"row\">\n      <label for=\"from\">From:</label>\n      <input\n        id=\"from\"\n        ref=\"from\"\n        v-model=\"origin\"\n        type=\"text\"\n        @keyup=\"sourceInputKeyPress($event)\"\n      >\n      <div\n        v-show=\"showSourceOptions\"\n        class=\"search-results\"\n      >\n        <location-options\n          :options=\"sourceOptions\"\n          :action=\"selectSource\"\n          :selected=\"selectedSource\"\n          @click=\"showSourceOptions = false;\"\n        />\n        <button\n          v-show=\"showSourceSearchButton\"\n          type=\"button\"\n          @click=\"lookupExternalSource()\"\n        >\n          Search for more locations...\n        </button>\n      </div>\n    </div>\n    <div class=\"row\">\n      <label for=\"to\">To:</label>\n      <input\n        id=\"to\"\n        ref=\"to\"\n        v-model=\"destination\"\n        type=\"text\"\n        @keyup=\"destinationInputKeyPress($event)\"\n      >\n      <div\n        v-show=\"showDestinationOptions\"\n        class=\"search-results\"\n      >\n        <location-options\n          :options=\"destinationOptions\"\n          :action=\"selectDestination\"\n          :selected=\"selectedDestination\"\n          @click=\"showDestinationOptions = false;\"\n        />\n        <button\n          v-show=\"showDestinationSearchButton\"\n          type=\"button\"\n          @click=\"lookupExternalDestination()\"\n        >\n          Search for more locations...\n        </button>\n      </div>\n    </div>\n    <div class=\"row\" />\n    <div class=\"row\">\n      <input\n        id=\"roundtrip\"\n        v-model=\"isRoundTrip\"\n        name=\"roundtrip\"\n        type=\"checkbox\"\n      >\n      <label for=\"roundtrip\">I am going and then coming back again</label>\n    </div>\n    <div class=\"row\">\n      <label for=\"timeatdest\">Minutes spent at location</label>\n      <input\n        id=\"timeatdest\"\n        v-model=\"timeAtDest\"\n        name=\"timeAtDest\"\n        type=\"number\"\n      >\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"presence\"\n        v-model=\"presenceRequired\"\n        name=\"presence\"\n        type=\"checkbox\"\n      >\n      <label for=\"presence\">I need to travel to the destination</label>\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"carrying\"\n        v-model=\"carrying\"\n        name=\"carrying\"\n        type=\"checkbox\"\n      >\n      <label for=\"carrying\">I am transporting a lot of stuff</label>\n    </div>\n    <button\n      type=\"button\"\n      @click=\"calculate()\"\n    >\n      Calculate\n    </button>\n  </form>\n</template>\n<script>\nimport LocationOptions from './LocationOptions.vue';\nexport default {\n  components: {\n    LocationOptions,\n  },\n  data() {\n    return {\n      showSourceOptions: false,\n      showDestinationOptions: false,\n      showSourceSearchButton: true,\n      showDestinationSearchButton: true,\n    };\n  },\n  computed: {\n    origin: {\n      get() { return this.$store.state.source; },\n      set(value) { this.$store.commit('updateSource', value); },\n    },\n    destination: {\n      get() { return this.$store.state.destination; },\n      set(value) { this.$store.commit('updateDestination', value); },\n    },\n    isRoundTrip: {\n      get() { return this.$store.state.isRoundTrip; },\n      set(value) { this.$store.commit('updateIsRoundTrip', value); },\n    },\n    timeAtDest: {\n      get() { return this.$store.state.timeAtDest; },\n      set(value) { this.$store.commit('updateTimeAtDest', value); },\n    },\n    presenceRequired: {\n      get() { return this.$store.state.presenceRequired; },\n      set(value) { this.$store.commit('updatePresenceRequired', value); },\n    },\n    carrying: {\n      get() { return this.$store.state.carrying; },\n      set(value) { this.$store.commit('updateCarrying', value); },\n    },\n    sourceOptions() { return this.$store.state.sourceDetails.options; },\n    selectedSource() { return this.$store.state.sourceDetails.selected; },\n    destinationOptions() { return this.$store.state.destinationDetails.options; },\n    selectedDestination() { return this.$store.state.destinationDetails.selected; },\n  },\n  methods: {\n    calculate() {\n      this.$store.dispatch('planTravel');\n    },\n    lookupCouncilDestination() {\n      if(this.destination.length > 2) {\n        this.$store.dispatch('lookupCouncilDestination');\n        this.showDestinationOptions = true;\n        this.showDestinationSearchButton = true;\n      }\n      else this.showDestinationOptions = false;\n    },\n    lookupCouncilSource() {\n      if(this.origin.length > 2) {\n        this.$store.dispatch('lookupCouncilSource');\n        this.showSourceOptions = true;\n        this.showSourceSearchButton = true;\n      }\n      else this.showSourceOptions = false;\n    },\n    lookupExternalDestination() {\n      this.$store.dispatch('lookupDestination');\n      this.showDestinationOptions = true;\n      this.showDestinationSearchButton = false;\n      this.$refs.to.focus(); //keep focus on the input field so that the keyboard can be used to navigate\n    },\n    lookupExternalSource() {\n      this.$store.dispatch('lookupSource');\n      this.showSourceOptions = true;\n      this.showSourceSearchButton = false;\n      this.$refs.from.focus();\n    },\n    selectDestination(key, hideOptions=true) {\n      this.$store.commit('selectDestination', key);\n      this.destination = this.destinationOptions[key].name;\n      if(hideOptions) this.showDestinationOptions = false;\n    },\n    selectSource(key, hideOptions=true) {\n      this.$store.commit('selectSource', key);\n      this.origin = this.sourceOptions[key].name;\n      if(hideOptions) this.showSourceOptions = false;\n    },\n    destinationInputKeyPress(event) {\n      //do nothing if the input field is empty\n      if(!this.destination) this.showDestinationOptions = false;\n\n      //keyboard navigation\n      else if(event.key == 'ArrowDown' && this.selectedDestination < (this.destinationOptions.length - 1)) this.selectDestination(this.selectedDestination + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedDestination > 0) this.selectDestination(this.selectedDestination - 1, false);\n      else if(event.key == 'Enter') this.showDestinationOptions = false;\n\n      //if a character is entered, search the council location list again\n      else if(this.destination.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilDestination');\n        this.showDestinationOptions = true;\n        this.showDestinationSearchButton = true;\n      }\n    },\n    sourceInputKeyPress(event) {\n      if(!this.origin) this.showSourceOptions = false;\n      if(event.key == 'ArrowDown' && this.selectedSource < (this.sourceOptions.length - 1)) this.selectSource(this.selectedSource + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedSource > 0) this.selectSource(this.selectedSource - 1, false);\n      else if(event.key == 'Enter') this.showSourceOptions = false;\n      else if(this.origin.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilSource');\n        this.showSourceOptions = true;\n        this.showSourceSearchButton = true;\n      }\n    },\n  },\n};\n</script>\n\n<style>\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  position: absolute;\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  width: max-content;\n}\n.search-results li {\n  padding: 8px;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.selected {\n  background-color: #ededed;\n} \n</style>"]}, media: undefined });
+
+    };
     /* scoped */
     const __vue_scope_id__$1 = undefined;
     /* module identifier */
     const __vue_module_identifier__$1 = undefined;
     /* functional template */
     const __vue_is_functional_template__$1 = false;
-    /* style inject */
-    
     /* style inject SSR */
     
     /* style inject shadow dom */
@@ -1329,7 +1449,7 @@
       __vue_is_functional_template__$1,
       __vue_module_identifier__$1,
       false,
-      undefined,
+      createInjector,
       undefined,
       undefined
     );
@@ -1493,7 +1613,10 @@
       showModes: function showModes() {
         if (this.$store.state.driving != null) return true;else return false;
       }
-    }
+    } // created() {
+    //   this.$store.dispatch('getCouncilLocations');
+    // },
+
   };
 
   /* script */
@@ -2613,6 +2736,810 @@
     }
   };
 
+  var TO_STRING_TAG = wellKnownSymbol('toStringTag');
+  var test = {};
+
+  test[TO_STRING_TAG] = 'z';
+
+  var toStringTagSupport = String(test) === '[object z]';
+
+  var TO_STRING_TAG$1 = wellKnownSymbol('toStringTag');
+  // ES3 wrong here
+  var CORRECT_ARGUMENTS = classofRaw(function () { return arguments; }()) == 'Arguments';
+
+  // fallback for IE11 Script Access Denied error
+  var tryGet = function (it, key) {
+    try {
+      return it[key];
+    } catch (error) { /* empty */ }
+  };
+
+  // getting tag from ES6+ `Object.prototype.toString`
+  var classof = toStringTagSupport ? classofRaw : function (it) {
+    var O, tag, result;
+    return it === undefined ? 'Undefined' : it === null ? 'Null'
+      // @@toStringTag case
+      : typeof (tag = tryGet(O = Object(it), TO_STRING_TAG$1)) == 'string' ? tag
+      // builtinTag case
+      : CORRECT_ARGUMENTS ? classofRaw(O)
+      // ES3 arguments fallback
+      : (result = classofRaw(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : result;
+  };
+
+  // `Object.prototype.toString` method implementation
+  // https://tc39.github.io/ecma262/#sec-object.prototype.tostring
+  var objectToString = toStringTagSupport ? {}.toString : function toString() {
+    return '[object ' + classof(this) + ']';
+  };
+
+  // `Object.prototype.toString` method
+  // https://tc39.github.io/ecma262/#sec-object.prototype.tostring
+  if (!toStringTagSupport) {
+    redefine(Object.prototype, 'toString', objectToString, { unsafe: true });
+  }
+
+  var nativePromiseConstructor = global_1.Promise;
+
+  var redefineAll = function (target, src, options) {
+    for (var key in src) redefine(target, key, src[key], options);
+    return target;
+  };
+
+  var defineProperty$2 = objectDefineProperty.f;
+
+
+
+  var TO_STRING_TAG$2 = wellKnownSymbol('toStringTag');
+
+  var setToStringTag = function (it, TAG, STATIC) {
+    if (it && !has(it = STATIC ? it : it.prototype, TO_STRING_TAG$2)) {
+      defineProperty$2(it, TO_STRING_TAG$2, { configurable: true, value: TAG });
+    }
+  };
+
+  var SPECIES$2 = wellKnownSymbol('species');
+
+  var setSpecies = function (CONSTRUCTOR_NAME) {
+    var Constructor = getBuiltIn(CONSTRUCTOR_NAME);
+    var defineProperty = objectDefineProperty.f;
+
+    if (descriptors && Constructor && !Constructor[SPECIES$2]) {
+      defineProperty(Constructor, SPECIES$2, {
+        configurable: true,
+        get: function () { return this; }
+      });
+    }
+  };
+
+  var aFunction$1 = function (it) {
+    if (typeof it != 'function') {
+      throw TypeError(String(it) + ' is not a function');
+    } return it;
+  };
+
+  var anInstance = function (it, Constructor, name) {
+    if (!(it instanceof Constructor)) {
+      throw TypeError('Incorrect ' + (name ? name + ' ' : '') + 'invocation');
+    } return it;
+  };
+
+  var iterators = {};
+
+  var ITERATOR = wellKnownSymbol('iterator');
+  var ArrayPrototype = Array.prototype;
+
+  // check on default Array iterator
+  var isArrayIteratorMethod = function (it) {
+    return it !== undefined && (iterators.Array === it || ArrayPrototype[ITERATOR] === it);
+  };
+
+  // optional / simple context binding
+  var functionBindContext = function (fn, that, length) {
+    aFunction$1(fn);
+    if (that === undefined) return fn;
+    switch (length) {
+      case 0: return function () {
+        return fn.call(that);
+      };
+      case 1: return function (a) {
+        return fn.call(that, a);
+      };
+      case 2: return function (a, b) {
+        return fn.call(that, a, b);
+      };
+      case 3: return function (a, b, c) {
+        return fn.call(that, a, b, c);
+      };
+    }
+    return function (/* ...args */) {
+      return fn.apply(that, arguments);
+    };
+  };
+
+  var ITERATOR$1 = wellKnownSymbol('iterator');
+
+  var getIteratorMethod = function (it) {
+    if (it != undefined) return it[ITERATOR$1]
+      || it['@@iterator']
+      || iterators[classof(it)];
+  };
+
+  // call something on iterator step with safe closing on error
+  var callWithSafeIterationClosing = function (iterator, fn, value, ENTRIES) {
+    try {
+      return ENTRIES ? fn(anObject(value)[0], value[1]) : fn(value);
+    // 7.4.6 IteratorClose(iterator, completion)
+    } catch (error) {
+      var returnMethod = iterator['return'];
+      if (returnMethod !== undefined) anObject(returnMethod.call(iterator));
+      throw error;
+    }
+  };
+
+  var iterate_1 = createCommonjsModule(function (module) {
+  var Result = function (stopped, result) {
+    this.stopped = stopped;
+    this.result = result;
+  };
+
+  var iterate = module.exports = function (iterable, fn, that, AS_ENTRIES, IS_ITERATOR) {
+    var boundFunction = functionBindContext(fn, that, AS_ENTRIES ? 2 : 1);
+    var iterator, iterFn, index, length, result, next, step;
+
+    if (IS_ITERATOR) {
+      iterator = iterable;
+    } else {
+      iterFn = getIteratorMethod(iterable);
+      if (typeof iterFn != 'function') throw TypeError('Target is not iterable');
+      // optimisation for array iterators
+      if (isArrayIteratorMethod(iterFn)) {
+        for (index = 0, length = toLength(iterable.length); length > index; index++) {
+          result = AS_ENTRIES
+            ? boundFunction(anObject(step = iterable[index])[0], step[1])
+            : boundFunction(iterable[index]);
+          if (result && result instanceof Result) return result;
+        } return new Result(false);
+      }
+      iterator = iterFn.call(iterable);
+    }
+
+    next = iterator.next;
+    while (!(step = next.call(iterator)).done) {
+      result = callWithSafeIterationClosing(iterator, boundFunction, step.value, AS_ENTRIES);
+      if (typeof result == 'object' && result && result instanceof Result) return result;
+    } return new Result(false);
+  };
+
+  iterate.stop = function (result) {
+    return new Result(true, result);
+  };
+  });
+
+  var ITERATOR$2 = wellKnownSymbol('iterator');
+  var SAFE_CLOSING = false;
+
+  try {
+    var called = 0;
+    var iteratorWithReturn = {
+      next: function () {
+        return { done: !!called++ };
+      },
+      'return': function () {
+        SAFE_CLOSING = true;
+      }
+    };
+    iteratorWithReturn[ITERATOR$2] = function () {
+      return this;
+    };
+    // eslint-disable-next-line no-throw-literal
+    Array.from(iteratorWithReturn, function () { throw 2; });
+  } catch (error) { /* empty */ }
+
+  var checkCorrectnessOfIteration = function (exec, SKIP_CLOSING) {
+    if (!SKIP_CLOSING && !SAFE_CLOSING) return false;
+    var ITERATION_SUPPORT = false;
+    try {
+      var object = {};
+      object[ITERATOR$2] = function () {
+        return {
+          next: function () {
+            return { done: ITERATION_SUPPORT = true };
+          }
+        };
+      };
+      exec(object);
+    } catch (error) { /* empty */ }
+    return ITERATION_SUPPORT;
+  };
+
+  var SPECIES$3 = wellKnownSymbol('species');
+
+  // `SpeciesConstructor` abstract operation
+  // https://tc39.github.io/ecma262/#sec-speciesconstructor
+  var speciesConstructor = function (O, defaultConstructor) {
+    var C = anObject(O).constructor;
+    var S;
+    return C === undefined || (S = anObject(C)[SPECIES$3]) == undefined ? defaultConstructor : aFunction$1(S);
+  };
+
+  var engineIsIos = /(iphone|ipod|ipad).*applewebkit/i.test(engineUserAgent);
+
+  var location = global_1.location;
+  var set$1 = global_1.setImmediate;
+  var clear = global_1.clearImmediate;
+  var process$1 = global_1.process;
+  var MessageChannel = global_1.MessageChannel;
+  var Dispatch = global_1.Dispatch;
+  var counter = 0;
+  var queue = {};
+  var ONREADYSTATECHANGE = 'onreadystatechange';
+  var defer, channel, port;
+
+  var run = function (id) {
+    // eslint-disable-next-line no-prototype-builtins
+    if (queue.hasOwnProperty(id)) {
+      var fn = queue[id];
+      delete queue[id];
+      fn();
+    }
+  };
+
+  var runner = function (id) {
+    return function () {
+      run(id);
+    };
+  };
+
+  var listener = function (event) {
+    run(event.data);
+  };
+
+  var post = function (id) {
+    // old engines have not location.origin
+    global_1.postMessage(id + '', location.protocol + '//' + location.host);
+  };
+
+  // Node.js 0.9+ & IE10+ has setImmediate, otherwise:
+  if (!set$1 || !clear) {
+    set$1 = function setImmediate(fn) {
+      var args = [];
+      var i = 1;
+      while (arguments.length > i) args.push(arguments[i++]);
+      queue[++counter] = function () {
+        // eslint-disable-next-line no-new-func
+        (typeof fn == 'function' ? fn : Function(fn)).apply(undefined, args);
+      };
+      defer(counter);
+      return counter;
+    };
+    clear = function clearImmediate(id) {
+      delete queue[id];
+    };
+    // Node.js 0.8-
+    if (classofRaw(process$1) == 'process') {
+      defer = function (id) {
+        process$1.nextTick(runner(id));
+      };
+    // Sphere (JS game engine) Dispatch API
+    } else if (Dispatch && Dispatch.now) {
+      defer = function (id) {
+        Dispatch.now(runner(id));
+      };
+    // Browsers with MessageChannel, includes WebWorkers
+    // except iOS - https://github.com/zloirock/core-js/issues/624
+    } else if (MessageChannel && !engineIsIos) {
+      channel = new MessageChannel();
+      port = channel.port2;
+      channel.port1.onmessage = listener;
+      defer = functionBindContext(port.postMessage, port, 1);
+    // Browsers with postMessage, skip WebWorkers
+    // IE8 has postMessage, but it's sync & typeof its postMessage is 'object'
+    } else if (global_1.addEventListener && typeof postMessage == 'function' && !global_1.importScripts && !fails(post)) {
+      defer = post;
+      global_1.addEventListener('message', listener, false);
+    // IE8-
+    } else if (ONREADYSTATECHANGE in documentCreateElement('script')) {
+      defer = function (id) {
+        html.appendChild(documentCreateElement('script'))[ONREADYSTATECHANGE] = function () {
+          html.removeChild(this);
+          run(id);
+        };
+      };
+    // Rest old browsers
+    } else {
+      defer = function (id) {
+        setTimeout(runner(id), 0);
+      };
+    }
+  }
+
+  var task = {
+    set: set$1,
+    clear: clear
+  };
+
+  var getOwnPropertyDescriptor$3 = objectGetOwnPropertyDescriptor.f;
+
+  var macrotask = task.set;
+
+
+  var MutationObserver = global_1.MutationObserver || global_1.WebKitMutationObserver;
+  var process$2 = global_1.process;
+  var Promise$1 = global_1.Promise;
+  var IS_NODE = classofRaw(process$2) == 'process';
+  // Node.js 11 shows ExperimentalWarning on getting `queueMicrotask`
+  var queueMicrotaskDescriptor = getOwnPropertyDescriptor$3(global_1, 'queueMicrotask');
+  var queueMicrotask = queueMicrotaskDescriptor && queueMicrotaskDescriptor.value;
+
+  var flush, head, last, notify, toggle, node, promise, then;
+
+  // modern engines have queueMicrotask method
+  if (!queueMicrotask) {
+    flush = function () {
+      var parent, fn;
+      if (IS_NODE && (parent = process$2.domain)) parent.exit();
+      while (head) {
+        fn = head.fn;
+        head = head.next;
+        try {
+          fn();
+        } catch (error) {
+          if (head) notify();
+          else last = undefined;
+          throw error;
+        }
+      } last = undefined;
+      if (parent) parent.enter();
+    };
+
+    // Node.js
+    if (IS_NODE) {
+      notify = function () {
+        process$2.nextTick(flush);
+      };
+    // browsers with MutationObserver, except iOS - https://github.com/zloirock/core-js/issues/339
+    } else if (MutationObserver && !engineIsIos) {
+      toggle = true;
+      node = document.createTextNode('');
+      new MutationObserver(flush).observe(node, { characterData: true });
+      notify = function () {
+        node.data = toggle = !toggle;
+      };
+    // environments with maybe non-completely correct, but existent Promise
+    } else if (Promise$1 && Promise$1.resolve) {
+      // Promise.resolve without an argument throws an error in LG WebOS 2
+      promise = Promise$1.resolve(undefined);
+      then = promise.then;
+      notify = function () {
+        then.call(promise, flush);
+      };
+    // for other environments - macrotask based on:
+    // - setImmediate
+    // - MessageChannel
+    // - window.postMessag
+    // - onreadystatechange
+    // - setTimeout
+    } else {
+      notify = function () {
+        // strange IE + webpack dev server bug - use .call(global)
+        macrotask.call(global_1, flush);
+      };
+    }
+  }
+
+  var microtask = queueMicrotask || function (fn) {
+    var task = { fn: fn, next: undefined };
+    if (last) last.next = task;
+    if (!head) {
+      head = task;
+      notify();
+    } last = task;
+  };
+
+  var PromiseCapability = function (C) {
+    var resolve, reject;
+    this.promise = new C(function ($$resolve, $$reject) {
+      if (resolve !== undefined || reject !== undefined) throw TypeError('Bad Promise constructor');
+      resolve = $$resolve;
+      reject = $$reject;
+    });
+    this.resolve = aFunction$1(resolve);
+    this.reject = aFunction$1(reject);
+  };
+
+  // 25.4.1.5 NewPromiseCapability(C)
+  var f$5 = function (C) {
+    return new PromiseCapability(C);
+  };
+
+  var newPromiseCapability = {
+  	f: f$5
+  };
+
+  var promiseResolve = function (C, x) {
+    anObject(C);
+    if (isObject(x) && x.constructor === C) return x;
+    var promiseCapability = newPromiseCapability.f(C);
+    var resolve = promiseCapability.resolve;
+    resolve(x);
+    return promiseCapability.promise;
+  };
+
+  var hostReportErrors = function (a, b) {
+    var console = global_1.console;
+    if (console && console.error) {
+      arguments.length === 1 ? console.error(a) : console.error(a, b);
+    }
+  };
+
+  var perform = function (exec) {
+    try {
+      return { error: false, value: exec() };
+    } catch (error) {
+      return { error: true, value: error };
+    }
+  };
+
+  var task$1 = task.set;
+
+
+
+
+
+
+
+
+
+
+  var SPECIES$4 = wellKnownSymbol('species');
+  var PROMISE = 'Promise';
+  var getInternalState = internalState.get;
+  var setInternalState = internalState.set;
+  var getInternalPromiseState = internalState.getterFor(PROMISE);
+  var PromiseConstructor = nativePromiseConstructor;
+  var TypeError$1 = global_1.TypeError;
+  var document$2 = global_1.document;
+  var process$3 = global_1.process;
+  var $fetch = getBuiltIn('fetch');
+  var newPromiseCapability$1 = newPromiseCapability.f;
+  var newGenericPromiseCapability = newPromiseCapability$1;
+  var IS_NODE$1 = classofRaw(process$3) == 'process';
+  var DISPATCH_EVENT = !!(document$2 && document$2.createEvent && global_1.dispatchEvent);
+  var UNHANDLED_REJECTION = 'unhandledrejection';
+  var REJECTION_HANDLED = 'rejectionhandled';
+  var PENDING = 0;
+  var FULFILLED = 1;
+  var REJECTED = 2;
+  var HANDLED = 1;
+  var UNHANDLED = 2;
+  var Internal, OwnPromiseCapability, PromiseWrapper, nativeThen;
+
+  var FORCED$2 = isForced_1(PROMISE, function () {
+    var GLOBAL_CORE_JS_PROMISE = inspectSource(PromiseConstructor) !== String(PromiseConstructor);
+    if (!GLOBAL_CORE_JS_PROMISE) {
+      // V8 6.6 (Node 10 and Chrome 66) have a bug with resolving custom thenables
+      // https://bugs.chromium.org/p/chromium/issues/detail?id=830565
+      // We can't detect it synchronously, so just check versions
+      if (engineV8Version === 66) return true;
+      // Unhandled rejections tracking support, NodeJS Promise without it fails @@species test
+      if (!IS_NODE$1 && typeof PromiseRejectionEvent != 'function') return true;
+    }
+    // We can't use @@species feature detection in V8 since it causes
+    // deoptimization and performance degradation
+    // https://github.com/zloirock/core-js/issues/679
+    if (engineV8Version >= 51 && /native code/.test(PromiseConstructor)) return false;
+    // Detect correctness of subclassing with @@species support
+    var promise = PromiseConstructor.resolve(1);
+    var FakePromise = function (exec) {
+      exec(function () { /* empty */ }, function () { /* empty */ });
+    };
+    var constructor = promise.constructor = {};
+    constructor[SPECIES$4] = FakePromise;
+    return !(promise.then(function () { /* empty */ }) instanceof FakePromise);
+  });
+
+  var INCORRECT_ITERATION = FORCED$2 || !checkCorrectnessOfIteration(function (iterable) {
+    PromiseConstructor.all(iterable)['catch'](function () { /* empty */ });
+  });
+
+  // helpers
+  var isThenable = function (it) {
+    var then;
+    return isObject(it) && typeof (then = it.then) == 'function' ? then : false;
+  };
+
+  var notify$1 = function (promise, state, isReject) {
+    if (state.notified) return;
+    state.notified = true;
+    var chain = state.reactions;
+    microtask(function () {
+      var value = state.value;
+      var ok = state.state == FULFILLED;
+      var index = 0;
+      // variable length - can't use forEach
+      while (chain.length > index) {
+        var reaction = chain[index++];
+        var handler = ok ? reaction.ok : reaction.fail;
+        var resolve = reaction.resolve;
+        var reject = reaction.reject;
+        var domain = reaction.domain;
+        var result, then, exited;
+        try {
+          if (handler) {
+            if (!ok) {
+              if (state.rejection === UNHANDLED) onHandleUnhandled(promise, state);
+              state.rejection = HANDLED;
+            }
+            if (handler === true) result = value;
+            else {
+              if (domain) domain.enter();
+              result = handler(value); // can throw
+              if (domain) {
+                domain.exit();
+                exited = true;
+              }
+            }
+            if (result === reaction.promise) {
+              reject(TypeError$1('Promise-chain cycle'));
+            } else if (then = isThenable(result)) {
+              then.call(result, resolve, reject);
+            } else resolve(result);
+          } else reject(value);
+        } catch (error) {
+          if (domain && !exited) domain.exit();
+          reject(error);
+        }
+      }
+      state.reactions = [];
+      state.notified = false;
+      if (isReject && !state.rejection) onUnhandled(promise, state);
+    });
+  };
+
+  var dispatchEvent = function (name, promise, reason) {
+    var event, handler;
+    if (DISPATCH_EVENT) {
+      event = document$2.createEvent('Event');
+      event.promise = promise;
+      event.reason = reason;
+      event.initEvent(name, false, true);
+      global_1.dispatchEvent(event);
+    } else event = { promise: promise, reason: reason };
+    if (handler = global_1['on' + name]) handler(event);
+    else if (name === UNHANDLED_REJECTION) hostReportErrors('Unhandled promise rejection', reason);
+  };
+
+  var onUnhandled = function (promise, state) {
+    task$1.call(global_1, function () {
+      var value = state.value;
+      var IS_UNHANDLED = isUnhandled(state);
+      var result;
+      if (IS_UNHANDLED) {
+        result = perform(function () {
+          if (IS_NODE$1) {
+            process$3.emit('unhandledRejection', value, promise);
+          } else dispatchEvent(UNHANDLED_REJECTION, promise, value);
+        });
+        // Browsers should not trigger `rejectionHandled` event if it was handled here, NodeJS - should
+        state.rejection = IS_NODE$1 || isUnhandled(state) ? UNHANDLED : HANDLED;
+        if (result.error) throw result.value;
+      }
+    });
+  };
+
+  var isUnhandled = function (state) {
+    return state.rejection !== HANDLED && !state.parent;
+  };
+
+  var onHandleUnhandled = function (promise, state) {
+    task$1.call(global_1, function () {
+      if (IS_NODE$1) {
+        process$3.emit('rejectionHandled', promise);
+      } else dispatchEvent(REJECTION_HANDLED, promise, state.value);
+    });
+  };
+
+  var bind = function (fn, promise, state, unwrap) {
+    return function (value) {
+      fn(promise, state, value, unwrap);
+    };
+  };
+
+  var internalReject = function (promise, state, value, unwrap) {
+    if (state.done) return;
+    state.done = true;
+    if (unwrap) state = unwrap;
+    state.value = value;
+    state.state = REJECTED;
+    notify$1(promise, state, true);
+  };
+
+  var internalResolve = function (promise, state, value, unwrap) {
+    if (state.done) return;
+    state.done = true;
+    if (unwrap) state = unwrap;
+    try {
+      if (promise === value) throw TypeError$1("Promise can't be resolved itself");
+      var then = isThenable(value);
+      if (then) {
+        microtask(function () {
+          var wrapper = { done: false };
+          try {
+            then.call(value,
+              bind(internalResolve, promise, wrapper, state),
+              bind(internalReject, promise, wrapper, state)
+            );
+          } catch (error) {
+            internalReject(promise, wrapper, error, state);
+          }
+        });
+      } else {
+        state.value = value;
+        state.state = FULFILLED;
+        notify$1(promise, state, false);
+      }
+    } catch (error) {
+      internalReject(promise, { done: false }, error, state);
+    }
+  };
+
+  // constructor polyfill
+  if (FORCED$2) {
+    // 25.4.3.1 Promise(executor)
+    PromiseConstructor = function Promise(executor) {
+      anInstance(this, PromiseConstructor, PROMISE);
+      aFunction$1(executor);
+      Internal.call(this);
+      var state = getInternalState(this);
+      try {
+        executor(bind(internalResolve, this, state), bind(internalReject, this, state));
+      } catch (error) {
+        internalReject(this, state, error);
+      }
+    };
+    // eslint-disable-next-line no-unused-vars
+    Internal = function Promise(executor) {
+      setInternalState(this, {
+        type: PROMISE,
+        done: false,
+        notified: false,
+        parent: false,
+        reactions: [],
+        rejection: false,
+        state: PENDING,
+        value: undefined
+      });
+    };
+    Internal.prototype = redefineAll(PromiseConstructor.prototype, {
+      // `Promise.prototype.then` method
+      // https://tc39.github.io/ecma262/#sec-promise.prototype.then
+      then: function then(onFulfilled, onRejected) {
+        var state = getInternalPromiseState(this);
+        var reaction = newPromiseCapability$1(speciesConstructor(this, PromiseConstructor));
+        reaction.ok = typeof onFulfilled == 'function' ? onFulfilled : true;
+        reaction.fail = typeof onRejected == 'function' && onRejected;
+        reaction.domain = IS_NODE$1 ? process$3.domain : undefined;
+        state.parent = true;
+        state.reactions.push(reaction);
+        if (state.state != PENDING) notify$1(this, state, false);
+        return reaction.promise;
+      },
+      // `Promise.prototype.catch` method
+      // https://tc39.github.io/ecma262/#sec-promise.prototype.catch
+      'catch': function (onRejected) {
+        return this.then(undefined, onRejected);
+      }
+    });
+    OwnPromiseCapability = function () {
+      var promise = new Internal();
+      var state = getInternalState(promise);
+      this.promise = promise;
+      this.resolve = bind(internalResolve, promise, state);
+      this.reject = bind(internalReject, promise, state);
+    };
+    newPromiseCapability.f = newPromiseCapability$1 = function (C) {
+      return C === PromiseConstructor || C === PromiseWrapper
+        ? new OwnPromiseCapability(C)
+        : newGenericPromiseCapability(C);
+    };
+
+    if ( typeof nativePromiseConstructor == 'function') {
+      nativeThen = nativePromiseConstructor.prototype.then;
+
+      // wrap native Promise#then for native async functions
+      redefine(nativePromiseConstructor.prototype, 'then', function then(onFulfilled, onRejected) {
+        var that = this;
+        return new PromiseConstructor(function (resolve, reject) {
+          nativeThen.call(that, resolve, reject);
+        }).then(onFulfilled, onRejected);
+      // https://github.com/zloirock/core-js/issues/640
+      }, { unsafe: true });
+
+      // wrap fetch result
+      if (typeof $fetch == 'function') _export({ global: true, enumerable: true, forced: true }, {
+        // eslint-disable-next-line no-unused-vars
+        fetch: function fetch(input /* , init */) {
+          return promiseResolve(PromiseConstructor, $fetch.apply(global_1, arguments));
+        }
+      });
+    }
+  }
+
+  _export({ global: true, wrap: true, forced: FORCED$2 }, {
+    Promise: PromiseConstructor
+  });
+
+  setToStringTag(PromiseConstructor, PROMISE, false);
+  setSpecies(PROMISE);
+
+  PromiseWrapper = getBuiltIn(PROMISE);
+
+  // statics
+  _export({ target: PROMISE, stat: true, forced: FORCED$2 }, {
+    // `Promise.reject` method
+    // https://tc39.github.io/ecma262/#sec-promise.reject
+    reject: function reject(r) {
+      var capability = newPromiseCapability$1(this);
+      capability.reject.call(undefined, r);
+      return capability.promise;
+    }
+  });
+
+  _export({ target: PROMISE, stat: true, forced:  FORCED$2 }, {
+    // `Promise.resolve` method
+    // https://tc39.github.io/ecma262/#sec-promise.resolve
+    resolve: function resolve(x) {
+      return promiseResolve( this, x);
+    }
+  });
+
+  _export({ target: PROMISE, stat: true, forced: INCORRECT_ITERATION }, {
+    // `Promise.all` method
+    // https://tc39.github.io/ecma262/#sec-promise.all
+    all: function all(iterable) {
+      var C = this;
+      var capability = newPromiseCapability$1(C);
+      var resolve = capability.resolve;
+      var reject = capability.reject;
+      var result = perform(function () {
+        var $promiseResolve = aFunction$1(C.resolve);
+        var values = [];
+        var counter = 0;
+        var remaining = 1;
+        iterate_1(iterable, function (promise) {
+          var index = counter++;
+          var alreadyCalled = false;
+          values.push(undefined);
+          remaining++;
+          $promiseResolve.call(C, promise).then(function (value) {
+            if (alreadyCalled) return;
+            alreadyCalled = true;
+            values[index] = value;
+            --remaining || resolve(values);
+          }, reject);
+        });
+        --remaining || resolve(values);
+      });
+      if (result.error) reject(result.value);
+      return capability.promise;
+    },
+    // `Promise.race` method
+    // https://tc39.github.io/ecma262/#sec-promise.race
+    race: function race(iterable) {
+      var C = this;
+      var capability = newPromiseCapability$1(C);
+      var reject = capability.reject;
+      var result = perform(function () {
+        var $promiseResolve = aFunction$1(C.resolve);
+        iterate_1(iterable, function (promise) {
+          $promiseResolve.call(C, promise).then(capability.resolve, reject);
+        });
+      });
+      if (result.error) reject(result.value);
+      return capability.promise;
+    }
+  });
+
   var runtime = createCommonjsModule(function (module) {
   /**
    * Copyright (c) 2014-present, Facebook, Inc.
@@ -3426,35 +4353,6 @@
     throw new TypeError("Invalid attempt to destructure non-iterable instance");
   }
 
-  var aFunction$1 = function (it) {
-    if (typeof it != 'function') {
-      throw TypeError(String(it) + ' is not a function');
-    } return it;
-  };
-
-  // optional / simple context binding
-  var functionBindContext = function (fn, that, length) {
-    aFunction$1(fn);
-    if (that === undefined) return fn;
-    switch (length) {
-      case 0: return function () {
-        return fn.call(that);
-      };
-      case 1: return function (a) {
-        return fn.call(that, a);
-      };
-      case 2: return function (a, b) {
-        return fn.call(that, a, b);
-      };
-      case 3: return function (a, b, c) {
-        return fn.call(that, a, b, c);
-      };
-    }
-    return function (/* ...args */) {
-      return fn.apply(that, arguments);
-    };
-  };
-
   var push = [].push;
 
   // `Array.prototype.{ forEach, map, filter, some, every, find, findIndex }` methods implementation
@@ -3515,7 +4413,7 @@
     findIndex: createMethod$2(6)
   };
 
-  var defineProperty$2 = Object.defineProperty;
+  var defineProperty$3 = Object.defineProperty;
   var cache = {};
 
   var thrower = function (it) { throw it; };
@@ -3532,7 +4430,7 @@
       if (ACCESSORS && !descriptors) return true;
       var O = { length: -1 };
 
-      if (ACCESSORS) defineProperty$2(O, 1, { enumerable: true, get: thrower });
+      if (ACCESSORS) defineProperty$3(O, 1, { enumerable: true, get: thrower });
       else O[1] = 1;
 
       method.call(O, argument0, argument1);
@@ -3559,7 +4457,7 @@
   var HAS_SPECIES_SUPPORT$1 = arrayMethodHasSpeciesSupport('slice');
   var USES_TO_LENGTH$1 = arrayMethodUsesToLength('slice', { ACCESSORS: true, 0: 0, 1: 2 });
 
-  var SPECIES$2 = wellKnownSymbol('species');
+  var SPECIES$5 = wellKnownSymbol('species');
   var nativeSlice = [].slice;
   var max$1 = Math.max;
 
@@ -3580,7 +4478,7 @@
         if (typeof Constructor == 'function' && (Constructor === Array || isArray(Constructor.prototype))) {
           Constructor = undefined;
         } else if (isObject(Constructor)) {
-          Constructor = Constructor[SPECIES$2];
+          Constructor = Constructor[SPECIES$5];
           if (Constructor === null) Constructor = undefined;
         }
         if (Constructor === Array || Constructor === undefined) {
@@ -3594,779 +4492,131 @@
     }
   });
 
-  var TO_STRING_TAG = wellKnownSymbol('toStringTag');
-  var test = {};
-
-  test[TO_STRING_TAG] = 'z';
-
-  var toStringTagSupport = String(test) === '[object z]';
-
-  var TO_STRING_TAG$1 = wellKnownSymbol('toStringTag');
-  // ES3 wrong here
-  var CORRECT_ARGUMENTS = classofRaw(function () { return arguments; }()) == 'Arguments';
-
-  // fallback for IE11 Script Access Denied error
-  var tryGet = function (it, key) {
-    try {
-      return it[key];
-    } catch (error) { /* empty */ }
+  // `RegExp.prototype.flags` getter implementation
+  // https://tc39.github.io/ecma262/#sec-get-regexp.prototype.flags
+  var regexpFlags = function () {
+    var that = anObject(this);
+    var result = '';
+    if (that.global) result += 'g';
+    if (that.ignoreCase) result += 'i';
+    if (that.multiline) result += 'm';
+    if (that.dotAll) result += 's';
+    if (that.unicode) result += 'u';
+    if (that.sticky) result += 'y';
+    return result;
   };
 
-  // getting tag from ES6+ `Object.prototype.toString`
-  var classof = toStringTagSupport ? classofRaw : function (it) {
-    var O, tag, result;
-    return it === undefined ? 'Undefined' : it === null ? 'Null'
-      // @@toStringTag case
-      : typeof (tag = tryGet(O = Object(it), TO_STRING_TAG$1)) == 'string' ? tag
-      // builtinTag case
-      : CORRECT_ARGUMENTS ? classofRaw(O)
-      // ES3 arguments fallback
-      : (result = classofRaw(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : result;
-  };
-
-  // `Object.prototype.toString` method implementation
-  // https://tc39.github.io/ecma262/#sec-object.prototype.tostring
-  var objectToString = toStringTagSupport ? {}.toString : function toString() {
-    return '[object ' + classof(this) + ']';
-  };
-
-  // `Object.prototype.toString` method
-  // https://tc39.github.io/ecma262/#sec-object.prototype.tostring
-  if (!toStringTagSupport) {
-    redefine(Object.prototype, 'toString', objectToString, { unsafe: true });
+  // babel-minify transpiles RegExp('a', 'y') -> /a/y and it causes SyntaxError,
+  // so we use an intermediate function.
+  function RE(s, f) {
+    return RegExp(s, f);
   }
 
-  var nativePromiseConstructor = global_1.Promise;
-
-  var redefineAll = function (target, src, options) {
-    for (var key in src) redefine(target, key, src[key], options);
-    return target;
-  };
-
-  var defineProperty$3 = objectDefineProperty.f;
-
-
-
-  var TO_STRING_TAG$2 = wellKnownSymbol('toStringTag');
-
-  var setToStringTag = function (it, TAG, STATIC) {
-    if (it && !has(it = STATIC ? it : it.prototype, TO_STRING_TAG$2)) {
-      defineProperty$3(it, TO_STRING_TAG$2, { configurable: true, value: TAG });
-    }
-  };
-
-  var SPECIES$3 = wellKnownSymbol('species');
-
-  var setSpecies = function (CONSTRUCTOR_NAME) {
-    var Constructor = getBuiltIn(CONSTRUCTOR_NAME);
-    var defineProperty = objectDefineProperty.f;
-
-    if (descriptors && Constructor && !Constructor[SPECIES$3]) {
-      defineProperty(Constructor, SPECIES$3, {
-        configurable: true,
-        get: function () { return this; }
-      });
-    }
-  };
-
-  var anInstance = function (it, Constructor, name) {
-    if (!(it instanceof Constructor)) {
-      throw TypeError('Incorrect ' + (name ? name + ' ' : '') + 'invocation');
-    } return it;
-  };
-
-  var iterators = {};
-
-  var ITERATOR = wellKnownSymbol('iterator');
-  var ArrayPrototype = Array.prototype;
-
-  // check on default Array iterator
-  var isArrayIteratorMethod = function (it) {
-    return it !== undefined && (iterators.Array === it || ArrayPrototype[ITERATOR] === it);
-  };
-
-  var ITERATOR$1 = wellKnownSymbol('iterator');
-
-  var getIteratorMethod = function (it) {
-    if (it != undefined) return it[ITERATOR$1]
-      || it['@@iterator']
-      || iterators[classof(it)];
-  };
-
-  // call something on iterator step with safe closing on error
-  var callWithSafeIterationClosing = function (iterator, fn, value, ENTRIES) {
-    try {
-      return ENTRIES ? fn(anObject(value)[0], value[1]) : fn(value);
-    // 7.4.6 IteratorClose(iterator, completion)
-    } catch (error) {
-      var returnMethod = iterator['return'];
-      if (returnMethod !== undefined) anObject(returnMethod.call(iterator));
-      throw error;
-    }
-  };
-
-  var iterate_1 = createCommonjsModule(function (module) {
-  var Result = function (stopped, result) {
-    this.stopped = stopped;
-    this.result = result;
-  };
-
-  var iterate = module.exports = function (iterable, fn, that, AS_ENTRIES, IS_ITERATOR) {
-    var boundFunction = functionBindContext(fn, that, AS_ENTRIES ? 2 : 1);
-    var iterator, iterFn, index, length, result, next, step;
-
-    if (IS_ITERATOR) {
-      iterator = iterable;
-    } else {
-      iterFn = getIteratorMethod(iterable);
-      if (typeof iterFn != 'function') throw TypeError('Target is not iterable');
-      // optimisation for array iterators
-      if (isArrayIteratorMethod(iterFn)) {
-        for (index = 0, length = toLength(iterable.length); length > index; index++) {
-          result = AS_ENTRIES
-            ? boundFunction(anObject(step = iterable[index])[0], step[1])
-            : boundFunction(iterable[index]);
-          if (result && result instanceof Result) return result;
-        } return new Result(false);
-      }
-      iterator = iterFn.call(iterable);
-    }
-
-    next = iterator.next;
-    while (!(step = next.call(iterator)).done) {
-      result = callWithSafeIterationClosing(iterator, boundFunction, step.value, AS_ENTRIES);
-      if (typeof result == 'object' && result && result instanceof Result) return result;
-    } return new Result(false);
-  };
-
-  iterate.stop = function (result) {
-    return new Result(true, result);
-  };
+  var UNSUPPORTED_Y = fails(function () {
+    // babel-minify transpiles RegExp('a', 'y') -> /a/y and it causes SyntaxError
+    var re = RE('a', 'y');
+    re.lastIndex = 2;
+    return re.exec('abcd') != null;
   });
 
-  var ITERATOR$2 = wellKnownSymbol('iterator');
-  var SAFE_CLOSING = false;
+  var BROKEN_CARET = fails(function () {
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=773687
+    var re = RE('^r', 'gy');
+    re.lastIndex = 2;
+    return re.exec('str') != null;
+  });
 
-  try {
-    var called = 0;
-    var iteratorWithReturn = {
-      next: function () {
-        return { done: !!called++ };
-      },
-      'return': function () {
-        SAFE_CLOSING = true;
-      }
-    };
-    iteratorWithReturn[ITERATOR$2] = function () {
-      return this;
-    };
-    // eslint-disable-next-line no-throw-literal
-    Array.from(iteratorWithReturn, function () { throw 2; });
-  } catch (error) { /* empty */ }
-
-  var checkCorrectnessOfIteration = function (exec, SKIP_CLOSING) {
-    if (!SKIP_CLOSING && !SAFE_CLOSING) return false;
-    var ITERATION_SUPPORT = false;
-    try {
-      var object = {};
-      object[ITERATOR$2] = function () {
-        return {
-          next: function () {
-            return { done: ITERATION_SUPPORT = true };
-          }
-        };
-      };
-      exec(object);
-    } catch (error) { /* empty */ }
-    return ITERATION_SUPPORT;
+  var regexpStickyHelpers = {
+  	UNSUPPORTED_Y: UNSUPPORTED_Y,
+  	BROKEN_CARET: BROKEN_CARET
   };
 
-  var SPECIES$4 = wellKnownSymbol('species');
+  var nativeExec = RegExp.prototype.exec;
+  // This always refers to the native implementation, because the
+  // String#replace polyfill uses ./fix-regexp-well-known-symbol-logic.js,
+  // which loads this file before patching the method.
+  var nativeReplace = String.prototype.replace;
 
-  // `SpeciesConstructor` abstract operation
-  // https://tc39.github.io/ecma262/#sec-speciesconstructor
-  var speciesConstructor = function (O, defaultConstructor) {
-    var C = anObject(O).constructor;
-    var S;
-    return C === undefined || (S = anObject(C)[SPECIES$4]) == undefined ? defaultConstructor : aFunction$1(S);
-  };
+  var patchedExec = nativeExec;
 
-  var engineIsIos = /(iphone|ipod|ipad).*applewebkit/i.test(engineUserAgent);
+  var UPDATES_LAST_INDEX_WRONG = (function () {
+    var re1 = /a/;
+    var re2 = /b*/g;
+    nativeExec.call(re1, 'a');
+    nativeExec.call(re2, 'a');
+    return re1.lastIndex !== 0 || re2.lastIndex !== 0;
+  })();
 
-  var location = global_1.location;
-  var set$1 = global_1.setImmediate;
-  var clear = global_1.clearImmediate;
-  var process$1 = global_1.process;
-  var MessageChannel = global_1.MessageChannel;
-  var Dispatch = global_1.Dispatch;
-  var counter = 0;
-  var queue = {};
-  var ONREADYSTATECHANGE = 'onreadystatechange';
-  var defer, channel, port;
+  var UNSUPPORTED_Y$1 = regexpStickyHelpers.UNSUPPORTED_Y || regexpStickyHelpers.BROKEN_CARET;
 
-  var run = function (id) {
-    // eslint-disable-next-line no-prototype-builtins
-    if (queue.hasOwnProperty(id)) {
-      var fn = queue[id];
-      delete queue[id];
-      fn();
-    }
-  };
+  // nonparticipating capturing group, copied from es5-shim's String#split patch.
+  var NPCG_INCLUDED = /()??/.exec('')[1] !== undefined;
 
-  var runner = function (id) {
-    return function () {
-      run(id);
-    };
-  };
+  var PATCH = UPDATES_LAST_INDEX_WRONG || NPCG_INCLUDED || UNSUPPORTED_Y$1;
 
-  var listener = function (event) {
-    run(event.data);
-  };
+  if (PATCH) {
+    patchedExec = function exec(str) {
+      var re = this;
+      var lastIndex, reCopy, match, i;
+      var sticky = UNSUPPORTED_Y$1 && re.sticky;
+      var flags = regexpFlags.call(re);
+      var source = re.source;
+      var charsAdded = 0;
+      var strCopy = str;
 
-  var post = function (id) {
-    // old engines have not location.origin
-    global_1.postMessage(id + '', location.protocol + '//' + location.host);
-  };
-
-  // Node.js 0.9+ & IE10+ has setImmediate, otherwise:
-  if (!set$1 || !clear) {
-    set$1 = function setImmediate(fn) {
-      var args = [];
-      var i = 1;
-      while (arguments.length > i) args.push(arguments[i++]);
-      queue[++counter] = function () {
-        // eslint-disable-next-line no-new-func
-        (typeof fn == 'function' ? fn : Function(fn)).apply(undefined, args);
-      };
-      defer(counter);
-      return counter;
-    };
-    clear = function clearImmediate(id) {
-      delete queue[id];
-    };
-    // Node.js 0.8-
-    if (classofRaw(process$1) == 'process') {
-      defer = function (id) {
-        process$1.nextTick(runner(id));
-      };
-    // Sphere (JS game engine) Dispatch API
-    } else if (Dispatch && Dispatch.now) {
-      defer = function (id) {
-        Dispatch.now(runner(id));
-      };
-    // Browsers with MessageChannel, includes WebWorkers
-    // except iOS - https://github.com/zloirock/core-js/issues/624
-    } else if (MessageChannel && !engineIsIos) {
-      channel = new MessageChannel();
-      port = channel.port2;
-      channel.port1.onmessage = listener;
-      defer = functionBindContext(port.postMessage, port, 1);
-    // Browsers with postMessage, skip WebWorkers
-    // IE8 has postMessage, but it's sync & typeof its postMessage is 'object'
-    } else if (global_1.addEventListener && typeof postMessage == 'function' && !global_1.importScripts && !fails(post)) {
-      defer = post;
-      global_1.addEventListener('message', listener, false);
-    // IE8-
-    } else if (ONREADYSTATECHANGE in documentCreateElement('script')) {
-      defer = function (id) {
-        html.appendChild(documentCreateElement('script'))[ONREADYSTATECHANGE] = function () {
-          html.removeChild(this);
-          run(id);
-        };
-      };
-    // Rest old browsers
-    } else {
-      defer = function (id) {
-        setTimeout(runner(id), 0);
-      };
-    }
-  }
-
-  var task = {
-    set: set$1,
-    clear: clear
-  };
-
-  var getOwnPropertyDescriptor$3 = objectGetOwnPropertyDescriptor.f;
-
-  var macrotask = task.set;
-
-
-  var MutationObserver = global_1.MutationObserver || global_1.WebKitMutationObserver;
-  var process$2 = global_1.process;
-  var Promise$1 = global_1.Promise;
-  var IS_NODE = classofRaw(process$2) == 'process';
-  // Node.js 11 shows ExperimentalWarning on getting `queueMicrotask`
-  var queueMicrotaskDescriptor = getOwnPropertyDescriptor$3(global_1, 'queueMicrotask');
-  var queueMicrotask = queueMicrotaskDescriptor && queueMicrotaskDescriptor.value;
-
-  var flush, head, last, notify, toggle, node, promise, then;
-
-  // modern engines have queueMicrotask method
-  if (!queueMicrotask) {
-    flush = function () {
-      var parent, fn;
-      if (IS_NODE && (parent = process$2.domain)) parent.exit();
-      while (head) {
-        fn = head.fn;
-        head = head.next;
-        try {
-          fn();
-        } catch (error) {
-          if (head) notify();
-          else last = undefined;
-          throw error;
+      if (sticky) {
+        flags = flags.replace('y', '');
+        if (flags.indexOf('g') === -1) {
+          flags += 'g';
         }
-      } last = undefined;
-      if (parent) parent.enter();
-    };
 
-    // Node.js
-    if (IS_NODE) {
-      notify = function () {
-        process$2.nextTick(flush);
-      };
-    // browsers with MutationObserver, except iOS - https://github.com/zloirock/core-js/issues/339
-    } else if (MutationObserver && !engineIsIos) {
-      toggle = true;
-      node = document.createTextNode('');
-      new MutationObserver(flush).observe(node, { characterData: true });
-      notify = function () {
-        node.data = toggle = !toggle;
-      };
-    // environments with maybe non-completely correct, but existent Promise
-    } else if (Promise$1 && Promise$1.resolve) {
-      // Promise.resolve without an argument throws an error in LG WebOS 2
-      promise = Promise$1.resolve(undefined);
-      then = promise.then;
-      notify = function () {
-        then.call(promise, flush);
-      };
-    // for other environments - macrotask based on:
-    // - setImmediate
-    // - MessageChannel
-    // - window.postMessag
-    // - onreadystatechange
-    // - setTimeout
-    } else {
-      notify = function () {
-        // strange IE + webpack dev server bug - use .call(global)
-        macrotask.call(global_1, flush);
-      };
-    }
-  }
-
-  var microtask = queueMicrotask || function (fn) {
-    var task = { fn: fn, next: undefined };
-    if (last) last.next = task;
-    if (!head) {
-      head = task;
-      notify();
-    } last = task;
-  };
-
-  var PromiseCapability = function (C) {
-    var resolve, reject;
-    this.promise = new C(function ($$resolve, $$reject) {
-      if (resolve !== undefined || reject !== undefined) throw TypeError('Bad Promise constructor');
-      resolve = $$resolve;
-      reject = $$reject;
-    });
-    this.resolve = aFunction$1(resolve);
-    this.reject = aFunction$1(reject);
-  };
-
-  // 25.4.1.5 NewPromiseCapability(C)
-  var f$5 = function (C) {
-    return new PromiseCapability(C);
-  };
-
-  var newPromiseCapability = {
-  	f: f$5
-  };
-
-  var promiseResolve = function (C, x) {
-    anObject(C);
-    if (isObject(x) && x.constructor === C) return x;
-    var promiseCapability = newPromiseCapability.f(C);
-    var resolve = promiseCapability.resolve;
-    resolve(x);
-    return promiseCapability.promise;
-  };
-
-  var hostReportErrors = function (a, b) {
-    var console = global_1.console;
-    if (console && console.error) {
-      arguments.length === 1 ? console.error(a) : console.error(a, b);
-    }
-  };
-
-  var perform = function (exec) {
-    try {
-      return { error: false, value: exec() };
-    } catch (error) {
-      return { error: true, value: error };
-    }
-  };
-
-  var task$1 = task.set;
-
-
-
-
-
-
-
-
-
-
-  var SPECIES$5 = wellKnownSymbol('species');
-  var PROMISE = 'Promise';
-  var getInternalState = internalState.get;
-  var setInternalState = internalState.set;
-  var getInternalPromiseState = internalState.getterFor(PROMISE);
-  var PromiseConstructor = nativePromiseConstructor;
-  var TypeError$1 = global_1.TypeError;
-  var document$2 = global_1.document;
-  var process$3 = global_1.process;
-  var $fetch = getBuiltIn('fetch');
-  var newPromiseCapability$1 = newPromiseCapability.f;
-  var newGenericPromiseCapability = newPromiseCapability$1;
-  var IS_NODE$1 = classofRaw(process$3) == 'process';
-  var DISPATCH_EVENT = !!(document$2 && document$2.createEvent && global_1.dispatchEvent);
-  var UNHANDLED_REJECTION = 'unhandledrejection';
-  var REJECTION_HANDLED = 'rejectionhandled';
-  var PENDING = 0;
-  var FULFILLED = 1;
-  var REJECTED = 2;
-  var HANDLED = 1;
-  var UNHANDLED = 2;
-  var Internal, OwnPromiseCapability, PromiseWrapper, nativeThen;
-
-  var FORCED$2 = isForced_1(PROMISE, function () {
-    var GLOBAL_CORE_JS_PROMISE = inspectSource(PromiseConstructor) !== String(PromiseConstructor);
-    if (!GLOBAL_CORE_JS_PROMISE) {
-      // V8 6.6 (Node 10 and Chrome 66) have a bug with resolving custom thenables
-      // https://bugs.chromium.org/p/chromium/issues/detail?id=830565
-      // We can't detect it synchronously, so just check versions
-      if (engineV8Version === 66) return true;
-      // Unhandled rejections tracking support, NodeJS Promise without it fails @@species test
-      if (!IS_NODE$1 && typeof PromiseRejectionEvent != 'function') return true;
-    }
-    // We can't use @@species feature detection in V8 since it causes
-    // deoptimization and performance degradation
-    // https://github.com/zloirock/core-js/issues/679
-    if (engineV8Version >= 51 && /native code/.test(PromiseConstructor)) return false;
-    // Detect correctness of subclassing with @@species support
-    var promise = PromiseConstructor.resolve(1);
-    var FakePromise = function (exec) {
-      exec(function () { /* empty */ }, function () { /* empty */ });
-    };
-    var constructor = promise.constructor = {};
-    constructor[SPECIES$5] = FakePromise;
-    return !(promise.then(function () { /* empty */ }) instanceof FakePromise);
-  });
-
-  var INCORRECT_ITERATION = FORCED$2 || !checkCorrectnessOfIteration(function (iterable) {
-    PromiseConstructor.all(iterable)['catch'](function () { /* empty */ });
-  });
-
-  // helpers
-  var isThenable = function (it) {
-    var then;
-    return isObject(it) && typeof (then = it.then) == 'function' ? then : false;
-  };
-
-  var notify$1 = function (promise, state, isReject) {
-    if (state.notified) return;
-    state.notified = true;
-    var chain = state.reactions;
-    microtask(function () {
-      var value = state.value;
-      var ok = state.state == FULFILLED;
-      var index = 0;
-      // variable length - can't use forEach
-      while (chain.length > index) {
-        var reaction = chain[index++];
-        var handler = ok ? reaction.ok : reaction.fail;
-        var resolve = reaction.resolve;
-        var reject = reaction.reject;
-        var domain = reaction.domain;
-        var result, then, exited;
-        try {
-          if (handler) {
-            if (!ok) {
-              if (state.rejection === UNHANDLED) onHandleUnhandled(promise, state);
-              state.rejection = HANDLED;
-            }
-            if (handler === true) result = value;
-            else {
-              if (domain) domain.enter();
-              result = handler(value); // can throw
-              if (domain) {
-                domain.exit();
-                exited = true;
-              }
-            }
-            if (result === reaction.promise) {
-              reject(TypeError$1('Promise-chain cycle'));
-            } else if (then = isThenable(result)) {
-              then.call(result, resolve, reject);
-            } else resolve(result);
-          } else reject(value);
-        } catch (error) {
-          if (domain && !exited) domain.exit();
-          reject(error);
+        strCopy = String(str).slice(re.lastIndex);
+        // Support anchored sticky behavior.
+        if (re.lastIndex > 0 && (!re.multiline || re.multiline && str[re.lastIndex - 1] !== '\n')) {
+          source = '(?: ' + source + ')';
+          strCopy = ' ' + strCopy;
+          charsAdded++;
         }
+        // ^(? + rx + ) is needed, in combination with some str slicing, to
+        // simulate the 'y' flag.
+        reCopy = new RegExp('^(?:' + source + ')', flags);
       }
-      state.reactions = [];
-      state.notified = false;
-      if (isReject && !state.rejection) onUnhandled(promise, state);
-    });
-  };
 
-  var dispatchEvent = function (name, promise, reason) {
-    var event, handler;
-    if (DISPATCH_EVENT) {
-      event = document$2.createEvent('Event');
-      event.promise = promise;
-      event.reason = reason;
-      event.initEvent(name, false, true);
-      global_1.dispatchEvent(event);
-    } else event = { promise: promise, reason: reason };
-    if (handler = global_1['on' + name]) handler(event);
-    else if (name === UNHANDLED_REJECTION) hostReportErrors('Unhandled promise rejection', reason);
-  };
-
-  var onUnhandled = function (promise, state) {
-    task$1.call(global_1, function () {
-      var value = state.value;
-      var IS_UNHANDLED = isUnhandled(state);
-      var result;
-      if (IS_UNHANDLED) {
-        result = perform(function () {
-          if (IS_NODE$1) {
-            process$3.emit('unhandledRejection', value, promise);
-          } else dispatchEvent(UNHANDLED_REJECTION, promise, value);
-        });
-        // Browsers should not trigger `rejectionHandled` event if it was handled here, NodeJS - should
-        state.rejection = IS_NODE$1 || isUnhandled(state) ? UNHANDLED : HANDLED;
-        if (result.error) throw result.value;
+      if (NPCG_INCLUDED) {
+        reCopy = new RegExp('^' + source + '$(?!\\s)', flags);
       }
-    });
-  };
+      if (UPDATES_LAST_INDEX_WRONG) lastIndex = re.lastIndex;
 
-  var isUnhandled = function (state) {
-    return state.rejection !== HANDLED && !state.parent;
-  };
+      match = nativeExec.call(sticky ? reCopy : re, strCopy);
 
-  var onHandleUnhandled = function (promise, state) {
-    task$1.call(global_1, function () {
-      if (IS_NODE$1) {
-        process$3.emit('rejectionHandled', promise);
-      } else dispatchEvent(REJECTION_HANDLED, promise, state.value);
-    });
-  };
-
-  var bind = function (fn, promise, state, unwrap) {
-    return function (value) {
-      fn(promise, state, value, unwrap);
-    };
-  };
-
-  var internalReject = function (promise, state, value, unwrap) {
-    if (state.done) return;
-    state.done = true;
-    if (unwrap) state = unwrap;
-    state.value = value;
-    state.state = REJECTED;
-    notify$1(promise, state, true);
-  };
-
-  var internalResolve = function (promise, state, value, unwrap) {
-    if (state.done) return;
-    state.done = true;
-    if (unwrap) state = unwrap;
-    try {
-      if (promise === value) throw TypeError$1("Promise can't be resolved itself");
-      var then = isThenable(value);
-      if (then) {
-        microtask(function () {
-          var wrapper = { done: false };
-          try {
-            then.call(value,
-              bind(internalResolve, promise, wrapper, state),
-              bind(internalReject, promise, wrapper, state)
-            );
-          } catch (error) {
-            internalReject(promise, wrapper, error, state);
+      if (sticky) {
+        if (match) {
+          match.input = match.input.slice(charsAdded);
+          match[0] = match[0].slice(charsAdded);
+          match.index = re.lastIndex;
+          re.lastIndex += match[0].length;
+        } else re.lastIndex = 0;
+      } else if (UPDATES_LAST_INDEX_WRONG && match) {
+        re.lastIndex = re.global ? match.index + match[0].length : lastIndex;
+      }
+      if (NPCG_INCLUDED && match && match.length > 1) {
+        // Fix browsers whose `exec` methods don't consistently return `undefined`
+        // for NPCG, like IE8. NOTE: This doesn' work for /(.?)?/
+        nativeReplace.call(match[0], reCopy, function () {
+          for (i = 1; i < arguments.length - 2; i++) {
+            if (arguments[i] === undefined) match[i] = undefined;
           }
         });
-      } else {
-        state.value = value;
-        state.state = FULFILLED;
-        notify$1(promise, state, false);
       }
-    } catch (error) {
-      internalReject(promise, { done: false }, error, state);
-    }
-  };
 
-  // constructor polyfill
-  if (FORCED$2) {
-    // 25.4.3.1 Promise(executor)
-    PromiseConstructor = function Promise(executor) {
-      anInstance(this, PromiseConstructor, PROMISE);
-      aFunction$1(executor);
-      Internal.call(this);
-      var state = getInternalState(this);
-      try {
-        executor(bind(internalResolve, this, state), bind(internalReject, this, state));
-      } catch (error) {
-        internalReject(this, state, error);
-      }
+      return match;
     };
-    // eslint-disable-next-line no-unused-vars
-    Internal = function Promise(executor) {
-      setInternalState(this, {
-        type: PROMISE,
-        done: false,
-        notified: false,
-        parent: false,
-        reactions: [],
-        rejection: false,
-        state: PENDING,
-        value: undefined
-      });
-    };
-    Internal.prototype = redefineAll(PromiseConstructor.prototype, {
-      // `Promise.prototype.then` method
-      // https://tc39.github.io/ecma262/#sec-promise.prototype.then
-      then: function then(onFulfilled, onRejected) {
-        var state = getInternalPromiseState(this);
-        var reaction = newPromiseCapability$1(speciesConstructor(this, PromiseConstructor));
-        reaction.ok = typeof onFulfilled == 'function' ? onFulfilled : true;
-        reaction.fail = typeof onRejected == 'function' && onRejected;
-        reaction.domain = IS_NODE$1 ? process$3.domain : undefined;
-        state.parent = true;
-        state.reactions.push(reaction);
-        if (state.state != PENDING) notify$1(this, state, false);
-        return reaction.promise;
-      },
-      // `Promise.prototype.catch` method
-      // https://tc39.github.io/ecma262/#sec-promise.prototype.catch
-      'catch': function (onRejected) {
-        return this.then(undefined, onRejected);
-      }
-    });
-    OwnPromiseCapability = function () {
-      var promise = new Internal();
-      var state = getInternalState(promise);
-      this.promise = promise;
-      this.resolve = bind(internalResolve, promise, state);
-      this.reject = bind(internalReject, promise, state);
-    };
-    newPromiseCapability.f = newPromiseCapability$1 = function (C) {
-      return C === PromiseConstructor || C === PromiseWrapper
-        ? new OwnPromiseCapability(C)
-        : newGenericPromiseCapability(C);
-    };
-
-    if ( typeof nativePromiseConstructor == 'function') {
-      nativeThen = nativePromiseConstructor.prototype.then;
-
-      // wrap native Promise#then for native async functions
-      redefine(nativePromiseConstructor.prototype, 'then', function then(onFulfilled, onRejected) {
-        var that = this;
-        return new PromiseConstructor(function (resolve, reject) {
-          nativeThen.call(that, resolve, reject);
-        }).then(onFulfilled, onRejected);
-      // https://github.com/zloirock/core-js/issues/640
-      }, { unsafe: true });
-
-      // wrap fetch result
-      if (typeof $fetch == 'function') _export({ global: true, enumerable: true, forced: true }, {
-        // eslint-disable-next-line no-unused-vars
-        fetch: function fetch(input /* , init */) {
-          return promiseResolve(PromiseConstructor, $fetch.apply(global_1, arguments));
-        }
-      });
-    }
   }
 
-  _export({ global: true, wrap: true, forced: FORCED$2 }, {
-    Promise: PromiseConstructor
-  });
+  var regexpExec = patchedExec;
 
-  setToStringTag(PromiseConstructor, PROMISE, false);
-  setSpecies(PROMISE);
-
-  PromiseWrapper = getBuiltIn(PROMISE);
-
-  // statics
-  _export({ target: PROMISE, stat: true, forced: FORCED$2 }, {
-    // `Promise.reject` method
-    // https://tc39.github.io/ecma262/#sec-promise.reject
-    reject: function reject(r) {
-      var capability = newPromiseCapability$1(this);
-      capability.reject.call(undefined, r);
-      return capability.promise;
-    }
-  });
-
-  _export({ target: PROMISE, stat: true, forced:  FORCED$2 }, {
-    // `Promise.resolve` method
-    // https://tc39.github.io/ecma262/#sec-promise.resolve
-    resolve: function resolve(x) {
-      return promiseResolve( this, x);
-    }
-  });
-
-  _export({ target: PROMISE, stat: true, forced: INCORRECT_ITERATION }, {
-    // `Promise.all` method
-    // https://tc39.github.io/ecma262/#sec-promise.all
-    all: function all(iterable) {
-      var C = this;
-      var capability = newPromiseCapability$1(C);
-      var resolve = capability.resolve;
-      var reject = capability.reject;
-      var result = perform(function () {
-        var $promiseResolve = aFunction$1(C.resolve);
-        var values = [];
-        var counter = 0;
-        var remaining = 1;
-        iterate_1(iterable, function (promise) {
-          var index = counter++;
-          var alreadyCalled = false;
-          values.push(undefined);
-          remaining++;
-          $promiseResolve.call(C, promise).then(function (value) {
-            if (alreadyCalled) return;
-            alreadyCalled = true;
-            values[index] = value;
-            --remaining || resolve(values);
-          }, reject);
-        });
-        --remaining || resolve(values);
-      });
-      if (result.error) reject(result.value);
-      return capability.promise;
-    },
-    // `Promise.race` method
-    // https://tc39.github.io/ecma262/#sec-promise.race
-    race: function race(iterable) {
-      var C = this;
-      var capability = newPromiseCapability$1(C);
-      var reject = capability.reject;
-      var result = perform(function () {
-        var $promiseResolve = aFunction$1(C.resolve);
-        iterate_1(iterable, function (promise) {
-          $promiseResolve.call(C, promise).then(capability.resolve, reject);
-        });
-      });
-      if (result.error) reject(result.value);
-      return capability.promise;
-    }
+  _export({ target: 'RegExp', proto: true, forced: /./.exec !== regexpExec }, {
+    exec: regexpExec
   });
 
   function geoCode(_x) {
@@ -4404,9 +4654,11 @@
               condensedResults = results.map(function (_ref) {
                 var coordinates = _ref.geometry.coordinates,
                     label = _ref.properties.label;
+                var i = /,\s?[eE]ngland/.exec(label).index;
+                var shortLabel = label.substring(0, i);
                 return {
-                  name: label,
-                  latLng: coordinates
+                  name: shortLabel,
+                  lngLat: coordinates
                 };
               });
               return _context.abrupt("return", condensedResults);
@@ -4643,20 +4895,6 @@
       return value === value ? nativeDateToString.call(this) : INVALID_DATE;
     });
   }
-
-  // `RegExp.prototype.flags` getter implementation
-  // https://tc39.github.io/ecma262/#sec-get-regexp.prototype.flags
-  var regexpFlags = function () {
-    var that = anObject(this);
-    var result = '';
-    if (that.global) result += 'g';
-    if (that.ignoreCase) result += 'i';
-    if (that.multiline) result += 'm';
-    if (that.dotAll) result += 's';
-    if (that.unicode) result += 'u';
-    if (that.sticky) result += 'y';
-    return result;
-  };
 
   var TO_STRING$1 = 'toString';
   var RegExpPrototype = RegExp.prototype;
@@ -4921,55 +5159,391 @@
     return _ref.apply(this, arguments);
   }
 
-  function lookupDestination(_x) {
-    return _lookupDestination.apply(this, arguments);
+  var $filter = arrayIteration.filter;
+
+
+
+  var HAS_SPECIES_SUPPORT$2 = arrayMethodHasSpeciesSupport('filter');
+  // Edge 14- issue
+  var USES_TO_LENGTH$2 = arrayMethodUsesToLength('filter');
+
+  // `Array.prototype.filter` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.filter
+  // with adding support of @@species
+  _export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT$2 || !USES_TO_LENGTH$2 }, {
+    filter: function filter(callbackfn /* , thisArg */) {
+      return $filter(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+    }
+  });
+
+  var arrayMethodIsStrict = function (METHOD_NAME, argument) {
+    var method = [][METHOD_NAME];
+    return !!method && fails(function () {
+      // eslint-disable-next-line no-useless-call,no-throw-literal
+      method.call(null, argument || function () { throw 1; }, 1);
+    });
+  };
+
+  var $forEach = arrayIteration.forEach;
+
+
+
+  var STRICT_METHOD = arrayMethodIsStrict('forEach');
+  var USES_TO_LENGTH$3 = arrayMethodUsesToLength('forEach');
+
+  // `Array.prototype.forEach` method implementation
+  // https://tc39.github.io/ecma262/#sec-array.prototype.foreach
+  var arrayForEach = (!STRICT_METHOD || !USES_TO_LENGTH$3) ? function forEach(callbackfn /* , thisArg */) {
+    return $forEach(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+  } : [].forEach;
+
+  // `Array.prototype.forEach` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.foreach
+  _export({ target: 'Array', proto: true, forced: [].forEach != arrayForEach }, {
+    forEach: arrayForEach
+  });
+
+  var $includes = arrayIncludes.includes;
+
+
+
+  var USES_TO_LENGTH$4 = arrayMethodUsesToLength('indexOf', { ACCESSORS: true, 1: 0 });
+
+  // `Array.prototype.includes` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.includes
+  _export({ target: 'Array', proto: true, forced: !USES_TO_LENGTH$4 }, {
+    includes: function includes(el /* , fromIndex = 0 */) {
+      return $includes(this, el, arguments.length > 1 ? arguments[1] : undefined);
+    }
+  });
+
+  // https://tc39.github.io/ecma262/#sec-array.prototype-@@unscopables
+  addToUnscopables('includes');
+
+  var MATCH = wellKnownSymbol('match');
+
+  // `IsRegExp` abstract operation
+  // https://tc39.github.io/ecma262/#sec-isregexp
+  var isRegexp = function (it) {
+    var isRegExp;
+    return isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : classofRaw(it) == 'RegExp');
+  };
+
+  var notARegexp = function (it) {
+    if (isRegexp(it)) {
+      throw TypeError("The method doesn't accept regular expressions");
+    } return it;
+  };
+
+  var MATCH$1 = wellKnownSymbol('match');
+
+  var correctIsRegexpLogic = function (METHOD_NAME) {
+    var regexp = /./;
+    try {
+      '/./'[METHOD_NAME](regexp);
+    } catch (e) {
+      try {
+        regexp[MATCH$1] = false;
+        return '/./'[METHOD_NAME](regexp);
+      } catch (f) { /* empty */ }
+    } return false;
+  };
+
+  // `String.prototype.includes` method
+  // https://tc39.github.io/ecma262/#sec-string.prototype.includes
+  _export({ target: 'String', proto: true, forced: !correctIsRegexpLogic('includes') }, {
+    includes: function includes(searchString /* , position = 0 */) {
+      return !!~String(requireObjectCoercible(this))
+        .indexOf(notARegexp(searchString), arguments.length > 1 ? arguments[1] : undefined);
+    }
+  });
+
+  // TODO: Remove from `core-js@4` since it's moved to entry points
+
+
+
+
+
+
+
+  var SPECIES$6 = wellKnownSymbol('species');
+
+  var REPLACE_SUPPORTS_NAMED_GROUPS = !fails(function () {
+    // #replace needs built-in support for named groups.
+    // #match works fine because it just return the exec results, even if it has
+    // a "grops" property.
+    var re = /./;
+    re.exec = function () {
+      var result = [];
+      result.groups = { a: '7' };
+      return result;
+    };
+    return ''.replace(re, '$<a>') !== '7';
+  });
+
+  // IE <= 11 replaces $0 with the whole match, as if it was $&
+  // https://stackoverflow.com/questions/6024666/getting-ie-to-replace-a-regex-with-the-literal-string-0
+  var REPLACE_KEEPS_$0 = (function () {
+    return 'a'.replace(/./, '$0') === '$0';
+  })();
+
+  var REPLACE = wellKnownSymbol('replace');
+  // Safari <= 13.0.3(?) substitutes nth capture where n>m with an empty string
+  var REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE = (function () {
+    if (/./[REPLACE]) {
+      return /./[REPLACE]('a', '$0') === '';
+    }
+    return false;
+  })();
+
+  // Chrome 51 has a buggy "split" implementation when RegExp#exec !== nativeExec
+  // Weex JS has frozen built-in prototypes, so use try / catch wrapper
+  var SPLIT_WORKS_WITH_OVERWRITTEN_EXEC = !fails(function () {
+    var re = /(?:)/;
+    var originalExec = re.exec;
+    re.exec = function () { return originalExec.apply(this, arguments); };
+    var result = 'ab'.split(re);
+    return result.length !== 2 || result[0] !== 'a' || result[1] !== 'b';
+  });
+
+  var fixRegexpWellKnownSymbolLogic = function (KEY, length, exec, sham) {
+    var SYMBOL = wellKnownSymbol(KEY);
+
+    var DELEGATES_TO_SYMBOL = !fails(function () {
+      // String methods call symbol-named RegEp methods
+      var O = {};
+      O[SYMBOL] = function () { return 7; };
+      return ''[KEY](O) != 7;
+    });
+
+    var DELEGATES_TO_EXEC = DELEGATES_TO_SYMBOL && !fails(function () {
+      // Symbol-named RegExp methods call .exec
+      var execCalled = false;
+      var re = /a/;
+
+      if (KEY === 'split') {
+        // We can't use real regex here since it causes deoptimization
+        // and serious performance degradation in V8
+        // https://github.com/zloirock/core-js/issues/306
+        re = {};
+        // RegExp[@@split] doesn't call the regex's exec method, but first creates
+        // a new one. We need to return the patched regex when creating the new one.
+        re.constructor = {};
+        re.constructor[SPECIES$6] = function () { return re; };
+        re.flags = '';
+        re[SYMBOL] = /./[SYMBOL];
+      }
+
+      re.exec = function () { execCalled = true; return null; };
+
+      re[SYMBOL]('');
+      return !execCalled;
+    });
+
+    if (
+      !DELEGATES_TO_SYMBOL ||
+      !DELEGATES_TO_EXEC ||
+      (KEY === 'replace' && !(
+        REPLACE_SUPPORTS_NAMED_GROUPS &&
+        REPLACE_KEEPS_$0 &&
+        !REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE
+      )) ||
+      (KEY === 'split' && !SPLIT_WORKS_WITH_OVERWRITTEN_EXEC)
+    ) {
+      var nativeRegExpMethod = /./[SYMBOL];
+      var methods = exec(SYMBOL, ''[KEY], function (nativeMethod, regexp, str, arg2, forceStringMethod) {
+        if (regexp.exec === regexpExec) {
+          if (DELEGATES_TO_SYMBOL && !forceStringMethod) {
+            // The native String method already delegates to @@method (this
+            // polyfilled function), leasing to infinite recursion.
+            // We avoid it by directly calling the native @@method method.
+            return { done: true, value: nativeRegExpMethod.call(regexp, str, arg2) };
+          }
+          return { done: true, value: nativeMethod.call(str, regexp, arg2) };
+        }
+        return { done: false };
+      }, {
+        REPLACE_KEEPS_$0: REPLACE_KEEPS_$0,
+        REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE: REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE
+      });
+      var stringMethod = methods[0];
+      var regexMethod = methods[1];
+
+      redefine(String.prototype, KEY, stringMethod);
+      redefine(RegExp.prototype, SYMBOL, length == 2
+        // 21.2.5.8 RegExp.prototype[@@replace](string, replaceValue)
+        // 21.2.5.11 RegExp.prototype[@@split](string, limit)
+        ? function (string, arg) { return regexMethod.call(string, this, arg); }
+        // 21.2.5.6 RegExp.prototype[@@match](string)
+        // 21.2.5.9 RegExp.prototype[@@search](string)
+        : function (string) { return regexMethod.call(string, this); }
+      );
+    }
+
+    if (sham) createNonEnumerableProperty(RegExp.prototype[SYMBOL], 'sham', true);
+  };
+
+  var charAt$1 = stringMultibyte.charAt;
+
+  // `AdvanceStringIndex` abstract operation
+  // https://tc39.github.io/ecma262/#sec-advancestringindex
+  var advanceStringIndex = function (S, index, unicode) {
+    return index + (unicode ? charAt$1(S, index).length : 1);
+  };
+
+  // `RegExpExec` abstract operation
+  // https://tc39.github.io/ecma262/#sec-regexpexec
+  var regexpExecAbstract = function (R, S) {
+    var exec = R.exec;
+    if (typeof exec === 'function') {
+      var result = exec.call(R, S);
+      if (typeof result !== 'object') {
+        throw TypeError('RegExp exec method returned something other than an Object or null');
+      }
+      return result;
+    }
+
+    if (classofRaw(R) !== 'RegExp') {
+      throw TypeError('RegExp#exec called on incompatible receiver');
+    }
+
+    return regexpExec.call(R, S);
+  };
+
+  // @@match logic
+  fixRegexpWellKnownSymbolLogic('match', 1, function (MATCH, nativeMatch, maybeCallNative) {
+    return [
+      // `String.prototype.match` method
+      // https://tc39.github.io/ecma262/#sec-string.prototype.match
+      function match(regexp) {
+        var O = requireObjectCoercible(this);
+        var matcher = regexp == undefined ? undefined : regexp[MATCH];
+        return matcher !== undefined ? matcher.call(regexp, O) : new RegExp(regexp)[MATCH](String(O));
+      },
+      // `RegExp.prototype[@@match]` method
+      // https://tc39.github.io/ecma262/#sec-regexp.prototype-@@match
+      function (regexp) {
+        var res = maybeCallNative(nativeMatch, regexp, this);
+        if (res.done) return res.value;
+
+        var rx = anObject(regexp);
+        var S = String(this);
+
+        if (!rx.global) return regexpExecAbstract(rx, S);
+
+        var fullUnicode = rx.unicode;
+        rx.lastIndex = 0;
+        var A = [];
+        var n = 0;
+        var result;
+        while ((result = regexpExecAbstract(rx, S)) !== null) {
+          var matchStr = String(result[0]);
+          A[n] = matchStr;
+          if (matchStr === '') rx.lastIndex = advanceStringIndex(S, toLength(rx.lastIndex), fullUnicode);
+          n++;
+        }
+        return n === 0 ? null : A;
+      }
+    ];
+  });
+
+  for (var COLLECTION_NAME$1 in domIterables) {
+    var Collection$1 = global_1[COLLECTION_NAME$1];
+    var CollectionPrototype$1 = Collection$1 && Collection$1.prototype;
+    // some Chrome versions have non-configurable methods on DOMTokenList
+    if (CollectionPrototype$1 && CollectionPrototype$1.forEach !== arrayForEach) try {
+      createNonEnumerableProperty(CollectionPrototype$1, 'forEach', arrayForEach);
+    } catch (error) {
+      CollectionPrototype$1.forEach = arrayForEach;
+    }
   }
 
-  function _lookupDestination() {
-    _lookupDestination = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(context) {
-      var state, commit, destination, results;
+  function searchCouncilLocations(input, locations) {
+    var tokens = input.match(/\S+/g).map(function (token) {
+      return token.toLowerCase();
+    });
+    var results = locations.filter(function (el) {
+      var match = true;
+      tokens.forEach(function (token) {
+        if (!el.name.toLowerCase().includes(token) && !el.addr.toLowerCase().includes(token)) match = false;
+      });
+      return match;
+    });
+    return results;
+  }
+
+  function getCouncilLocations(_x) {
+    return _getCouncilLocations.apply(this, arguments);
+  }
+
+  function _getCouncilLocations() {
+    _getCouncilLocations = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(context) {
+      var commit, response, data;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              state = context.state, commit = context.commit;
-              destination = state.destination;
-              _context.next = 4;
-              return geoCode(destination);
+              commit = context.commit;
+              _context.next = 3;
+              return fetch('data/council-locations.json');
 
-            case 4:
-              results = _context.sent;
-              commit('updateDestOptions', results);
+            case 3:
+              response = _context.sent;
+              _context.next = 6;
+              return response.json();
 
             case 6:
+              data = _context.sent;
+              commit('updateCouncilLocations', data);
+
+            case 8:
             case "end":
               return _context.stop();
           }
         }
       }, _callee);
     }));
+    return _getCouncilLocations.apply(this, arguments);
+  }
+
+  function lookupCouncilDestination(context) {
+    var state = context.state,
+        commit = context.commit;
+    var destination = state.destination,
+        councilLocations = state.councilLocations;
+    var results = searchCouncilLocations(destination, councilLocations);
+    if (results.length <= 10) commit('updateDestOptions', results);
+  }
+
+  function lookupCouncilSource(context) {
+    var state = context.state,
+        commit = context.commit;
+    var source = state.source,
+        councilLocations = state.councilLocations;
+    var results = searchCouncilLocations(source, councilLocations);
+    console.log(results);
+    if (results.length <= 10) commit('updateSourceOptions', results);
+  }
+
+  function lookupDestination(_x2) {
     return _lookupDestination.apply(this, arguments);
   }
 
-  function lookupSource(_x2) {
-    return _lookupSource.apply(this, arguments);
-  }
-
-  function _lookupSource() {
-    _lookupSource = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(context) {
-      var state, commit, source, results;
+  function _lookupDestination() {
+    _lookupDestination = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(context) {
+      var state, commit, destination, results;
       return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
               state = context.state, commit = context.commit;
-              source = state.source;
+              destination = state.destination;
               _context2.next = 4;
-              return geoCode(source);
+              return geoCode(destination);
 
             case 4:
               results = _context2.sent;
-              commit('updateSourceOptions', results);
+              commit('appendDestOptions', results);
 
             case 6:
             case "end":
@@ -4978,47 +5552,88 @@
         }
       }, _callee2);
     }));
+    return _lookupDestination.apply(this, arguments);
+  }
+
+  function lookupSource(_x3) {
     return _lookupSource.apply(this, arguments);
   }
 
-  function planTravel(_x3) {
-    return _planTravel.apply(this, arguments);
-  }
-
-  function _planTravel() {
-    _planTravel = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(context) {
-      var state, commit, _state$sourceDetails, selectedSource, sourceOptions, _state$destinationDet, selectedDest, destOptions, _ref, from, to, data;
-
+  function _lookupSource() {
+    _lookupSource = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(context) {
+      var state, commit, source, results;
       return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              console.log('BEING CALLED');
               state = context.state, commit = context.commit;
-              _state$sourceDetails = state.sourceDetails, selectedSource = _state$sourceDetails.selected, sourceOptions = _state$sourceDetails.options, _state$destinationDet = state.destinationDetails, selectedDest = _state$destinationDet.selected, destOptions = _state$destinationDet.options;
-              _ref = [sourceOptions[selectedSource].latLng, destOptions[selectedDest].latLng], from = _ref[0], to = _ref[1];
-              _context3.next = 6;
-              return journey(from, to);
+              source = state.source;
+              _context3.next = 4;
+              return geoCode(source);
+
+            case 4:
+              results = _context3.sent;
+              commit('appendSourceOptions', results);
 
             case 6:
-              data = _context3.sent;
-              commit('setTravelDetails', data);
-
-            case 8:
             case "end":
               return _context3.stop();
           }
         }
       }, _callee3);
     }));
+    return _lookupSource.apply(this, arguments);
+  }
+
+  function planTravel(_x4) {
+    return _planTravel.apply(this, arguments);
+  }
+
+  function _planTravel() {
+    _planTravel = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(context) {
+      var state, commit, _state$sourceDetails, selectedSource, sourceOptions, _state$destinationDet, selectedDest, destOptions, _ref, from, to, data;
+
+      return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              console.log('BEING CALLED');
+              state = context.state, commit = context.commit;
+              _state$sourceDetails = state.sourceDetails, selectedSource = _state$sourceDetails.selected, sourceOptions = _state$sourceDetails.options, _state$destinationDet = state.destinationDetails, selectedDest = _state$destinationDet.selected, destOptions = _state$destinationDet.options;
+              _ref = [sourceOptions[selectedSource].lngLat, destOptions[selectedDest].lngLat], from = _ref[0], to = _ref[1];
+              _context4.next = 6;
+              return journey(from, to);
+
+            case 6:
+              data = _context4.sent;
+              commit('setTravelDetails', data);
+
+            case 8:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4);
+    }));
     return _planTravel.apply(this, arguments);
   }
 
   var actions = {
+    getCouncilLocations: getCouncilLocations,
+    lookupCouncilDestination: lookupCouncilDestination,
+    lookupCouncilSource: lookupCouncilSource,
     lookupDestination: lookupDestination,
     lookupSource: lookupSource,
     planTravel: planTravel
   };
+
+  function appendDestOptions(state, update) {
+    state.destinationDetails.options = state.destinationDetails.options.concat(update);
+  }
+
+  function appendSourceOptions(state, update) {
+    state.sourceDetails.options = state.sourceDetails.options.concat(update);
+  }
 
   function clearTravelDetails(state) {
     state.cycling = null;
@@ -5052,6 +5667,10 @@
     state.carrying = update;
   }
 
+  function updateCouncilLocations(state, update) {
+    state.councilLocations = update;
+  }
+
   function updateDestination(state, update) {
     state.destination = update;
   }
@@ -5083,11 +5702,14 @@
   }
 
   var mutations = {
+    appendDestOptions: appendDestOptions,
+    appendSourceOptions: appendSourceOptions,
     clearTravelDetails: clearTravelDetails,
     selectDestination: selectDestination,
     selectSource: selectSource,
     setTravelDetails: setTravelDetails,
     updateCarrying: updateCarrying,
+    updateCouncilLocations: updateCouncilLocations,
     updateDestination: updateDestination,
     updateDestOptions: updateDestOptions,
     updateIsRoundTrip: updateIsRoundTrip,
@@ -5102,20 +5724,21 @@
     actions: actions,
     mutations: mutations,
     state: {
-      source: 'Merrion House',
+      source: '',
       sourceDetails: {
         selected: null,
         // Index to option. Defaults to 0 when search done.
-        options: [] // Array of { name: string, latLng: array }
+        options: [] // Array of { name: string, latLng: array, addr: string } - addr only for council locations
 
       },
-      destination: 'Hough Top',
+      destination: '',
       destinationDetails: {
         selected: null,
         // Index to option. Defaults to 0 when search done.
-        options: [] // Array of { name: string, latLng: array }
+        options: [] // Array of { name: string, lngLat: array, addr: string } - addr only for council locations
 
       },
+      councilLocations: [],
       isRoundTrip: false,
       timeAtDest: 60,
       presenceRequired: false,
@@ -5152,6 +5775,9 @@
   new Vue({
     el: '#app',
     store: store$2,
+    created: function created() {
+      store$2.dispatch('getCouncilLocations');
+    },
     render: function render(h) {
       return h(__vue_component__$3, {
         props: {

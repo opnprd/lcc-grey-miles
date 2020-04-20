@@ -47,5 +47,8 @@ export default {
       else return false;
     },
   },
+  // created() {
+  //   this.$store.dispatch('getCouncilLocations');
+  // },
 };
 </script>

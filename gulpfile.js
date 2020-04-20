@@ -31,7 +31,7 @@ async function getCouncilLocations() {
     return {
         name: entry.Name,
         addr: entry['Address, Incl Postcode'],
-        lonlat: [lon, lat],
+        lngLat: [lon, lat],
     };
   });
   saveJson(processed, 'src/data/council-locations.json');

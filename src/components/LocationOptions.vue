@@ -1,5 +1,8 @@
 <template>
-  <ul v-if="options.length > 0">
+  <ul
+    v-if="options.length > 0"
+    class="results"
+  >
     <li
       v-for="(o, i) in options"
       :key="i"
@@ -7,6 +10,7 @@
       @click="action(i)"
     >
       {{ o.name }}
+      <span v-if="o.addr"> ({{ o.addr }})</span>
     </li>
   </ul>
 </template>
@@ -30,7 +34,7 @@ export default {
 </script>
 <style scoped>
 /* Todo - style properly, hide after selection etc */
-ul {
+/* ul {
   margin: 5px 0px;
   width: min(100%, max-content);
   border: 1px dashed black;
@@ -41,5 +45,6 @@ li {
 }
 .selected {
   background-color: lightgray;
-}
+} */
+
 </style>

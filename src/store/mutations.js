@@ -1,3 +1,11 @@
+function appendDestOptions(state, update) {
+  state.destinationDetails.options = state.destinationDetails.options.concat(update);
+}
+
+function appendSourceOptions(state, update) {
+  state.sourceDetails.options = state.sourceDetails.options.concat(update);
+}
+
 function clearTravelDetails(state) {
   state.cycling = null;
   state.driving = null;
@@ -24,6 +32,10 @@ function setTravelDetails(state, update) {
 
 function updateCarrying(state, update) {
   state.carrying = update;
+}
+
+function updateCouncilLocations(state, update) {
+  state.councilLocations = update;
 }
 
 function updateDestination(state, update) {
@@ -57,11 +69,14 @@ function updateTimeAtDest(state, update) {
 }
 
 export default {
+  appendDestOptions,
+  appendSourceOptions,
   clearTravelDetails,
   selectDestination,
   selectSource,
   setTravelDetails,
   updateCarrying,
+  updateCouncilLocations,
   updateDestination,
   updateDestOptions,
   updateIsRoundTrip,
