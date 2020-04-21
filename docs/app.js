@@ -818,59 +818,6 @@
       return script;
   }
 
-  const isOldIE = typeof navigator !== 'undefined' &&
-      /msie [6-9]\\b/.test(navigator.userAgent.toLowerCase());
-  function createInjector(context) {
-      return (id, style) => addStyle(id, style);
-  }
-  let HEAD;
-  const styles = {};
-  function addStyle(id, css) {
-      const group = isOldIE ? css.media || 'default' : id;
-      const style = styles[group] || (styles[group] = { ids: new Set(), styles: [] });
-      if (!style.ids.has(id)) {
-          style.ids.add(id);
-          let code = css.source;
-          if (css.map) {
-              // https://developer.chrome.com/devtools/docs/javascript-debugging
-              // this makes source maps inside style tags work properly in Chrome
-              code += '\n/*# sourceURL=' + css.map.sources[0] + ' */';
-              // http://stackoverflow.com/a/26603875
-              code +=
-                  '\n/*# sourceMappingURL=data:application/json;base64,' +
-                      btoa(unescape(encodeURIComponent(JSON.stringify(css.map)))) +
-                      ' */';
-          }
-          if (!style.element) {
-              style.element = document.createElement('style');
-              style.element.type = 'text/css';
-              if (css.media)
-                  style.element.setAttribute('media', css.media);
-              if (HEAD === undefined) {
-                  HEAD = document.head || document.getElementsByTagName('head')[0];
-              }
-              HEAD.appendChild(style.element);
-          }
-          if ('styleSheet' in style.element) {
-              style.styles.push(code);
-              style.element.styleSheet.cssText = style.styles
-                  .filter(Boolean)
-                  .join('\n');
-          }
-          else {
-              const index = style.ids.size - 1;
-              const textNode = document.createTextNode(code);
-              const nodes = style.element.childNodes;
-              if (nodes[index])
-                  style.element.removeChild(nodes[index]);
-              if (nodes.length)
-                  style.element.insertBefore(textNode, nodes[index]);
-              else
-                  style.element.appendChild(textNode);
-          }
-      }
-  }
-
   /* script */
   const __vue_script__ = script;
 
@@ -911,17 +858,15 @@
   __vue_render__._withStripped = true;
 
     /* style */
-    const __vue_inject_styles__ = function (inject) {
-      if (!inject) return
-      inject("data-v-c0d17254_0", { source: "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Todo - style properly, hide after selection etc */\n/* ul {\n  margin: 5px 0px;\n  width: min(100%, max-content);\n  border: 1px dashed black;\n}\nli {\n  padding: 4px 10px;\n  font-size: 0.8em;\n}\n.selected {\n  background-color: lightgray;\n} */\n\n", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/LocationOptions.vue"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AAmCA,oDAAA;AACA;;;;;;;;;;;GAWA","file":"LocationOptions.vue","sourcesContent":["<template>\n  <ul\n    v-if=\"options.length > 0\"\n    class=\"results\"\n  >\n    <li\n      v-for=\"(o, i) in options\"\n      :key=\"i\"\n      :class=\"{ selected: (selected == i) }\"\n      @click=\"action(i)\"\n    >\n      {{ o.name }}\n      <span v-if=\"o.addr\"> ({{ o.addr }})</span>\n    </li>\n  </ul>\n</template>\n<script>\nexport default {\n  props: {\n    action: {\n      default: () => (i) => console.error(`Unimplemented action click ${i}`),\n      type: Function,\n    },\n    options: {\n      default: () => [],\n      type: Array,\n    },\n    selected: {\n      default: () => null,\n      type: Number,\n    },\n  },\n};\n</script>\n<style scoped>\n/* Todo - style properly, hide after selection etc */\n/* ul {\n  margin: 5px 0px;\n  width: min(100%, max-content);\n  border: 1px dashed black;\n}\nli {\n  padding: 4px 10px;\n  font-size: 0.8em;\n}\n.selected {\n  background-color: lightgray;\n} */\n\n</style>"]}, media: undefined });
-
-    };
+    const __vue_inject_styles__ = undefined;
     /* scoped */
-    const __vue_scope_id__ = "data-v-c0d17254";
+    const __vue_scope_id__ = undefined;
     /* module identifier */
     const __vue_module_identifier__ = undefined;
     /* functional template */
     const __vue_is_functional_template__ = false;
+    /* style inject */
+    
     /* style inject SSR */
     
     /* style inject shadow dom */
@@ -936,7 +881,7 @@
       __vue_is_functional_template__,
       __vue_module_identifier__,
       false,
-      createInjector,
+      undefined,
       undefined,
       undefined
     );
@@ -1019,19 +964,23 @@
       calculate: function calculate() {
         this.$store.dispatch('planTravel');
       },
-      lookupCouncilDestination: function lookupCouncilDestination() {
-        if (this.destination.length > 2) {
-          this.$store.dispatch('lookupCouncilDestination');
-          this.showDestinationOptions = true;
-          this.showDestinationSearchButton = true;
-        } else this.showDestinationOptions = false;
+      handleDestinationInput: function handleDestinationInput(event) {
+        //do nothing if the input field is empty
+        if (!this.destination) this.showDestinationOptions = false; //keyboard navigation
+        else if (event.key == 'ArrowDown' && this.selectedDestination < this.destinationOptions.length - 1) this.selectDestination(this.selectedDestination + 1, false);else if (event.key == 'ArrowUp' && this.selectedDestination > 0) this.selectDestination(this.selectedDestination - 1, false);else if (event.key == 'Enter') this.showDestinationOptions = false; //if a character is entered, search the council location list again
+          else if (this.destination.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {
+              this.$store.dispatch('lookupCouncilDestination');
+              this.showDestinationOptions = true;
+              this.showDestinationSearchButton = true;
+            }
       },
-      lookupCouncilSource: function lookupCouncilSource() {
-        if (this.origin.length > 2) {
+      handleSourceInput: function handleSourceInput(event) {
+        if (!this.origin) this.showSourceOptions = false;
+        if (event.key == 'ArrowDown' && this.selectedSource < this.sourceOptions.length - 1) this.selectSource(this.selectedSource + 1, false);else if (event.key == 'ArrowUp' && this.selectedSource > 0) this.selectSource(this.selectedSource - 1, false);else if (event.key == 'Enter') this.showSourceOptions = false;else if (this.origin.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {
           this.$store.dispatch('lookupCouncilSource');
           this.showSourceOptions = true;
           this.showSourceSearchButton = true;
-        } else this.showSourceOptions = false;
+        }
       },
       lookupExternalDestination: function lookupExternalDestination() {
         this.$store.dispatch('lookupDestination');
@@ -1056,27 +1005,62 @@
         this.$store.commit('selectSource', key);
         this.origin = this.sourceOptions[key].name;
         if (hideOptions) this.showSourceOptions = false;
-      },
-      destinationInputKeyPress: function destinationInputKeyPress(event) {
-        //do nothing if the input field is empty
-        if (!this.destination) this.showDestinationOptions = false; //keyboard navigation
-        else if (event.key == 'ArrowDown' && this.selectedDestination < this.destinationOptions.length - 1) this.selectDestination(this.selectedDestination + 1, false);else if (event.key == 'ArrowUp' && this.selectedDestination > 0) this.selectDestination(this.selectedDestination - 1, false);else if (event.key == 'Enter') this.showDestinationOptions = false; //if a character is entered, search the council location list again
-          else if (this.destination.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {
-              this.$store.dispatch('lookupCouncilDestination');
-              this.showDestinationOptions = true;
-              this.showDestinationSearchButton = true;
-            }
-      },
-      sourceInputKeyPress: function sourceInputKeyPress(event) {
-        if (!this.origin) this.showSourceOptions = false;
-        if (event.key == 'ArrowDown' && this.selectedSource < this.sourceOptions.length - 1) this.selectSource(this.selectedSource + 1, false);else if (event.key == 'ArrowUp' && this.selectedSource > 0) this.selectSource(this.selectedSource - 1, false);else if (event.key == 'Enter') this.showSourceOptions = false;else if (this.origin.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {
-          this.$store.dispatch('lookupCouncilSource');
-          this.showSourceOptions = true;
-          this.showSourceSearchButton = true;
-        }
       }
     }
   };
+
+  const isOldIE = typeof navigator !== 'undefined' &&
+      /msie [6-9]\\b/.test(navigator.userAgent.toLowerCase());
+  function createInjector(context) {
+      return (id, style) => addStyle(id, style);
+  }
+  let HEAD;
+  const styles = {};
+  function addStyle(id, css) {
+      const group = isOldIE ? css.media || 'default' : id;
+      const style = styles[group] || (styles[group] = { ids: new Set(), styles: [] });
+      if (!style.ids.has(id)) {
+          style.ids.add(id);
+          let code = css.source;
+          if (css.map) {
+              // https://developer.chrome.com/devtools/docs/javascript-debugging
+              // this makes source maps inside style tags work properly in Chrome
+              code += '\n/*# sourceURL=' + css.map.sources[0] + ' */';
+              // http://stackoverflow.com/a/26603875
+              code +=
+                  '\n/*# sourceMappingURL=data:application/json;base64,' +
+                      btoa(unescape(encodeURIComponent(JSON.stringify(css.map)))) +
+                      ' */';
+          }
+          if (!style.element) {
+              style.element = document.createElement('style');
+              style.element.type = 'text/css';
+              if (css.media)
+                  style.element.setAttribute('media', css.media);
+              if (HEAD === undefined) {
+                  HEAD = document.head || document.getElementsByTagName('head')[0];
+              }
+              HEAD.appendChild(style.element);
+          }
+          if ('styleSheet' in style.element) {
+              style.styles.push(code);
+              style.element.styleSheet.cssText = style.styles
+                  .filter(Boolean)
+                  .join('\n');
+          }
+          else {
+              const index = style.ids.size - 1;
+              const textNode = document.createTextNode(code);
+              const nodes = style.element.childNodes;
+              if (nodes[index])
+                  style.element.removeChild(nodes[index]);
+              if (nodes.length)
+                  style.element.insertBefore(textNode, nodes[index]);
+              else
+                  style.element.appendChild(textNode);
+          }
+      }
+  }
 
   /* script */
   const __vue_script__$1 = script$1;
@@ -1104,7 +1088,7 @@
           domProps: { value: _vm.origin },
           on: {
             keyup: function($event) {
-              return _vm.sourceInputKeyPress($event)
+              return _vm.handleSourceInput($event)
             },
             input: function($event) {
               if ($event.target.composing) {
@@ -1184,7 +1168,7 @@
           domProps: { value: _vm.destination },
           on: {
             keyup: function($event) {
-              return _vm.destinationInputKeyPress($event)
+              return _vm.handleDestinationInput($event)
             },
             input: function($event) {
               if ($event.target.composing) {
@@ -1426,7 +1410,7 @@
     /* style */
     const __vue_inject_styles__$1 = function (inject) {
       if (!inject) return
-      inject("data-v-8799a790_0", { source: "\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  position: absolute;\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  width: max-content;\n}\n.search-results li {\n  padding: 8px;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.selected {\n  background-color: #ededed;\n} \n", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/Search.vue"],"names":[],"mappings":";AA6NA;EACA,sBAAA;AACA;AACA;EACA,kBAAA;EACA,YAAA;EACA,uBAAA;EACA,6BAAA;EACA,kBAAA;AACA;AACA;EACA,YAAA;AACA;AACA;EACA,eAAA;EACA,oBAAA;EACA,SAAA;EACA,YAAA;EACA,gBAAA;EACA,0BAAA;EACA,eAAA;AACA;AACA;EACA,yBAAA;AACA","file":"Search.vue","sourcesContent":["<template>\n  <form>\n    <div class=\"row\">\n      <label for=\"from\">From:</label>\n      <input\n        id=\"from\"\n        ref=\"from\"\n        v-model=\"origin\"\n        type=\"text\"\n        @keyup=\"sourceInputKeyPress($event)\"\n      >\n      <div\n        v-show=\"showSourceOptions\"\n        class=\"search-results\"\n      >\n        <location-options\n          :options=\"sourceOptions\"\n          :action=\"selectSource\"\n          :selected=\"selectedSource\"\n          @click=\"showSourceOptions = false;\"\n        />\n        <button\n          v-show=\"showSourceSearchButton\"\n          type=\"button\"\n          @click=\"lookupExternalSource()\"\n        >\n          Search for more locations...\n        </button>\n      </div>\n    </div>\n    <div class=\"row\">\n      <label for=\"to\">To:</label>\n      <input\n        id=\"to\"\n        ref=\"to\"\n        v-model=\"destination\"\n        type=\"text\"\n        @keyup=\"destinationInputKeyPress($event)\"\n      >\n      <div\n        v-show=\"showDestinationOptions\"\n        class=\"search-results\"\n      >\n        <location-options\n          :options=\"destinationOptions\"\n          :action=\"selectDestination\"\n          :selected=\"selectedDestination\"\n          @click=\"showDestinationOptions = false;\"\n        />\n        <button\n          v-show=\"showDestinationSearchButton\"\n          type=\"button\"\n          @click=\"lookupExternalDestination()\"\n        >\n          Search for more locations...\n        </button>\n      </div>\n    </div>\n    <div class=\"row\" />\n    <div class=\"row\">\n      <input\n        id=\"roundtrip\"\n        v-model=\"isRoundTrip\"\n        name=\"roundtrip\"\n        type=\"checkbox\"\n      >\n      <label for=\"roundtrip\">I am going and then coming back again</label>\n    </div>\n    <div class=\"row\">\n      <label for=\"timeatdest\">Minutes spent at location</label>\n      <input\n        id=\"timeatdest\"\n        v-model=\"timeAtDest\"\n        name=\"timeAtDest\"\n        type=\"number\"\n      >\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"presence\"\n        v-model=\"presenceRequired\"\n        name=\"presence\"\n        type=\"checkbox\"\n      >\n      <label for=\"presence\">I need to travel to the destination</label>\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"carrying\"\n        v-model=\"carrying\"\n        name=\"carrying\"\n        type=\"checkbox\"\n      >\n      <label for=\"carrying\">I am transporting a lot of stuff</label>\n    </div>\n    <button\n      type=\"button\"\n      @click=\"calculate()\"\n    >\n      Calculate\n    </button>\n  </form>\n</template>\n<script>\nimport LocationOptions from './LocationOptions.vue';\nexport default {\n  components: {\n    LocationOptions,\n  },\n  data() {\n    return {\n      showSourceOptions: false,\n      showDestinationOptions: false,\n      showSourceSearchButton: true,\n      showDestinationSearchButton: true,\n    };\n  },\n  computed: {\n    origin: {\n      get() { return this.$store.state.source; },\n      set(value) { this.$store.commit('updateSource', value); },\n    },\n    destination: {\n      get() { return this.$store.state.destination; },\n      set(value) { this.$store.commit('updateDestination', value); },\n    },\n    isRoundTrip: {\n      get() { return this.$store.state.isRoundTrip; },\n      set(value) { this.$store.commit('updateIsRoundTrip', value); },\n    },\n    timeAtDest: {\n      get() { return this.$store.state.timeAtDest; },\n      set(value) { this.$store.commit('updateTimeAtDest', value); },\n    },\n    presenceRequired: {\n      get() { return this.$store.state.presenceRequired; },\n      set(value) { this.$store.commit('updatePresenceRequired', value); },\n    },\n    carrying: {\n      get() { return this.$store.state.carrying; },\n      set(value) { this.$store.commit('updateCarrying', value); },\n    },\n    sourceOptions() { return this.$store.state.sourceDetails.options; },\n    selectedSource() { return this.$store.state.sourceDetails.selected; },\n    destinationOptions() { return this.$store.state.destinationDetails.options; },\n    selectedDestination() { return this.$store.state.destinationDetails.selected; },\n  },\n  methods: {\n    calculate() {\n      this.$store.dispatch('planTravel');\n    },\n    lookupCouncilDestination() {\n      if(this.destination.length > 2) {\n        this.$store.dispatch('lookupCouncilDestination');\n        this.showDestinationOptions = true;\n        this.showDestinationSearchButton = true;\n      }\n      else this.showDestinationOptions = false;\n    },\n    lookupCouncilSource() {\n      if(this.origin.length > 2) {\n        this.$store.dispatch('lookupCouncilSource');\n        this.showSourceOptions = true;\n        this.showSourceSearchButton = true;\n      }\n      else this.showSourceOptions = false;\n    },\n    lookupExternalDestination() {\n      this.$store.dispatch('lookupDestination');\n      this.showDestinationOptions = true;\n      this.showDestinationSearchButton = false;\n      this.$refs.to.focus(); //keep focus on the input field so that the keyboard can be used to navigate\n    },\n    lookupExternalSource() {\n      this.$store.dispatch('lookupSource');\n      this.showSourceOptions = true;\n      this.showSourceSearchButton = false;\n      this.$refs.from.focus();\n    },\n    selectDestination(key, hideOptions=true) {\n      this.$store.commit('selectDestination', key);\n      this.destination = this.destinationOptions[key].name;\n      if(hideOptions) this.showDestinationOptions = false;\n    },\n    selectSource(key, hideOptions=true) {\n      this.$store.commit('selectSource', key);\n      this.origin = this.sourceOptions[key].name;\n      if(hideOptions) this.showSourceOptions = false;\n    },\n    destinationInputKeyPress(event) {\n      //do nothing if the input field is empty\n      if(!this.destination) this.showDestinationOptions = false;\n\n      //keyboard navigation\n      else if(event.key == 'ArrowDown' && this.selectedDestination < (this.destinationOptions.length - 1)) this.selectDestination(this.selectedDestination + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedDestination > 0) this.selectDestination(this.selectedDestination - 1, false);\n      else if(event.key == 'Enter') this.showDestinationOptions = false;\n\n      //if a character is entered, search the council location list again\n      else if(this.destination.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilDestination');\n        this.showDestinationOptions = true;\n        this.showDestinationSearchButton = true;\n      }\n    },\n    sourceInputKeyPress(event) {\n      if(!this.origin) this.showSourceOptions = false;\n      if(event.key == 'ArrowDown' && this.selectedSource < (this.sourceOptions.length - 1)) this.selectSource(this.selectedSource + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedSource > 0) this.selectSource(this.selectedSource - 1, false);\n      else if(event.key == 'Enter') this.showSourceOptions = false;\n      else if(this.origin.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilSource');\n        this.showSourceOptions = true;\n        this.showSourceSearchButton = true;\n      }\n    },\n  },\n};\n</script>\n\n<style>\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  position: absolute;\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  width: max-content;\n}\n.search-results li {\n  padding: 8px;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.selected {\n  background-color: #ededed;\n} \n</style>"]}, media: undefined });
+      inject("data-v-3e6428ce_0", { source: "\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  position: absolute;\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  width: max-content;\n}\n.search-results li {\n  padding: 8px;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.selected {\n  background-color: #ededed;\n} \n", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/Search.vue"],"names":[],"mappings":";AA6MA;EACA,sBAAA;AACA;AACA;EACA,kBAAA;EACA,YAAA;EACA,uBAAA;EACA,6BAAA;EACA,kBAAA;AACA;AACA;EACA,YAAA;AACA;AACA;EACA,eAAA;EACA,oBAAA;EACA,SAAA;EACA,YAAA;EACA,gBAAA;EACA,0BAAA;EACA,eAAA;AACA;AACA;EACA,yBAAA;AACA","file":"Search.vue","sourcesContent":["<template>\n  <form>\n    <div class=\"row\">\n      <label for=\"from\">From:</label>\n      <input\n        id=\"from\"\n        ref=\"from\"\n        v-model=\"origin\"\n        type=\"text\"\n        @keyup=\"handleSourceInput($event)\"\n      >\n      <div\n        v-show=\"showSourceOptions\"\n        class=\"search-results\"\n      >\n        <location-options\n          :options=\"sourceOptions\"\n          :action=\"selectSource\"\n          :selected=\"selectedSource\"\n          @click=\"showSourceOptions = false;\"\n        />\n        <button\n          v-show=\"showSourceSearchButton\"\n          type=\"button\"\n          @click=\"lookupExternalSource()\"\n        >\n          Search for more locations...\n        </button>\n      </div>\n    </div>\n    <div class=\"row\">\n      <label for=\"to\">To:</label>\n      <input\n        id=\"to\"\n        ref=\"to\"\n        v-model=\"destination\"\n        type=\"text\"\n        @keyup=\"handleDestinationInput($event)\"\n      >\n      <div\n        v-show=\"showDestinationOptions\"\n        class=\"search-results\"\n      >\n        <location-options\n          :options=\"destinationOptions\"\n          :action=\"selectDestination\"\n          :selected=\"selectedDestination\"\n          @click=\"showDestinationOptions = false;\"\n        />\n        <button\n          v-show=\"showDestinationSearchButton\"\n          type=\"button\"\n          @click=\"lookupExternalDestination()\"\n        >\n          Search for more locations...\n        </button>\n      </div>\n    </div>\n    <div class=\"row\" />\n    <div class=\"row\">\n      <input\n        id=\"roundtrip\"\n        v-model=\"isRoundTrip\"\n        name=\"roundtrip\"\n        type=\"checkbox\"\n      >\n      <label for=\"roundtrip\">I am going and then coming back again</label>\n    </div>\n    <div class=\"row\">\n      <label for=\"timeatdest\">Minutes spent at location</label>\n      <input\n        id=\"timeatdest\"\n        v-model=\"timeAtDest\"\n        name=\"timeAtDest\"\n        type=\"number\"\n      >\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"presence\"\n        v-model=\"presenceRequired\"\n        name=\"presence\"\n        type=\"checkbox\"\n      >\n      <label for=\"presence\">I need to travel to the destination</label>\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"carrying\"\n        v-model=\"carrying\"\n        name=\"carrying\"\n        type=\"checkbox\"\n      >\n      <label for=\"carrying\">I am transporting a lot of stuff</label>\n    </div>\n    <button\n      type=\"button\"\n      @click=\"calculate()\"\n    >\n      Calculate\n    </button>\n  </form>\n</template>\n<script>\nimport LocationOptions from './LocationOptions.vue';\nexport default {\n  components: {\n    LocationOptions,\n  },\n  data() {\n    return {\n      showSourceOptions: false,\n      showDestinationOptions: false,\n      showSourceSearchButton: true,\n      showDestinationSearchButton: true,\n    };\n  },\n  computed: {\n    origin: {\n      get() { return this.$store.state.source; },\n      set(value) { this.$store.commit('updateSource', value); },\n    },\n    destination: {\n      get() { return this.$store.state.destination; },\n      set(value) { this.$store.commit('updateDestination', value); },\n    },\n    isRoundTrip: {\n      get() { return this.$store.state.isRoundTrip; },\n      set(value) { this.$store.commit('updateIsRoundTrip', value); },\n    },\n    timeAtDest: {\n      get() { return this.$store.state.timeAtDest; },\n      set(value) { this.$store.commit('updateTimeAtDest', value); },\n    },\n    presenceRequired: {\n      get() { return this.$store.state.presenceRequired; },\n      set(value) { this.$store.commit('updatePresenceRequired', value); },\n    },\n    carrying: {\n      get() { return this.$store.state.carrying; },\n      set(value) { this.$store.commit('updateCarrying', value); },\n    },\n    sourceOptions() { return this.$store.state.sourceDetails.options; },\n    selectedSource() { return this.$store.state.sourceDetails.selected; },\n    destinationOptions() { return this.$store.state.destinationDetails.options; },\n    selectedDestination() { return this.$store.state.destinationDetails.selected; },\n  },\n  methods: {\n    calculate() {\n      this.$store.dispatch('planTravel');\n    },\n    handleDestinationInput(event) {\n      //do nothing if the input field is empty\n      if(!this.destination) this.showDestinationOptions = false;\n\n      //keyboard navigation\n      else if(event.key == 'ArrowDown' && this.selectedDestination < (this.destinationOptions.length - 1)) this.selectDestination(this.selectedDestination + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedDestination > 0) this.selectDestination(this.selectedDestination - 1, false);\n      else if(event.key == 'Enter') this.showDestinationOptions = false;\n\n      //if a character is entered, search the council location list again\n      else if(this.destination.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilDestination');\n        this.showDestinationOptions = true;\n        this.showDestinationSearchButton = true;\n      }\n    },\n    handleSourceInput(event) {\n      if(!this.origin) this.showSourceOptions = false;\n      if(event.key == 'ArrowDown' && this.selectedSource < (this.sourceOptions.length - 1)) this.selectSource(this.selectedSource + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedSource > 0) this.selectSource(this.selectedSource - 1, false);\n      else if(event.key == 'Enter') this.showSourceOptions = false;\n      else if(this.origin.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilSource');\n        this.showSourceOptions = true;\n        this.showSourceSearchButton = true;\n      }\n    },\n    lookupExternalDestination() {\n      this.$store.dispatch('lookupDestination');\n      this.showDestinationOptions = true;\n      this.showDestinationSearchButton = false;\n      this.$refs.to.focus(); //keep focus on the input field so that the keyboard can be used to navigate\n    },\n    lookupExternalSource() {\n      this.$store.dispatch('lookupSource');\n      this.showSourceOptions = true;\n      this.showSourceSearchButton = false;\n      this.$refs.from.focus();\n    },\n    selectDestination(key, hideOptions=true) {\n      this.$store.commit('selectDestination', key);\n      this.destination = this.destinationOptions[key].name;\n      if(hideOptions) this.showDestinationOptions = false;\n    },\n    selectSource(key, hideOptions=true) {\n      this.$store.commit('selectSource', key);\n      this.origin = this.sourceOptions[key].name;\n      if(hideOptions) this.showSourceOptions = false;\n    },\n  },\n};\n</script>\n\n<style>\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  position: absolute;\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  width: max-content;\n}\n.search-results li {\n  padding: 8px;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.selected {\n  background-color: #ededed;\n} \n</style>"]}, media: undefined });
 
     };
     /* scoped */
@@ -2654,7 +2638,8 @@
    * * title: Display name of the mode of transport
    * * details: A Vue component to render for detailed information
    * * summarise: A function to present the summary of the function
-   * * costFn: A function to calculate the cost of travel
+   * * costFn: A function to calculate the cost of travel in £
+   * * co2Fn: A function to calculate the CO2 emissions in kg for that mode of transport
    */
 
   var modes = [{
@@ -2665,6 +2650,9 @@
     },
     costFn: function costFn(j) {
       return 0;
+    },
+    co2Fn: function co2Fn(j) {
+      return 0;
     }
   }, {
     title: 'Walk/Cycle',
@@ -2674,9 +2662,13 @@
     },
     costFn: function costFn(j) {
       return 0;
+    },
+    co2Fn: function co2Fn(j) {
+      return 0;
     }
   }, {
     title: 'Bus/train',
+    // should we split this into 2 options? different cost & emissions calculations
     details: __vue_component__$4,
     summarise: function summarise(j) {
       return "".concat(formatTime(j.train.time.value), " by train or ").concat(formatTime(j.bus.time.value), " by bus (xx Metro cards are available nearby)");
@@ -2684,7 +2676,8 @@
     costFn: function costFn(j) {
       // TODO Need to calculate cost with/without metro card
       return 5;
-    }
+    },
+    co2Fn: function co2Fn(j) {}
   }, {
     title: 'Pool vehicle',
     details: __vue_component__$6,
@@ -2694,6 +2687,9 @@
     costFn: function costFn(j) {
       // TODO How is this calculated?
       return 10;
+    },
+    co2Fn: function co2Fn(j) {
+      (0.2446754 * miles(j.driving.distance.value)).toFixed(2); //assuming same as Car Club
     }
   }, {
     title: 'Car club',
@@ -2702,8 +2698,10 @@
       return "".concat(formatTime(j.driving.time.value), " drive (xx cars at Cookridge Street)");
     },
     costFn: function costFn(j) {
-      // TODO How is this calculated?
-      return (10 * j.driving.time.value / 30).toFixed(2);
+      return (3.71 * j.driving.time.value / 60).toFixed(2); //£3.71 per hour
+    },
+    co2Fn: function co2Fn(j) {
+      return (0.2446754 * miles(j.driving.distance.value)).toFixed(2);
     }
   }, {
     title: 'Taxi',
@@ -2712,8 +2710,11 @@
       return "".concat(formatTime(j.driving.time.value), " (AAA Taxis)");
     },
     costFn: function costFn(j) {
-      // TODO How is this calculated?
-      return (0.50 * j.driving.time.value).toFixed(2);
+      var dist = miles(j.driving.distance.value);
+      return (3.5 + 1.6 * (dist - 1)).toFixed(2); // £3.50 for first mile then £1.60
+    },
+    co2Fn: function co2Fn(j) {
+      return (0.24020217 * miles(j.driving.distance.value)).toFixed(2);
     }
   }, {
     title: 'Self drive',
@@ -2724,8 +2725,15 @@
     costFn: function costFn(j) {
       // TODO How is this calculated?
       return 0.5 * j.driving.time.value;
+    },
+    co2Fn: function co2Fn(j) {
+      return (0.28591256 * miles(j.driving.distance.value)).toFixed(2);
     }
-  }];
+  }]; // helper functions
+
+  var miles = function miles(km) {
+    return km / 1.609344;
+  };
 
   var formatTime = function formatTime(value) {
     value = Number(value);

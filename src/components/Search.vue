@@ -7,7 +7,7 @@
         ref="from"
         v-model="origin"
         type="text"
-        @keyup="sourceInputKeyPress($event)"
+        @keyup="handleSourceInput($event)"
       >
       <div
         v-show="showSourceOptions"
@@ -35,7 +35,7 @@
         ref="to"
         v-model="destination"
         type="text"
-        @keyup="destinationInputKeyPress($event)"
+        @keyup="handleDestinationInput($event)"
       >
       <div
         v-show="showDestinationOptions"
@@ -149,21 +149,32 @@ export default {
     calculate() {
       this.$store.dispatch('planTravel');
     },
-    lookupCouncilDestination() {
-      if(this.destination.length > 2) {
+    handleDestinationInput(event) {
+      //do nothing if the input field is empty
+      if(!this.destination) this.showDestinationOptions = false;
+
+      //keyboard navigation
+      else if(event.key == 'ArrowDown' && this.selectedDestination < (this.destinationOptions.length - 1)) this.selectDestination(this.selectedDestination + 1, false);
+      else if(event.key == 'ArrowUp' && this.selectedDestination > 0) this.selectDestination(this.selectedDestination - 1, false);
+      else if(event.key == 'Enter') this.showDestinationOptions = false;
+
+      //if a character is entered, search the council location list again
+      else if(this.destination.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {
         this.$store.dispatch('lookupCouncilDestination');
         this.showDestinationOptions = true;
         this.showDestinationSearchButton = true;
       }
-      else this.showDestinationOptions = false;
     },
-    lookupCouncilSource() {
-      if(this.origin.length > 2) {
+    handleSourceInput(event) {
+      if(!this.origin) this.showSourceOptions = false;
+      if(event.key == 'ArrowDown' && this.selectedSource < (this.sourceOptions.length - 1)) this.selectSource(this.selectedSource + 1, false);
+      else if(event.key == 'ArrowUp' && this.selectedSource > 0) this.selectSource(this.selectedSource - 1, false);
+      else if(event.key == 'Enter') this.showSourceOptions = false;
+      else if(this.origin.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {
         this.$store.dispatch('lookupCouncilSource');
         this.showSourceOptions = true;
         this.showSourceSearchButton = true;
       }
-      else this.showSourceOptions = false;
     },
     lookupExternalDestination() {
       this.$store.dispatch('lookupDestination');
@@ -186,33 +197,6 @@ export default {
       this.$store.commit('selectSource', key);
       this.origin = this.sourceOptions[key].name;
       if(hideOptions) this.showSourceOptions = false;
-    },
-    destinationInputKeyPress(event) {
-      //do nothing if the input field is empty
-      if(!this.destination) this.showDestinationOptions = false;
-
-      //keyboard navigation
-      else if(event.key == 'ArrowDown' && this.selectedDestination < (this.destinationOptions.length - 1)) this.selectDestination(this.selectedDestination + 1, false);
-      else if(event.key == 'ArrowUp' && this.selectedDestination > 0) this.selectDestination(this.selectedDestination - 1, false);
-      else if(event.key == 'Enter') this.showDestinationOptions = false;
-
-      //if a character is entered, search the council location list again
-      else if(this.destination.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {
-        this.$store.dispatch('lookupCouncilDestination');
-        this.showDestinationOptions = true;
-        this.showDestinationSearchButton = true;
-      }
-    },
-    sourceInputKeyPress(event) {
-      if(!this.origin) this.showSourceOptions = false;
-      if(event.key == 'ArrowDown' && this.selectedSource < (this.sourceOptions.length - 1)) this.selectSource(this.selectedSource + 1, false);
-      else if(event.key == 'ArrowUp' && this.selectedSource > 0) this.selectSource(this.selectedSource - 1, false);
-      else if(event.key == 'Enter') this.showSourceOptions = false;
-      else if(this.origin.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {
-        this.$store.dispatch('lookupCouncilSource');
-        this.showSourceOptions = true;
-        this.showSourceSearchButton = true;
-      }
     },
   },
 };
