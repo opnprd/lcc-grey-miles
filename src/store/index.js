@@ -33,9 +33,8 @@ export default new Vuex.Store({
   },
   getters: {
     journey: (state) => {
-      // Journey needs to return isRoundTrip, etc
-      const { source, destination, bus, train, driving, cycling, walking } = state;
-      return { source, destination, bus, train, driving, cycling, walking };
+      const { source, destination, isRoundTrip, timeAtDest, presenceRequired, carrying, bus, train, driving, cycling, walking } = state;
+      return { source, destination, isRoundTrip, timeAtDest, presenceRequired, carrying, bus, train, driving, cycling, walking };
     },
   },
 });

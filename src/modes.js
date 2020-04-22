@@ -13,7 +13,9 @@ import SelfDrive from './components/modes/SelfDrive.vue';
  * * title: Display name of the mode of transport
  * * details: A Vue component to render for detailed information
  * * summarise: A function to present the summary of the function
- * * costFn: A function to calculate the cost of travel
+ * * costFn: A function to calculate the cost of travel in £
+ * * co2Fn: A function to calculate the CO2 emissions in kg for that mode of transport
+ * * displayFn: If applicable, function to determine whether the mode should be displayed. Defaults to true.
  */
 export default [
   {
@@ -25,6 +27,12 @@ export default [
     costFn(j) {
       return 0;
     },
+    co2Fn(j) {
+      return 0;
+    },
+    displayFn(j) {
+      return !j.presenceRequired; //hide if presence is required
+    },
   },
   {
     title: 'Walk/Cycle',
@@ -35,9 +43,15 @@ export default [
     costFn(j) {
       return 0;
     },
+    co2Fn(j) {
+      return 0;
+    },
+    displayFn(j) {
+      return !j.carrying; //hide if user is carrying lots of stuff
+    },
   },
   {
-    title: 'Bus/train',
+    title: 'Bus/train', // should we split this into 2 options? different cost & emissions calculations
     details: BusTrain,
     summarise(j) {
       return `${formatTime(j.train.time.value)} by train or ${formatTime(j.bus.time.value)} by bus (xx Metro cards are available nearby)`;
@@ -45,6 +59,9 @@ export default [
     costFn(j) {
       // TODO Need to calculate cost with/without metro card
       return 5;
+    },
+    co2Fn(j) {
+      // need to decide what this should be as different emission factors for train & bus
     },
   },
   {
@@ -57,6 +74,9 @@ export default [
       // TODO How is this calculated?
       return 10;
     },
+    co2Fn(j) {
+      return (0.2446754 * miles(j.driving.distance.value)).toFixed(2); //assuming same as Car Club
+    },
   },
   {
     title: 'Car club',
@@ -65,8 +85,10 @@ export default [
       return `${formatTime(j.driving.time.value)} drive (xx cars at Cookridge Street)`;
     },
     costFn(j) {
-      // TODO How is this calculated?
-      return (10*j.driving.time.value/30).toFixed(2);
+      return (3.71*j.driving.time.value/60).toFixed(2); //£3.71 per hour
+    },
+    co2Fn(j) {
+      return (0.2446754 * miles(j.driving.distance.value)).toFixed(2);
     },
   },
   {
@@ -76,8 +98,11 @@ export default [
       return `${formatTime(j.driving.time.value)} (AAA Taxis)`;
     },
     costFn(j) {
-      // TODO How is this calculated?
-      return (0.50*j.driving.time.value).toFixed(2);
+      const dist = miles(j.driving.distance.value);
+      return (3.5 + (1.6 * (dist - 1))).toFixed(2); // £3.50 for first mile then £1.60
+    },
+    co2Fn(j) {
+      return (0.24020217 * miles(j.driving.distance.value)).toFixed(2);
     },
   },
   {
@@ -90,8 +115,14 @@ export default [
       // TODO How is this calculated?
       return 0.5*j.driving.time.value;
     },
+    co2Fn(j) {
+      return (0.28591256 * miles(j.driving.distance.value)).toFixed(2);
+    },
   },
 ];
+
+// helper functions
+const miles = km => km / 1.609344;
 
 const formatTime = value => {
   value = Number(value);
