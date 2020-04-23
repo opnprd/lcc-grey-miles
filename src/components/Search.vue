@@ -211,10 +211,13 @@ input[type=text] {
   z-index: 100;
   background-color: white;
   border: 0.5px solid lightgray;
-  width: max-content;
+  max-width: 90vw;
+  margin-top: 20px;
+  margin-left: 95px;
 }
 .search-results li {
   padding: 8px;
+  max-width: max-content;
 }
 .search-results button {
   font-size: 100%;
