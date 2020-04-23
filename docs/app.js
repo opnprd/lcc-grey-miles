@@ -2732,7 +2732,10 @@
       // TODO Need to calculate cost with/without metro card
       return 5;
     },
-    co2Fn: function co2Fn(j) {// need to decide what this should be as different emission factors for train & bus
+    co2Fn: function co2Fn(j) {
+      var bus = 0.167227 * miles(j.bus.distance.value);
+      var train = 0.065613 * miles(j.train.distance.value);
+      return ((bus + train) / 2).toFixed(2); //take the average for now
     }
   }, {
     title: 'Pool vehicle',
@@ -2741,8 +2744,7 @@
       return "".concat(formatTime(j.driving.time.value), " drive (needs booking in advance)");
     },
     costFn: function costFn(j) {
-      // TODO How is this calculated?
-      return 10;
+      return (0.04 * miles(j.driving.distance.value)).toFixed(2); //Cost of electricity only - do we need to factor in lease & maintenance?
     },
     co2Fn: function co2Fn(j) {
       return (0.2446754 * miles(j.driving.distance.value)).toFixed(2); //assuming same as Car Club
@@ -2767,7 +2769,9 @@
     },
     costFn: function costFn(j) {
       var dist = miles(j.driving.distance.value);
-      return (3.5 + 1.6 * (dist - 1)).toFixed(2); // £3.50 for first mile then £1.60
+      var cost = 3.5 + 1.6 * (dist - 1); // £3.50 for first mile then £1.60
+
+      return Math.max(3.5, cost).toFixed(2);
     },
     co2Fn: function co2Fn(j) {
       return (0.24020217 * miles(j.driving.distance.value)).toFixed(2);
@@ -2779,8 +2783,7 @@
       return "".concat(formatTime(j.driving.time.value));
     },
     costFn: function costFn(j) {
-      // TODO How is this calculated?
-      return 0.5 * j.driving.time.value;
+      return (0.45 * miles(j.driving.distance.value)).toFixed(2); //worst case cost scenario (ie. casual car user doing <10k annual miles)
     },
     co2Fn: function co2Fn(j) {
       return (0.28591256 * miles(j.driving.distance.value)).toFixed(2);
