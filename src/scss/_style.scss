@@ -51,3 +51,11 @@ label {
   min-width: 6em;
   display: block;
 }
+
+.modes {
+  margin-top: 1em;
+  li {
+    padding: 2em 0;
+    border-top: 4px solid darkgrey;
+  }
+}
