@@ -1,9 +1,8 @@
-(function (Vue, Vuex, google) {
+(function (Vue, Vuex) {
   'use strict';
 
   Vue = Vue && Object.prototype.hasOwnProperty.call(Vue, 'default') ? Vue['default'] : Vue;
   Vuex = Vuex && Object.prototype.hasOwnProperty.call(Vuex, 'default') ? Vuex['default'] : Vuex;
-  google = google && Object.prototype.hasOwnProperty.call(google, 'default') ? google['default'] : google;
 
   var fails = function (exec) {
     try {
@@ -5102,6 +5101,7 @@
     }
   }
 
+  /* eslint-disable no-undef */
   function getPublicTransport(origin, destination, method) {
     return new Promise(function (resolve, reject) {
       var from = new google.maps.LatLng(origin[1], origin[0]),
@@ -5862,4 +5862,4 @@
     }
   });
 
-}(Vue, Vuex, google));
+}(Vue, Vuex));

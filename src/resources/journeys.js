@@ -1,4 +1,4 @@
-import google from 'google'; //Global variable included via script tag
+/* eslint-disable no-undef */
 
 function getPublicTransport(origin, destination, method) {
   return new Promise((resolve, reject) => {
