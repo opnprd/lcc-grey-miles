@@ -191,7 +191,7 @@
   (module.exports = function (key, value) {
     return sharedStore[key] || (sharedStore[key] = value !== undefined ? value : {});
   })('versions', []).push({
-    version: '3.6.4',
+    version: '3.6.5',
     mode:  'global',
     copyright: '© 2020 Denis Pushkarev (zloirock.ru)'
   });
@@ -3101,7 +3101,13 @@
       defer = functionBindContext(port.postMessage, port, 1);
     // Browsers with postMessage, skip WebWorkers
     // IE8 has postMessage, but it's sync & typeof its postMessage is 'object'
-    } else if (global_1.addEventListener && typeof postMessage == 'function' && !global_1.importScripts && !fails(post)) {
+    } else if (
+      global_1.addEventListener &&
+      typeof postMessage == 'function' &&
+      !global_1.importScripts &&
+      !fails(post) &&
+      location.protocol !== 'file:'
+    ) {
       defer = post;
       global_1.addEventListener('message', listener, false);
     // IE8-
@@ -3607,7 +3613,7 @@
     }
   });
 
-  var runtime = createCommonjsModule(function (module) {
+  var runtime_1 = createCommonjsModule(function (module) {
   /**
    * Copyright (c) 2014-present, Facebook, Inc.
    *
@@ -3615,7 +3621,7 @@
    * LICENSE file in the root directory of this source tree.
    */
 
-  !(function(global) {
+  var runtime = (function (exports) {
 
     var Op = Object.prototype;
     var hasOwn = Op.hasOwnProperty;
@@ -3624,21 +3630,6 @@
     var iteratorSymbol = $Symbol.iterator || "@@iterator";
     var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
     var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-    var runtime = global.regeneratorRuntime;
-    if (runtime) {
-      {
-        // If regeneratorRuntime is defined globally and we're in a module,
-        // make the exports object identical to regeneratorRuntime.
-        module.exports = runtime;
-      }
-      // Don't bother evaluating the rest of this file if the runtime was
-      // already defined globally.
-      return;
-    }
-
-    // Define the runtime globally (as expected by generated code) as either
-    // module.exports (if we're in a module) or a new, empty object.
-    runtime = global.regeneratorRuntime =  module.exports ;
 
     function wrap(innerFn, outerFn, self, tryLocsList) {
       // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
@@ -3652,7 +3643,7 @@
 
       return generator;
     }
-    runtime.wrap = wrap;
+    exports.wrap = wrap;
 
     // Try/catch helper to minimize deoptimizations. Returns a completion
     // record like context.tryEntries[i].completion. This interface could
@@ -3723,7 +3714,7 @@
       });
     }
 
-    runtime.isGeneratorFunction = function(genFun) {
+    exports.isGeneratorFunction = function(genFun) {
       var ctor = typeof genFun === "function" && genFun.constructor;
       return ctor
         ? ctor === GeneratorFunction ||
@@ -3733,7 +3724,7 @@
         : false;
     };
 
-    runtime.mark = function(genFun) {
+    exports.mark = function(genFun) {
       if (Object.setPrototypeOf) {
         Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
       } else {
@@ -3750,11 +3741,11 @@
     // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
     // `hasOwn.call(value, "__await")` to determine if the yielded value is
     // meant to be awaited.
-    runtime.awrap = function(arg) {
+    exports.awrap = function(arg) {
       return { __await: arg };
     };
 
-    function AsyncIterator(generator) {
+    function AsyncIterator(generator, PromiseImpl) {
       function invoke(method, arg, resolve, reject) {
         var record = tryCatch(generator[method], generator, arg);
         if (record.type === "throw") {
@@ -3765,32 +3756,24 @@
           if (value &&
               typeof value === "object" &&
               hasOwn.call(value, "__await")) {
-            return Promise.resolve(value.__await).then(function(value) {
+            return PromiseImpl.resolve(value.__await).then(function(value) {
               invoke("next", value, resolve, reject);
             }, function(err) {
               invoke("throw", err, resolve, reject);
             });
           }
 
-          return Promise.resolve(value).then(function(unwrapped) {
+          return PromiseImpl.resolve(value).then(function(unwrapped) {
             // When a yielded Promise is resolved, its final value becomes
             // the .value of the Promise<{value,done}> result for the
-            // current iteration. If the Promise is rejected, however, the
-            // result for this iteration will be rejected with the same
-            // reason. Note that rejections of yielded Promises are not
-            // thrown back into the generator function, as is the case
-            // when an awaited Promise is rejected. This difference in
-            // behavior between yield and await is important, because it
-            // allows the consumer to decide what to do with the yielded
-            // rejection (swallow it and continue, manually .throw it back
-            // into the generator, abandon iteration, whatever). With
-            // await, by contrast, there is no opportunity to examine the
-            // rejection reason outside the generator function, so the
-            // only option is to throw it from the await expression, and
-            // let the generator function handle the exception.
+            // current iteration.
             result.value = unwrapped;
             resolve(result);
-          }, reject);
+          }, function(error) {
+            // If a rejected Promise was yielded, throw the rejection back
+            // into the async generator function so it can be handled there.
+            return invoke("throw", error, resolve, reject);
+          });
         }
       }
 
@@ -3798,7 +3781,7 @@
 
       function enqueue(method, arg) {
         function callInvokeWithMethodAndArg() {
-          return new Promise(function(resolve, reject) {
+          return new PromiseImpl(function(resolve, reject) {
             invoke(method, arg, resolve, reject);
           });
         }
@@ -3833,17 +3816,20 @@
     AsyncIterator.prototype[asyncIteratorSymbol] = function () {
       return this;
     };
-    runtime.AsyncIterator = AsyncIterator;
+    exports.AsyncIterator = AsyncIterator;
 
     // Note that simple async functions are implemented on top of
     // AsyncIterator objects; they just return a Promise for the value of
     // the final result produced by the iterator.
-    runtime.async = function(innerFn, outerFn, self, tryLocsList) {
+    exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
+      if (PromiseImpl === void 0) PromiseImpl = Promise;
+
       var iter = new AsyncIterator(
-        wrap(innerFn, outerFn, self, tryLocsList)
+        wrap(innerFn, outerFn, self, tryLocsList),
+        PromiseImpl
       );
 
-      return runtime.isGeneratorFunction(outerFn)
+      return exports.isGeneratorFunction(outerFn)
         ? iter // If outerFn is a generator, return the full iterator.
         : iter.next().then(function(result) {
             return result.done ? result.value : iter.next();
@@ -3940,7 +3926,8 @@
         context.delegate = null;
 
         if (context.method === "throw") {
-          if (delegate.iterator.return) {
+          // Note: ["return"] must be used for ES3 parsing compatibility.
+          if (delegate.iterator["return"]) {
             // If the delegate iterator has a return method, give it a
             // chance to clean up.
             context.method = "return";
@@ -4060,7 +4047,7 @@
       this.reset(true);
     }
 
-    runtime.keys = function(object) {
+    exports.keys = function(object) {
       var keys = [];
       for (var key in object) {
         keys.push(key);
@@ -4121,7 +4108,7 @@
       // Return an iterator with no values.
       return { next: doneResult };
     }
-    runtime.values = values;
+    exports.values = values;
 
     function doneResult() {
       return { value: undefined$1, done: true };
@@ -4326,12 +4313,35 @@
         return ContinueSentinel;
       }
     };
-  })(
-    // In sloppy mode, unbound `this` refers to the global object, fallback to
-    // Function constructor if we're in global strict mode. That is sadly a form
-    // of indirect eval which violates Content Security Policy.
-    (function() { return this })() || Function("return this")()
-  );
+
+    // Regardless of whether this script is executing as a CommonJS module
+    // or not, return the runtime object so that we can declare the variable
+    // regeneratorRuntime in the outer scope, which allows this module to be
+    // injected easily by `bin/regenerator --include-runtime script.js`.
+    return exports;
+
+  }(
+    // If this script is executing as a CommonJS module, use module.exports
+    // as the regeneratorRuntime namespace. Otherwise create a new empty
+    // object. Either way, the resulting object will be used to initialize
+    // the regeneratorRuntime variable at the top of this file.
+     module.exports 
+  ));
+
+  try {
+    regeneratorRuntime = runtime;
+  } catch (accidentalStrictMode) {
+    // This module should not be running in strict mode, so the above
+    // assignment should always work unless something is misconfigured. Just
+    // in case runtime.js accidentally runs in strict mode, we can escape
+    // strict mode using a global Function call. This could conceivably fail
+    // if a Content Security Policy forbids using Function, but in that case
+    // the proper solution is to fix the accidental strict mode problem. If
+    // you've misconfigured your bundler to force strict mode and applied a
+    // CSP to forbid Function, and you're not willing to fix either of those
+    // problems, please detail your unique predicament in a GitHub issue.
+    Function("r", "regeneratorRuntime = r")(runtime);
+  }
   });
 
   function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
@@ -4371,11 +4381,11 @@
   }
 
   function _slicedToArray(arr, i) {
-    return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();
+    return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
   }
 
   function _toArray(arr) {
-    return _arrayWithHoles(arr) || _iterableToArray(arr) || _nonIterableRest();
+    return _arrayWithHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableRest();
   }
 
   function _arrayWithHoles(arr) {
@@ -4383,14 +4393,11 @@
   }
 
   function _iterableToArray(iter) {
-    if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
+    if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
   }
 
   function _iterableToArrayLimit(arr, i) {
-    if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) {
-      return;
-    }
-
+    if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;
     var _arr = [];
     var _n = true;
     var _d = false;
@@ -4416,8 +4423,25 @@
     return _arr;
   }
 
+  function _unsupportedIterableToArray(o, minLen) {
+    if (!o) return;
+    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === "Object" && o.constructor) n = o.constructor.name;
+    if (n === "Map" || n === "Set") return Array.from(n);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+  }
+
+  function _arrayLikeToArray(arr, len) {
+    if (len == null || len > arr.length) len = arr.length;
+
+    for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+
+    return arr2;
+  }
+
   function _nonIterableRest() {
-    throw new TypeError("Invalid attempt to destructure non-iterable instance");
+    throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
   }
 
   var push = [].push;
@@ -5192,7 +5216,7 @@
 
   function _ref() {
     _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(from, to) {
-      var _ref2, _ref3, bus, train, driving, cycling, walking;
+      var _yield$Promise$all, _yield$Promise$all2, bus, train, driving, cycling, walking;
 
       return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
@@ -5202,13 +5226,13 @@
               return Promise.all([getPublicTransport(from, to, 'BUS'), getPublicTransport(from, to, 'RAIL'), queryOpenRouteService(from, to, 'driving-car'), queryOpenRouteService(from, to, 'cycling-road'), queryOpenRouteService(from, to, 'foot-walking')]);
 
             case 2:
-              _ref2 = _context2.sent;
-              _ref3 = _slicedToArray(_ref2, 5);
-              bus = _ref3[0];
-              train = _ref3[1];
-              driving = _ref3[2];
-              cycling = _ref3[3];
-              walking = _ref3[4];
+              _yield$Promise$all = _context2.sent;
+              _yield$Promise$all2 = _slicedToArray(_yield$Promise$all, 5);
+              bus = _yield$Promise$all2[0];
+              train = _yield$Promise$all2[1];
+              driving = _yield$Promise$all2[2];
+              cycling = _yield$Promise$all2[3];
+              walking = _yield$Promise$all2[4];
               return _context2.abrupt("return", {
                 bus: bus,
                 train: train,

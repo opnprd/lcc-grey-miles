@@ -1,4 +1,29 @@
 {
+  "name": "greymiles",
+  "private": true,
+  "version": "0.1.0",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/opnprd/lcc-grey-miles.git"
+  },
+  "keywords": [
+    "leeds",
+    "carbon",
+    "grey-miles",
+    "odi-leeds",
+    "co2",
+    "council"
+  ],
+  "author": "Giles Dring <giles.dring@odileeds.org>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/opnprd/lcc-grey-miles/issues"
+  },
+  "homepage": "https://github.com/opnprd/lcc-grey-miles#readme",
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.5",
