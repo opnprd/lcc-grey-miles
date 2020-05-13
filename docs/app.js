@@ -2,7 +2,7 @@
   'use strict';
 
   Vue = Vue && Object.prototype.hasOwnProperty.call(Vue, 'default') ? Vue['default'] : Vue;
-  Vuex = Vuex && Object.prototype.hasOwnProperty.call(Vuex, 'default') ? Vuex['default'] : Vuex;
+  var Vuex__default = 'default' in Vuex ? Vuex['default'] : Vuex;
 
   var fails = function (exec) {
     try {
@@ -872,7 +872,7 @@
     
 
     
-    const __vue_component__ = /*#__PURE__*/normalizeComponent(
+    const __vue_component__ = normalizeComponent(
       { render: __vue_render__, staticRenderFns: __vue_staticRenderFns__ },
       __vue_inject_styles__,
       __vue_script__,
@@ -1421,7 +1421,7 @@
     /* style */
     const __vue_inject_styles__$1 = function (inject) {
       if (!inject) return
-      inject("data-v-413f00a0_0", { source: "\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  position: absolute;\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  max-width: 90vw;\n  margin-top: 20px;\n  margin-left: 95px;\n}\n.search-results li {\n  padding: 8px;\n  max-width: max-content;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.selected {\n  background-color: #ededed;\n} \n", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/Search.vue"],"names":[],"mappings":";AAgNA;EACA,sBAAA;AACA;AACA;EACA,kBAAA;EACA,YAAA;EACA,uBAAA;EACA,6BAAA;EACA,eAAA;EACA,gBAAA;EACA,iBAAA;AACA;AACA;EACA,YAAA;EACA,sBAAA;AACA;AACA;EACA,eAAA;EACA,oBAAA;EACA,SAAA;EACA,YAAA;EACA,gBAAA;EACA,0BAAA;EACA,eAAA;AACA;AACA;EACA,yBAAA;AACA","file":"Search.vue","sourcesContent":["<template>\n  <form>\n    <div class=\"row\">\n      <label for=\"from\">From:</label>\n      <input\n        id=\"from\"\n        ref=\"from\"\n        v-model=\"origin\"\n        type=\"text\"\n        @keyup=\"handleSourceInput($event)\"\n      >\n      <div\n        v-show=\"showSourceOptions\"\n        class=\"search-results\"\n      >\n        <location-options\n          :options=\"sourceOptions\"\n          :action=\"selectSource\"\n          :selected=\"selectedSource\"\n          @click=\"showSourceOptions = false;\"\n        />\n        <button\n          v-show=\"showSourceSearchButton\"\n          type=\"button\"\n          @click=\"lookupExternalSource()\"\n        >\n          Search for more locations...\n        </button>\n      </div>\n    </div>\n    <div class=\"row\">\n      <label for=\"to\">To:</label>\n      <input\n        id=\"to\"\n        ref=\"to\"\n        v-model=\"destination\"\n        type=\"text\"\n        @keyup=\"handleDestinationInput($event)\"\n      >\n      <div\n        v-show=\"showDestinationOptions\"\n        class=\"search-results\"\n      >\n        <location-options\n          :options=\"destinationOptions\"\n          :action=\"selectDestination\"\n          :selected=\"selectedDestination\"\n          @click=\"showDestinationOptions = false;\"\n        />\n        <button\n          v-show=\"showDestinationSearchButton\"\n          type=\"button\"\n          @click=\"lookupExternalDestination()\"\n        >\n          Search for more locations...\n        </button>\n      </div>\n    </div>\n    <div class=\"row\" />\n    <div class=\"row\">\n      <input\n        id=\"roundtrip\"\n        v-model=\"isRoundTrip\"\n        name=\"roundtrip\"\n        type=\"checkbox\"\n      >\n      <label for=\"roundtrip\">Return Journey</label>\n    </div>\n    <div\n      v-show=\"isRoundTrip\"\n      class=\"row\"\n    >\n      <label for=\"timeatdest\">How long is your meeting (in minutes)?</label>\n      <input\n        id=\"timeatdest\"\n        v-model=\"timeAtDest\"\n        name=\"timeAtDest\"\n        type=\"number\"\n      >\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"presence\"\n        v-model=\"presenceRequired\"\n        name=\"presence\"\n        type=\"checkbox\"\n      >\n      <label for=\"presence\">I need to travel to the destination</label>\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"carrying\"\n        v-model=\"carrying\"\n        name=\"carrying\"\n        type=\"checkbox\"\n      >\n      <label for=\"carrying\">I'm transporting a lot of stuff</label>\n    </div>\n    <button\n      type=\"button\"\n      @click=\"calculate()\"\n    >\n      Calculate\n    </button>\n  </form>\n</template>\n<script>\nimport LocationOptions from './LocationOptions.vue';\nexport default {\n  components: {\n    LocationOptions,\n  },\n  data() {\n    return {\n      showSourceOptions: false,\n      showDestinationOptions: false,\n      showSourceSearchButton: true,\n      showDestinationSearchButton: true,\n    };\n  },\n  computed: {\n    origin: {\n      get() { return this.$store.state.source; },\n      set(value) { this.$store.commit('updateSource', value); },\n    },\n    destination: {\n      get() { return this.$store.state.destination; },\n      set(value) { this.$store.commit('updateDestination', value); },\n    },\n    isRoundTrip: {\n      get() { return this.$store.state.isRoundTrip; },\n      set(value) { this.$store.commit('updateIsRoundTrip', value); },\n    },\n    timeAtDest: {\n      get() { return this.$store.state.timeAtDest; },\n      set(value) { this.$store.commit('updateTimeAtDest', value); },\n    },\n    presenceRequired: {\n      get() { return this.$store.state.presenceRequired; },\n      set(value) { this.$store.commit('updatePresenceRequired', value); },\n    },\n    carrying: {\n      get() { return this.$store.state.carrying; },\n      set(value) { this.$store.commit('updateCarrying', value); },\n    },\n    sourceOptions() { return this.$store.state.sourceDetails.options; },\n    selectedSource() { return this.$store.state.sourceDetails.selected; },\n    destinationOptions() { return this.$store.state.destinationDetails.options; },\n    selectedDestination() { return this.$store.state.destinationDetails.selected; },\n  },\n  methods: {\n    calculate() {\n      this.$store.dispatch('planTravel');\n    },\n    handleDestinationInput(event) {\n      //do nothing if the input field is empty\n      if(!this.destination) this.showDestinationOptions = false;\n\n      //keyboard navigation\n      else if(event.key == 'ArrowDown' && this.selectedDestination < (this.destinationOptions.length - 1)) this.selectDestination(this.selectedDestination + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedDestination > 0) this.selectDestination(this.selectedDestination - 1, false);\n      else if(event.key == 'Enter') this.showDestinationOptions = false;\n\n      //if a character is entered, search the council location list again\n      else if(this.destination.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilDestination');\n        this.showDestinationOptions = true;\n        this.showDestinationSearchButton = true;\n      }\n    },\n    handleSourceInput(event) {\n      if(!this.origin) this.showSourceOptions = false;\n      if(event.key == 'ArrowDown' && this.selectedSource < (this.sourceOptions.length - 1)) this.selectSource(this.selectedSource + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedSource > 0) this.selectSource(this.selectedSource - 1, false);\n      else if(event.key == 'Enter') this.showSourceOptions = false;\n      else if(this.origin.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilSource');\n        this.showSourceOptions = true;\n        this.showSourceSearchButton = true;\n      }\n    },\n    lookupExternalDestination() {\n      this.$store.dispatch('lookupDestination');\n      this.showDestinationOptions = true;\n      this.showDestinationSearchButton = false;\n      this.$refs.to.focus(); //keep focus on the input field so that the keyboard can be used to navigate\n    },\n    lookupExternalSource() {\n      this.$store.dispatch('lookupSource');\n      this.showSourceOptions = true;\n      this.showSourceSearchButton = false;\n      this.$refs.from.focus();\n    },\n    selectDestination(key, hideOptions=true) {\n      this.$store.commit('selectDestination', key);\n      this.destination = this.destinationOptions[key].name;\n      if(hideOptions) this.showDestinationOptions = false;\n    },\n    selectSource(key, hideOptions=true) {\n      this.$store.commit('selectSource', key);\n      this.origin = this.sourceOptions[key].name;\n      if(hideOptions) this.showSourceOptions = false;\n    },\n  },\n};\n</script>\n\n<style>\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  position: absolute;\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  max-width: 90vw;\n  margin-top: 20px;\n  margin-left: 95px;\n}\n.search-results li {\n  padding: 8px;\n  max-width: max-content;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.selected {\n  background-color: #ededed;\n} \n</style>"]}, media: undefined });
+      inject("data-v-4894fbcc_0", { source: "\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  position: absolute;\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  max-width: 90vw;\n  margin-top: 20px;\n  margin-left: 95px;\n}\n.search-results li {\n  padding: 8px;\n  max-width: max-content;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.selected {\n  background-color: #ededed;\n} \n", map: {"version":3,"sources":["/Users/gilesdring/src/opnprd/greymiles/src/components/Search.vue"],"names":[],"mappings":";AAgNA;EACA,sBAAA;AACA;AACA;EACA,kBAAA;EACA,YAAA;EACA,uBAAA;EACA,6BAAA;EACA,eAAA;EACA,gBAAA;EACA,iBAAA;AACA;AACA;EACA,YAAA;EACA,sBAAA;AACA;AACA;EACA,eAAA;EACA,oBAAA;EACA,SAAA;EACA,YAAA;EACA,gBAAA;EACA,0BAAA;EACA,eAAA;AACA;AACA;EACA,yBAAA;AACA","file":"Search.vue","sourcesContent":["<template>\n  <form>\n    <div class=\"row\">\n      <label for=\"from\">From:</label>\n      <input\n        id=\"from\"\n        ref=\"from\"\n        v-model=\"origin\"\n        type=\"text\"\n        @keyup=\"handleSourceInput($event)\"\n      >\n      <div\n        v-show=\"showSourceOptions\"\n        class=\"search-results\"\n      >\n        <location-options\n          :options=\"sourceOptions\"\n          :action=\"selectSource\"\n          :selected=\"selectedSource\"\n          @click=\"showSourceOptions = false;\"\n        />\n        <button\n          v-show=\"showSourceSearchButton\"\n          type=\"button\"\n          @click=\"lookupExternalSource()\"\n        >\n          Search for more locations...\n        </button>\n      </div>\n    </div>\n    <div class=\"row\">\n      <label for=\"to\">To:</label>\n      <input\n        id=\"to\"\n        ref=\"to\"\n        v-model=\"destination\"\n        type=\"text\"\n        @keyup=\"handleDestinationInput($event)\"\n      >\n      <div\n        v-show=\"showDestinationOptions\"\n        class=\"search-results\"\n      >\n        <location-options\n          :options=\"destinationOptions\"\n          :action=\"selectDestination\"\n          :selected=\"selectedDestination\"\n          @click=\"showDestinationOptions = false;\"\n        />\n        <button\n          v-show=\"showDestinationSearchButton\"\n          type=\"button\"\n          @click=\"lookupExternalDestination()\"\n        >\n          Search for more locations...\n        </button>\n      </div>\n    </div>\n    <div class=\"row\" />\n    <div class=\"row\">\n      <input\n        id=\"roundtrip\"\n        v-model=\"isRoundTrip\"\n        name=\"roundtrip\"\n        type=\"checkbox\"\n      >\n      <label for=\"roundtrip\">Return Journey</label>\n    </div>\n    <div\n      v-show=\"isRoundTrip\"\n      class=\"row\"\n    >\n      <label for=\"timeatdest\">How long is your meeting (in minutes)?</label>\n      <input\n        id=\"timeatdest\"\n        v-model=\"timeAtDest\"\n        name=\"timeAtDest\"\n        type=\"number\"\n      >\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"presence\"\n        v-model=\"presenceRequired\"\n        name=\"presence\"\n        type=\"checkbox\"\n      >\n      <label for=\"presence\">I need to travel to the destination</label>\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"carrying\"\n        v-model=\"carrying\"\n        name=\"carrying\"\n        type=\"checkbox\"\n      >\n      <label for=\"carrying\">I'm transporting a lot of stuff</label>\n    </div>\n    <button\n      type=\"button\"\n      @click=\"calculate()\"\n    >\n      Calculate\n    </button>\n  </form>\n</template>\n<script>\nimport LocationOptions from './LocationOptions.vue';\nexport default {\n  components: {\n    LocationOptions,\n  },\n  data() {\n    return {\n      showSourceOptions: false,\n      showDestinationOptions: false,\n      showSourceSearchButton: true,\n      showDestinationSearchButton: true,\n    };\n  },\n  computed: {\n    origin: {\n      get() { return this.$store.state.source; },\n      set(value) { this.$store.commit('updateSource', value); },\n    },\n    destination: {\n      get() { return this.$store.state.destination; },\n      set(value) { this.$store.commit('updateDestination', value); },\n    },\n    isRoundTrip: {\n      get() { return this.$store.state.isRoundTrip; },\n      set(value) { this.$store.commit('updateIsRoundTrip', value); },\n    },\n    timeAtDest: {\n      get() { return this.$store.state.timeAtDest; },\n      set(value) { this.$store.commit('updateTimeAtDest', value); },\n    },\n    presenceRequired: {\n      get() { return this.$store.state.presenceRequired; },\n      set(value) { this.$store.commit('updatePresenceRequired', value); },\n    },\n    carrying: {\n      get() { return this.$store.state.carrying; },\n      set(value) { this.$store.commit('updateCarrying', value); },\n    },\n    sourceOptions() { return this.$store.state.sourceDetails.options; },\n    selectedSource() { return this.$store.state.sourceDetails.selected; },\n    destinationOptions() { return this.$store.state.destinationDetails.options; },\n    selectedDestination() { return this.$store.state.destinationDetails.selected; },\n  },\n  methods: {\n    calculate() {\n      this.$store.dispatch('planTravel');\n    },\n    handleDestinationInput(event) {\n      //do nothing if the input field is empty\n      if(!this.destination) this.showDestinationOptions = false;\n\n      //keyboard navigation\n      else if(event.key == 'ArrowDown' && this.selectedDestination < (this.destinationOptions.length - 1)) this.selectDestination(this.selectedDestination + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedDestination > 0) this.selectDestination(this.selectedDestination - 1, false);\n      else if(event.key == 'Enter') this.showDestinationOptions = false;\n\n      //if a character is entered, search the council location list again\n      else if(this.destination.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilDestination');\n        this.showDestinationOptions = true;\n        this.showDestinationSearchButton = true;\n      }\n    },\n    handleSourceInput(event) {\n      if(!this.origin) this.showSourceOptions = false;\n      if(event.key == 'ArrowDown' && this.selectedSource < (this.sourceOptions.length - 1)) this.selectSource(this.selectedSource + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedSource > 0) this.selectSource(this.selectedSource - 1, false);\n      else if(event.key == 'Enter') this.showSourceOptions = false;\n      else if(this.origin.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilSource');\n        this.showSourceOptions = true;\n        this.showSourceSearchButton = true;\n      }\n    },\n    lookupExternalDestination() {\n      this.$store.dispatch('lookupDestination');\n      this.showDestinationOptions = true;\n      this.showDestinationSearchButton = false;\n      this.$refs.to.focus(); //keep focus on the input field so that the keyboard can be used to navigate\n    },\n    lookupExternalSource() {\n      this.$store.dispatch('lookupSource');\n      this.showSourceOptions = true;\n      this.showSourceSearchButton = false;\n      this.$refs.from.focus();\n    },\n    selectDestination(key, hideOptions=true) {\n      this.$store.commit('selectDestination', key);\n      this.destination = this.destinationOptions[key].name;\n      if(hideOptions) this.showDestinationOptions = false;\n    },\n    selectSource(key, hideOptions=true) {\n      this.$store.commit('selectSource', key);\n      this.origin = this.sourceOptions[key].name;\n      if(hideOptions) this.showSourceOptions = false;\n    },\n  },\n};\n</script>\n\n<style>\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  position: absolute;\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  max-width: 90vw;\n  margin-top: 20px;\n  margin-left: 95px;\n}\n.search-results li {\n  padding: 8px;\n  max-width: max-content;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.selected {\n  background-color: #ededed;\n} \n</style>"]}, media: undefined });
 
     };
     /* scoped */
@@ -1436,7 +1436,7 @@
     
 
     
-    const __vue_component__$1 = /*#__PURE__*/normalizeComponent(
+    const __vue_component__$1 = normalizeComponent(
       { render: __vue_render__$1, staticRenderFns: __vue_staticRenderFns__$1 },
       __vue_inject_styles__$1,
       __vue_script__$1,
@@ -1668,324 +1668,643 @@
     }
   });
 
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  var script$2 = {
-    props: {
-      title: {
-        type: String,
-        required: true
-      },
-      details: {
-        type: Object,
-        required: false,
-        "default": function _default() {}
-      },
-      summarise: {
-        type: Function,
-        "default": function _default() {
-          return function () {
-            return null;
-          };
-        }
-      },
-      costFn: {
-        type: Function,
-        required: true
-      },
-      co2Fn: {
-        type: Function,
-        "default": function _default() {
-          return function () {
-            return 0;
-          };
-        }
-      },
-      displayFn: {
-        type: Function,
-        "default": function _default() {
-          return function () {
-            return true;
-          };
-        }
-      }
-    },
-    data: function data() {
-      return {
-        viewState: 'closed'
-      };
-    },
-    computed: {
-      summary: function summary() {
-        return this.summarise(this.$store.getters.journey);
-      },
-      cost: function cost() {
-        return this.costFn(this.$store.getters.journey);
-      },
-      emissions: function emissions() {
-        return this.co2Fn(this.$store.getters.journey);
-      },
-      shouldDisplay: function shouldDisplay() {
-        return this.displayFn(this.$store.getters.journey);
-      },
-      mapsURL: function mapsURL() {
-        var _this$$store$state = this.$store.state,
-            _this$$store$state$so = _this$$store$state.sourceDetails,
-            srcOptions = _this$$store$state$so.options,
-            selectedSrc = _this$$store$state$so.selected,
-            _this$$store$state$de = _this$$store$state.destinationDetails,
-            destOptions = _this$$store$state$de.options,
-            selectedDest = _this$$store$state$de.selected;
-        var srcLngLat = srcOptions[selectedSrc].lngLat;
-        var destLngLat = destOptions[selectedDest].lngLat;
-        return "https://www.google.com/maps/dir/?api=1&origin=".concat(srcLngLat[1], ",").concat(srcLngLat[0], "&destination=").concat(destLngLat[1], ",").concat(destLngLat[0], "&travelmode=");
-      }
-    },
-    methods: {
-      toggleView: function toggleView() {
-        var currentState = this.viewState;
-        this.viewState = currentState === 'open' ? 'closed' : 'open';
-      }
+  var UNSCOPABLES = wellKnownSymbol('unscopables');
+  var ArrayPrototype = Array.prototype;
+
+  // Array.prototype[@@unscopables]
+  // https://tc39.github.io/ecma262/#sec-array.prototype-@@unscopables
+  if (ArrayPrototype[UNSCOPABLES] == undefined) {
+    objectDefineProperty.f(ArrayPrototype, UNSCOPABLES, {
+      configurable: true,
+      value: objectCreate(null)
+    });
+  }
+
+  // add a key to Array.prototype[@@unscopables]
+  var addToUnscopables = function (key) {
+    ArrayPrototype[UNSCOPABLES][key] = true;
+  };
+
+  var iterators = {};
+
+  var correctPrototypeGetter = !fails(function () {
+    function F() { /* empty */ }
+    F.prototype.constructor = null;
+    return Object.getPrototypeOf(new F()) !== F.prototype;
+  });
+
+  var IE_PROTO$1 = sharedKey('IE_PROTO');
+  var ObjectPrototype = Object.prototype;
+
+  // `Object.getPrototypeOf` method
+  // https://tc39.github.io/ecma262/#sec-object.getprototypeof
+  var objectGetPrototypeOf = correctPrototypeGetter ? Object.getPrototypeOf : function (O) {
+    O = toObject(O);
+    if (has(O, IE_PROTO$1)) return O[IE_PROTO$1];
+    if (typeof O.constructor == 'function' && O instanceof O.constructor) {
+      return O.constructor.prototype;
+    } return O instanceof Object ? ObjectPrototype : null;
+  };
+
+  var ITERATOR = wellKnownSymbol('iterator');
+  var BUGGY_SAFARI_ITERATORS = false;
+
+  var returnThis = function () { return this; };
+
+  // `%IteratorPrototype%` object
+  // https://tc39.github.io/ecma262/#sec-%iteratorprototype%-object
+  var IteratorPrototype, PrototypeOfArrayIteratorPrototype, arrayIterator;
+
+  if ([].keys) {
+    arrayIterator = [].keys();
+    // Safari 8 has buggy iterators w/o `next`
+    if (!('next' in arrayIterator)) BUGGY_SAFARI_ITERATORS = true;
+    else {
+      PrototypeOfArrayIteratorPrototype = objectGetPrototypeOf(objectGetPrototypeOf(arrayIterator));
+      if (PrototypeOfArrayIteratorPrototype !== Object.prototype) IteratorPrototype = PrototypeOfArrayIteratorPrototype;
+    }
+  }
+
+  if (IteratorPrototype == undefined) IteratorPrototype = {};
+
+  // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
+  if ( !has(IteratorPrototype, ITERATOR)) {
+    createNonEnumerableProperty(IteratorPrototype, ITERATOR, returnThis);
+  }
+
+  var iteratorsCore = {
+    IteratorPrototype: IteratorPrototype,
+    BUGGY_SAFARI_ITERATORS: BUGGY_SAFARI_ITERATORS
+  };
+
+  var defineProperty$2 = objectDefineProperty.f;
+
+
+
+  var TO_STRING_TAG = wellKnownSymbol('toStringTag');
+
+  var setToStringTag = function (it, TAG, STATIC) {
+    if (it && !has(it = STATIC ? it : it.prototype, TO_STRING_TAG)) {
+      defineProperty$2(it, TO_STRING_TAG, { configurable: true, value: TAG });
     }
   };
 
-  /* script */
-  const __vue_script__$2 = script$2;
+  var IteratorPrototype$1 = iteratorsCore.IteratorPrototype;
 
-  /* template */
-  var __vue_render__$2 = function() {
-    var _vm = this;
-    var _h = _vm.$createElement;
-    var _c = _vm._self._c || _h;
-    return _vm.shouldDisplay
-      ? _c(
-          "section",
-          {
-            on: {
-              click: function($event) {
-                return _vm.toggleView()
-              }
-            }
-          },
-          [
-            _c("div", [
-              _vm.viewState === "closed"
-                ? _c("div", { staticClass: "open" }, [
-                    _vm._v("\n      more info\n    ")
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              _c("h3", [_vm._v(_vm._s(_vm.title))]),
-              _vm._v(" "),
-              _c("p", { domProps: { innerHTML: _vm._s(_vm.summary) } }),
-              _vm._v(" "),
-              _c("p", [_vm._v("£" + _vm._s(_vm.cost))]),
-              _vm._v(" "),
-              _vm.emissions
-                ? _c("p", [
-                    _vm._v("\n      " + _vm._s(_vm.emissions) + "kg CO"),
-                    _c("sub", [_vm._v("2")]),
-                    _vm._v(" emitted\n    ")
-                  ])
-                : _vm._e()
-            ]),
-            _vm._v(" "),
-            _vm.viewState === "open"
-              ? _c(_vm.details, { tag: "component" })
-              : _vm._e()
-          ],
-          1
-        )
-      : _vm._e()
+
+
+
+
+  var returnThis$1 = function () { return this; };
+
+  var createIteratorConstructor = function (IteratorConstructor, NAME, next) {
+    var TO_STRING_TAG = NAME + ' Iterator';
+    IteratorConstructor.prototype = objectCreate(IteratorPrototype$1, { next: createPropertyDescriptor(1, next) });
+    setToStringTag(IteratorConstructor, TO_STRING_TAG, false);
+    iterators[TO_STRING_TAG] = returnThis$1;
+    return IteratorConstructor;
   };
-  var __vue_staticRenderFns__$2 = [];
-  __vue_render__$2._withStripped = true;
 
-    /* style */
-    const __vue_inject_styles__$2 = function (inject) {
-      if (!inject) return
-      inject("data-v-86f8c432_0", { source: "\n.open[data-v-86f8c432] {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/ModeOfTransport.vue"],"names":[],"mappings":";AA0BA;EACA,qBAAA;EACA,YAAA;EACA,kBAAA;EACA,kBAAA;AACA","file":"ModeOfTransport.vue","sourcesContent":["<template>\n  <section\n    v-if=\"shouldDisplay\"\n    @click=\"toggleView()\"\n  >\n    <div>\n      <div\n        v-if=\"viewState ==='closed'\"\n        class=\"open\"\n      >\n        more info\n      </div>\n      <h3>{{ title }}</h3>\n      <p v-html=\"summary\" />\n      <p>£{{ cost }}</p>\n      <p v-if=\"emissions\">\n        {{ emissions }}kg CO<sub>2</sub> emitted\n      </p>\n    </div>\n    <component\n      :is=\"details\"\n      v-if=\"viewState ==='open'\"\n    />\n  </section>  \n</template>\n<style scoped>\n.open {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n</style>\n<script>\nexport default {\n  props: {\n    title: {\n      type: String,\n      required: true,\n    },\n    details: {\n      type: Object,\n      required: false,\n      default: () => {},\n    },\n    summarise: {\n      type: Function,\n      default: () => () => null,\n    },\n    costFn: {\n      type: Function,\n      required: true,\n    },\n    co2Fn: {\n      type: Function,\n      default: () => () => 0,\n    },\n    displayFn: {\n      type: Function,\n      default: () => () => true,\n    },\n  },\n  data: function () {\n    return {\n      viewState: 'closed',\n    };\n  },\n  computed: {\n    summary() {\n      return this.summarise(this.$store.getters.journey);\n    },\n    cost() {\n      return this.costFn(this.$store.getters.journey);\n    },\n    emissions() {\n      return this.co2Fn(this.$store.getters.journey);\n    },\n    shouldDisplay() {\n      return this.displayFn(this.$store.getters.journey);\n    },\n    mapsURL() {\n      const {\n        sourceDetails: { options: srcOptions, selected: selectedSrc },\n        destinationDetails: { options: destOptions, selected: selectedDest },\n      } = this.$store.state;\n      const srcLngLat = srcOptions[selectedSrc].lngLat;\n      const destLngLat = destOptions[selectedDest].lngLat;\n      return `https://www.google.com/maps/dir/?api=1&origin=${srcLngLat[1]},${srcLngLat[0]}&destination=${destLngLat[1]},${destLngLat[0]}&travelmode=`;\n    },\n  },\n  methods: {\n    toggleView() {\n      const currentState = this.viewState;\n      this.viewState = currentState === 'open' ? 'closed' : 'open';\n    },\n  },\n};\n</script>"]}, media: undefined });
+  var IteratorPrototype$2 = iteratorsCore.IteratorPrototype;
+  var BUGGY_SAFARI_ITERATORS$1 = iteratorsCore.BUGGY_SAFARI_ITERATORS;
+  var ITERATOR$1 = wellKnownSymbol('iterator');
+  var KEYS = 'keys';
+  var VALUES = 'values';
+  var ENTRIES = 'entries';
 
+  var returnThis$2 = function () { return this; };
+
+  var defineIterator = function (Iterable, NAME, IteratorConstructor, next, DEFAULT, IS_SET, FORCED) {
+    createIteratorConstructor(IteratorConstructor, NAME, next);
+
+    var getIterationMethod = function (KIND) {
+      if (KIND === DEFAULT && defaultIterator) return defaultIterator;
+      if (!BUGGY_SAFARI_ITERATORS$1 && KIND in IterablePrototype) return IterablePrototype[KIND];
+      switch (KIND) {
+        case KEYS: return function keys() { return new IteratorConstructor(this, KIND); };
+        case VALUES: return function values() { return new IteratorConstructor(this, KIND); };
+        case ENTRIES: return function entries() { return new IteratorConstructor(this, KIND); };
+      } return function () { return new IteratorConstructor(this); };
     };
-    /* scoped */
-    const __vue_scope_id__$2 = "data-v-86f8c432";
-    /* module identifier */
-    const __vue_module_identifier__$2 = undefined;
-    /* functional template */
-    const __vue_is_functional_template__$2 = false;
-    /* style inject SSR */
-    
-    /* style inject shadow dom */
-    
 
-    
-    const __vue_component__$2 = /*#__PURE__*/normalizeComponent(
-      { render: __vue_render__$2, staticRenderFns: __vue_staticRenderFns__$2 },
-      __vue_inject_styles__$2,
-      __vue_script__$2,
-      __vue_scope_id__$2,
-      __vue_is_functional_template__$2,
-      __vue_module_identifier__$2,
-      false,
-      createInjector,
-      undefined,
-      undefined
-    );
+    var TO_STRING_TAG = NAME + ' Iterator';
+    var INCORRECT_VALUES_NAME = false;
+    var IterablePrototype = Iterable.prototype;
+    var nativeIterator = IterablePrototype[ITERATOR$1]
+      || IterablePrototype['@@iterator']
+      || DEFAULT && IterablePrototype[DEFAULT];
+    var defaultIterator = !BUGGY_SAFARI_ITERATORS$1 && nativeIterator || getIterationMethod(DEFAULT);
+    var anyNativeIterator = NAME == 'Array' ? IterablePrototype.entries || nativeIterator : nativeIterator;
+    var CurrentIteratorPrototype, methods, KEY;
 
-  //
-  var script$3 = {
-    components: {
-      SearchForm: __vue_component__$1,
-      ModeOfTransport: __vue_component__$2
-    },
-    props: {
-      modes: {
-        type: Array,
-        "default": function _default() {
-          return [];
+    // fix native
+    if (anyNativeIterator) {
+      CurrentIteratorPrototype = objectGetPrototypeOf(anyNativeIterator.call(new Iterable()));
+      if (IteratorPrototype$2 !== Object.prototype && CurrentIteratorPrototype.next) {
+        if ( objectGetPrototypeOf(CurrentIteratorPrototype) !== IteratorPrototype$2) {
+          if (objectSetPrototypeOf) {
+            objectSetPrototypeOf(CurrentIteratorPrototype, IteratorPrototype$2);
+          } else if (typeof CurrentIteratorPrototype[ITERATOR$1] != 'function') {
+            createNonEnumerableProperty(CurrentIteratorPrototype, ITERATOR$1, returnThis$2);
+          }
         }
-      },
-      rawModes: {
-        type: Array,
-        "default": function _default() {
-          return [];
-        }
+        // Set @@toStringTag to native iterators
+        setToStringTag(CurrentIteratorPrototype, TO_STRING_TAG, true);
       }
-    },
-    computed: {
-      showModes: function showModes() {
-        if (this.$store.state.driving != null) return true;else return false;
-      }
-    } // created() {
-    //   this.$store.dispatch('getCouncilLocations');
-    // },
-
-  };
-
-  /* script */
-  const __vue_script__$3 = script$3;
-
-  /* template */
-  var __vue_render__$3 = function() {
-    var _vm = this;
-    var _h = _vm.$createElement;
-    var _c = _vm._self._c || _h;
-    return _c("article", { attrs: { id: "app" } }, [
-      _vm._m(0),
-      _vm._v(" "),
-      _c("div", { attrs: { id: "main" } }, [
-        _c(
-          "section",
-          [
-            _c("p", [
-              _vm._v(
-                "This tool shows you the greenest and most efficient way to make your journey. Reduce your emissions to help tackle the #ClimateEmergency."
-              )
-            ]),
-            _vm._v(" "),
-            _c("search-form")
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _vm.showModes
-          ? _c(
-              "ol",
-              { staticClass: "modes" },
-              _vm._l(_vm.modes, function(mode, i) {
-                return _c(
-                  "li",
-                  { key: i, class: "mode" + (i + 1) },
-                  [
-                    _c(
-                      "mode-of-transport",
-                      _vm._b({}, "mode-of-transport", mode, false)
-                    )
-                  ],
-                  1
-                )
-              }),
-              0
-            )
-          : _vm._e()
-      ])
-    ])
-  };
-  var __vue_staticRenderFns__$3 = [
-    function() {
-      var _vm = this;
-      var _h = _vm.$createElement;
-      var _c = _vm._self._c || _h;
-      return _c("header", [
-        _c("p", [_vm._v("Find the greenest way to get to your meeting")]),
-        _vm._v(" "),
-        _c("h1", [_vm._v("Staff Travel Options")]),
-        _vm._v(" "),
-        _c("img", { attrs: { src: "img/lcc.png", width: "224px" } })
-      ])
     }
-  ];
-  __vue_render__$3._withStripped = true;
 
-    /* style */
-    const __vue_inject_styles__$3 = undefined;
-    /* scoped */
-    const __vue_scope_id__$3 = undefined;
-    /* module identifier */
-    const __vue_module_identifier__$3 = undefined;
-    /* functional template */
-    const __vue_is_functional_template__$3 = false;
-    /* style inject */
-    
-    /* style inject SSR */
-    
-    /* style inject shadow dom */
-    
+    // fix Array#{values, @@iterator}.name in V8 / FF
+    if (DEFAULT == VALUES && nativeIterator && nativeIterator.name !== VALUES) {
+      INCORRECT_VALUES_NAME = true;
+      defaultIterator = function values() { return nativeIterator.call(this); };
+    }
 
-    
-    const __vue_component__$3 = /*#__PURE__*/normalizeComponent(
-      { render: __vue_render__$3, staticRenderFns: __vue_staticRenderFns__$3 },
-      __vue_inject_styles__$3,
-      __vue_script__$3,
-      __vue_scope_id__$3,
-      __vue_is_functional_template__$3,
-      __vue_module_identifier__$3,
-      false,
-      undefined,
-      undefined,
-      undefined
-    );
+    // define iterator
+    if ( IterablePrototype[ITERATOR$1] !== defaultIterator) {
+      createNonEnumerableProperty(IterablePrototype, ITERATOR$1, defaultIterator);
+    }
+    iterators[NAME] = defaultIterator;
+
+    // export additional methods
+    if (DEFAULT) {
+      methods = {
+        values: getIterationMethod(VALUES),
+        keys: IS_SET ? defaultIterator : getIterationMethod(KEYS),
+        entries: getIterationMethod(ENTRIES)
+      };
+      if (FORCED) for (KEY in methods) {
+        if (BUGGY_SAFARI_ITERATORS$1 || INCORRECT_VALUES_NAME || !(KEY in IterablePrototype)) {
+          redefine(IterablePrototype, KEY, methods[KEY]);
+        }
+      } else _export({ target: NAME, proto: true, forced: BUGGY_SAFARI_ITERATORS$1 || INCORRECT_VALUES_NAME }, methods);
+    }
+
+    return methods;
+  };
+
+  var ARRAY_ITERATOR = 'Array Iterator';
+  var setInternalState = internalState.set;
+  var getInternalState = internalState.getterFor(ARRAY_ITERATOR);
+
+  // `Array.prototype.entries` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.entries
+  // `Array.prototype.keys` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.keys
+  // `Array.prototype.values` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.values
+  // `Array.prototype[@@iterator]` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype-@@iterator
+  // `CreateArrayIterator` internal method
+  // https://tc39.github.io/ecma262/#sec-createarrayiterator
+  var es_array_iterator = defineIterator(Array, 'Array', function (iterated, kind) {
+    setInternalState(this, {
+      type: ARRAY_ITERATOR,
+      target: toIndexedObject(iterated), // target
+      index: 0,                          // next index
+      kind: kind                         // kind
+    });
+  // `%ArrayIteratorPrototype%.next` method
+  // https://tc39.github.io/ecma262/#sec-%arrayiteratorprototype%.next
+  }, function () {
+    var state = getInternalState(this);
+    var target = state.target;
+    var kind = state.kind;
+    var index = state.index++;
+    if (!target || index >= target.length) {
+      state.target = undefined;
+      return { value: undefined, done: true };
+    }
+    if (kind == 'keys') return { value: index, done: false };
+    if (kind == 'values') return { value: target[index], done: false };
+    return { value: [index, target[index]], done: false };
+  }, 'values');
+
+  // argumentsList[@@iterator] is %ArrayProto_values%
+  // https://tc39.github.io/ecma262/#sec-createunmappedargumentsobject
+  // https://tc39.github.io/ecma262/#sec-createmappedargumentsobject
+  iterators.Arguments = iterators.Array;
+
+  // https://tc39.github.io/ecma262/#sec-array.prototype-@@unscopables
+  addToUnscopables('keys');
+  addToUnscopables('values');
+  addToUnscopables('entries');
+
+  var aFunction$1 = function (it) {
+    if (typeof it != 'function') {
+      throw TypeError(String(it) + ' is not a function');
+    } return it;
+  };
+
+  // optional / simple context binding
+  var functionBindContext = function (fn, that, length) {
+    aFunction$1(fn);
+    if (that === undefined) return fn;
+    switch (length) {
+      case 0: return function () {
+        return fn.call(that);
+      };
+      case 1: return function (a) {
+        return fn.call(that, a);
+      };
+      case 2: return function (a, b) {
+        return fn.call(that, a, b);
+      };
+      case 3: return function (a, b, c) {
+        return fn.call(that, a, b, c);
+      };
+    }
+    return function (/* ...args */) {
+      return fn.apply(that, arguments);
+    };
+  };
+
+  var push = [].push;
+
+  // `Array.prototype.{ forEach, map, filter, some, every, find, findIndex }` methods implementation
+  var createMethod$2 = function (TYPE) {
+    var IS_MAP = TYPE == 1;
+    var IS_FILTER = TYPE == 2;
+    var IS_SOME = TYPE == 3;
+    var IS_EVERY = TYPE == 4;
+    var IS_FIND_INDEX = TYPE == 6;
+    var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
+    return function ($this, callbackfn, that, specificCreate) {
+      var O = toObject($this);
+      var self = indexedObject(O);
+      var boundFunction = functionBindContext(callbackfn, that, 3);
+      var length = toLength(self.length);
+      var index = 0;
+      var create = specificCreate || arraySpeciesCreate;
+      var target = IS_MAP ? create($this, length) : IS_FILTER ? create($this, 0) : undefined;
+      var value, result;
+      for (;length > index; index++) if (NO_HOLES || index in self) {
+        value = self[index];
+        result = boundFunction(value, index, O);
+        if (TYPE) {
+          if (IS_MAP) target[index] = result; // map
+          else if (result) switch (TYPE) {
+            case 3: return true;              // some
+            case 5: return value;             // find
+            case 6: return index;             // findIndex
+            case 2: push.call(target, value); // filter
+          } else if (IS_EVERY) return false;  // every
+        }
+      }
+      return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : target;
+    };
+  };
+
+  var arrayIteration = {
+    // `Array.prototype.forEach` method
+    // https://tc39.github.io/ecma262/#sec-array.prototype.foreach
+    forEach: createMethod$2(0),
+    // `Array.prototype.map` method
+    // https://tc39.github.io/ecma262/#sec-array.prototype.map
+    map: createMethod$2(1),
+    // `Array.prototype.filter` method
+    // https://tc39.github.io/ecma262/#sec-array.prototype.filter
+    filter: createMethod$2(2),
+    // `Array.prototype.some` method
+    // https://tc39.github.io/ecma262/#sec-array.prototype.some
+    some: createMethod$2(3),
+    // `Array.prototype.every` method
+    // https://tc39.github.io/ecma262/#sec-array.prototype.every
+    every: createMethod$2(4),
+    // `Array.prototype.find` method
+    // https://tc39.github.io/ecma262/#sec-array.prototype.find
+    find: createMethod$2(5),
+    // `Array.prototype.findIndex` method
+    // https://tc39.github.io/ecma262/#sec-array.prototype.findIndex
+    findIndex: createMethod$2(6)
+  };
+
+  var defineProperty$3 = Object.defineProperty;
+  var cache = {};
+
+  var thrower = function (it) { throw it; };
+
+  var arrayMethodUsesToLength = function (METHOD_NAME, options) {
+    if (has(cache, METHOD_NAME)) return cache[METHOD_NAME];
+    if (!options) options = {};
+    var method = [][METHOD_NAME];
+    var ACCESSORS = has(options, 'ACCESSORS') ? options.ACCESSORS : false;
+    var argument0 = has(options, 0) ? options[0] : thrower;
+    var argument1 = has(options, 1) ? options[1] : undefined;
+
+    return cache[METHOD_NAME] = !!method && !fails(function () {
+      if (ACCESSORS && !descriptors) return true;
+      var O = { length: -1 };
+
+      if (ACCESSORS) defineProperty$3(O, 1, { enumerable: true, get: thrower });
+      else O[1] = 1;
+
+      method.call(O, argument0, argument1);
+    });
+  };
+
+  var $map = arrayIteration.map;
+
+
+
+  var HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('map');
+  // FF49- issue
+  var USES_TO_LENGTH = arrayMethodUsesToLength('map');
+
+  // `Array.prototype.map` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.map
+  // with adding support of @@species
+  _export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT || !USES_TO_LENGTH }, {
+    map: function map(callbackfn /* , thisArg */) {
+      return $map(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+    }
+  });
+
+  var TO_STRING_TAG$1 = wellKnownSymbol('toStringTag');
+  var test = {};
+
+  test[TO_STRING_TAG$1] = 'z';
+
+  var toStringTagSupport = String(test) === '[object z]';
+
+  var TO_STRING_TAG$2 = wellKnownSymbol('toStringTag');
+  // ES3 wrong here
+  var CORRECT_ARGUMENTS = classofRaw(function () { return arguments; }()) == 'Arguments';
+
+  // fallback for IE11 Script Access Denied error
+  var tryGet = function (it, key) {
+    try {
+      return it[key];
+    } catch (error) { /* empty */ }
+  };
+
+  // getting tag from ES6+ `Object.prototype.toString`
+  var classof = toStringTagSupport ? classofRaw : function (it) {
+    var O, tag, result;
+    return it === undefined ? 'Undefined' : it === null ? 'Null'
+      // @@toStringTag case
+      : typeof (tag = tryGet(O = Object(it), TO_STRING_TAG$2)) == 'string' ? tag
+      // builtinTag case
+      : CORRECT_ARGUMENTS ? classofRaw(O)
+      // ES3 arguments fallback
+      : (result = classofRaw(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : result;
+  };
+
+  // `Object.prototype.toString` method implementation
+  // https://tc39.github.io/ecma262/#sec-object.prototype.tostring
+  var objectToString = toStringTagSupport ? {}.toString : function toString() {
+    return '[object ' + classof(this) + ']';
+  };
+
+  // `Object.prototype.toString` method
+  // https://tc39.github.io/ecma262/#sec-object.prototype.tostring
+  if (!toStringTagSupport) {
+    redefine(Object.prototype, 'toString', objectToString, { unsafe: true });
+  }
+
+  var trim$1 = stringTrim.trim;
+
+
+  var $parseInt = global_1.parseInt;
+  var hex = /^[+-]?0[Xx]/;
+  var FORCED$1 = $parseInt(whitespaces + '08') !== 8 || $parseInt(whitespaces + '0x16') !== 22;
+
+  // `parseInt` method
+  // https://tc39.github.io/ecma262/#sec-parseint-string-radix
+  var numberParseInt = FORCED$1 ? function parseInt(string, radix) {
+    var S = trim$1(String(string));
+    return $parseInt(S, (radix >>> 0) || (hex.test(S) ? 16 : 10));
+  } : $parseInt;
+
+  // `parseInt` method
+  // https://tc39.github.io/ecma262/#sec-parseint-string-radix
+  _export({ global: true, forced: parseInt != numberParseInt }, {
+    parseInt: numberParseInt
+  });
+
+  // iterable DOM collections
+  // flag - `iterable` interface - 'entries', 'keys', 'values', 'forEach' methods
+  var domIterables = {
+    CSSRuleList: 0,
+    CSSStyleDeclaration: 0,
+    CSSValueList: 0,
+    ClientRectList: 0,
+    DOMRectList: 0,
+    DOMStringList: 0,
+    DOMTokenList: 1,
+    DataTransferItemList: 0,
+    FileList: 0,
+    HTMLAllCollection: 0,
+    HTMLCollection: 0,
+    HTMLFormElement: 0,
+    HTMLSelectElement: 0,
+    MediaList: 0,
+    MimeTypeArray: 0,
+    NamedNodeMap: 0,
+    NodeList: 1,
+    PaintRequestList: 0,
+    Plugin: 0,
+    PluginArray: 0,
+    SVGLengthList: 0,
+    SVGNumberList: 0,
+    SVGPathSegList: 0,
+    SVGPointList: 0,
+    SVGStringList: 0,
+    SVGTransformList: 0,
+    SourceBufferList: 0,
+    StyleSheetList: 0,
+    TextTrackCueList: 0,
+    TextTrackList: 0,
+    TouchList: 0
+  };
+
+  var ITERATOR$2 = wellKnownSymbol('iterator');
+  var TO_STRING_TAG$3 = wellKnownSymbol('toStringTag');
+  var ArrayValues = es_array_iterator.values;
+
+  for (var COLLECTION_NAME in domIterables) {
+    var Collection = global_1[COLLECTION_NAME];
+    var CollectionPrototype = Collection && Collection.prototype;
+    if (CollectionPrototype) {
+      // some Chrome versions have non-configurable methods on DOMTokenList
+      if (CollectionPrototype[ITERATOR$2] !== ArrayValues) try {
+        createNonEnumerableProperty(CollectionPrototype, ITERATOR$2, ArrayValues);
+      } catch (error) {
+        CollectionPrototype[ITERATOR$2] = ArrayValues;
+      }
+      if (!CollectionPrototype[TO_STRING_TAG$3]) {
+        createNonEnumerableProperty(CollectionPrototype, TO_STRING_TAG$3, COLLECTION_NAME);
+      }
+      if (domIterables[COLLECTION_NAME]) for (var METHOD_NAME in es_array_iterator) {
+        // some Chrome versions have non-configurable methods on DOMTokenList
+        if (CollectionPrototype[METHOD_NAME] !== es_array_iterator[METHOD_NAME]) try {
+          createNonEnumerableProperty(CollectionPrototype, METHOD_NAME, es_array_iterator[METHOD_NAME]);
+        } catch (error) {
+          CollectionPrototype[METHOD_NAME] = es_array_iterator[METHOD_NAME];
+        }
+      }
+    }
+  }
+
+  function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+    try {
+      var info = gen[key](arg);
+      var value = info.value;
+    } catch (error) {
+      reject(error);
+      return;
+    }
+
+    if (info.done) {
+      resolve(value);
+    } else {
+      Promise.resolve(value).then(_next, _throw);
+    }
+  }
+
+  function _asyncToGenerator(fn) {
+    return function () {
+      var self = this,
+          args = arguments;
+      return new Promise(function (resolve, reject) {
+        var gen = fn.apply(self, args);
+
+        function _next(value) {
+          asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+        }
+
+        function _throw(err) {
+          asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+        }
+
+        _next(undefined);
+      });
+    };
+  }
+
+  function _defineProperty(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
+  }
+
+  function ownKeys$1(object, enumerableOnly) {
+    var keys = Object.keys(object);
+
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(object);
+      if (enumerableOnly) symbols = symbols.filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      });
+      keys.push.apply(keys, symbols);
+    }
+
+    return keys;
+  }
+
+  function _objectSpread2(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+
+      if (i % 2) {
+        ownKeys$1(Object(source), true).forEach(function (key) {
+          _defineProperty(target, key, source[key]);
+        });
+      } else if (Object.getOwnPropertyDescriptors) {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+      } else {
+        ownKeys$1(Object(source)).forEach(function (key) {
+          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
+      }
+    }
+
+    return target;
+  }
+
+  function _slicedToArray(arr, i) {
+    return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+  }
+
+  function _toArray(arr) {
+    return _arrayWithHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableRest();
+  }
+
+  function _toConsumableArray(arr) {
+    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+  }
+
+  function _arrayWithoutHoles(arr) {
+    if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+  }
+
+  function _arrayWithHoles(arr) {
+    if (Array.isArray(arr)) return arr;
+  }
+
+  function _iterableToArray(iter) {
+    if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
+  }
+
+  function _iterableToArrayLimit(arr, i) {
+    if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;
+    var _arr = [];
+    var _n = true;
+    var _d = false;
+    var _e = undefined;
+
+    try {
+      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+        _arr.push(_s.value);
+
+        if (i && _arr.length === i) break;
+      }
+    } catch (err) {
+      _d = true;
+      _e = err;
+    } finally {
+      try {
+        if (!_n && _i["return"] != null) _i["return"]();
+      } finally {
+        if (_d) throw _e;
+      }
+    }
+
+    return _arr;
+  }
+
+  function _unsupportedIterableToArray(o, minLen) {
+    if (!o) return;
+    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === "Object" && o.constructor) n = o.constructor.name;
+    if (n === "Map" || n === "Set") return Array.from(n);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+  }
+
+  function _arrayLikeToArray(arr, len) {
+    if (len == null || len > arr.length) len = arr.length;
+
+    for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+
+    return arr2;
+  }
+
+  function _nonIterableSpread() {
+    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+
+  function _nonIterableRest() {
+    throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
 
   // `thisNumberValue` abstract operation
   // https://tc39.github.io/ecma262/#sec-thisnumbervalue
@@ -2027,7 +2346,7 @@
     } return n;
   };
 
-  var FORCED$1 = nativeToFixed && (
+  var FORCED$2 = nativeToFixed && (
     0.00008.toFixed(3) !== '0.000' ||
     0.9.toFixed(0) !== '1' ||
     1.255.toFixed(2) !== '1.25' ||
@@ -2039,7 +2358,7 @@
 
   // `Number.prototype.toFixed` method
   // https://tc39.github.io/ecma262/#sec-number.prototype.tofixed
-  _export({ target: 'Number', proto: true, forced: FORCED$1 }, {
+  _export({ target: 'Number', proto: true, forced: FORCED$2 }, {
     // eslint-disable-next-line max-statements
     toFixed: function toFixed(fractionDigits) {
       var number = thisNumberValue(this);
@@ -2127,10 +2446,448 @@
     }
   });
 
+  var formatTime = function formatTime(value) {
+    value = Math.round(Number(value));
+    if (value < 60) return "".concat(value.toFixed(0), " minutes");else {
+      var hours = Math.floor(value / 60);
+      var mins = (value % 60).toFixed(0);
+      if (hours == 1) return "".concat(hours, " hour ").concat(mins, " minutes");else return "".concat(hours, " hours ").concat(mins, " minutes");
+    }
+  };
+
+  var UNKNOWN_DURATION = 10;
+
+  var script$2 = {
+    props: {
+      values: {
+        type: Array,
+        required: true
+      }
+    },
+    computed: _objectSpread2({
+      segments: function segments() {
+        var _this = this;
+
+        return this.values.map(function (x) {
+          return {
+            duration: x ? formatTime(x) : '',
+            style: "width: ".concat(parseInt(100 * (x || UNKNOWN_DURATION) / _this.maxDuration), "%;"),
+            "class": x ? undefined : 'unknown'
+          };
+        });
+      }
+    }, Vuex.mapState(['maxDuration']))
+  };
+
   /* script */
+  const __vue_script__$2 = script$2;
+
+  /* template */
+  var __vue_render__$2 = function() {
+    var _vm = this;
+    var _h = _vm.$createElement;
+    var _c = _vm._self._c || _h;
+    return _c("section", { staticClass: "timeline" }, [
+      _c(
+        "ol",
+        [
+          _vm._l(_vm.segments, function(segment, idx) {
+            return _c(
+              "li",
+              { key: idx, class: segment.class, style: segment.style },
+              [
+                _c("span", { staticClass: "marker" }),
+                _vm._v(" "),
+                _c("p", { staticClass: "value" }, [
+                  _vm._v("\n        " + _vm._s(segment.duration) + "\n      ")
+                ])
+              ]
+            )
+          }),
+          _vm._v(" "),
+          _vm._m(0)
+        ],
+        2
+      )
+    ])
+  };
+  var __vue_staticRenderFns__$2 = [
+    function() {
+      var _vm = this;
+      var _h = _vm.$createElement;
+      var _c = _vm._self._c || _h;
+      return _c("li", { staticClass: "end" }, [
+        _c("span", { staticClass: "marker" })
+      ])
+    }
+  ];
+  __vue_render__$2._withStripped = true;
+
+    /* style */
+    const __vue_inject_styles__$2 = function (inject) {
+      if (!inject) return
+      inject("data-v-77b1b2ea_0", { source: ".timeline[data-v-77b1b2ea] {\n  height: 4em;\n  margin: 17px 20px;\n  padding-top: 1em;\n}\n.timeline ol[data-v-77b1b2ea] {\n  display: flex;\n  list-style: none;\n  padding: 0;\n}\n.timeline ol > li[data-v-77b1b2ea] {\n  border-bottom: 6px solid black;\n  position: relative;\n}\n.timeline ol > li.unknown[data-v-77b1b2ea] {\n  border-bottom-style: dotted;\n}\n.timeline ol > li.end[data-v-77b1b2ea] {\n  border-bottom-style: none;\n}\n.timeline ol > li p[data-v-77b1b2ea] {\n  position: absolute;\n  display: block;\n  width: 100%;\n  text-align: center;\n}\n.timeline ol > li p.value[data-v-77b1b2ea] {\n  top: 0.5em;\n  font-size: 1.5em;\n}\n.timeline ol > li p.title[data-v-77b1b2ea] {\n  top: 2.5em;\n}\n.timeline ol > li .marker[data-v-77b1b2ea] {\n  box-sizing: border-box;\n  width: 26px;\n  height: 26px;\n  border-radius: 13px;\n  display: block;\n  border: 6px solid black;\n  background: white;\n  position: absolute;\n  top: -10px;\n  left: -13px;\n}\n\n/*# sourceMappingURL=Timeline.vue.map */", map: {"version":3,"sources":["/Users/gilesdring/src/opnprd/greymiles/src/components/Timeline.vue","Timeline.vue"],"names":[],"mappings":"AAiDA;EACA,WAAA;EACA,iBAAA;EACA,gBAAA;AChDA;ADiDA;EACA,aAAA;EACA,gBAAA;EACA,UAAA;AC/CA;ADgDA;EACA,8BAAA;EACA,kBAAA;AC9CA;AD+CA;EACA,2BAAA;AC7CA;AD+CA;EACA,yBAAA;AC7CA;AD+CA;EACA,kBAAA;EACA,cAAA;EACA,WAAA;EACA,kBAAA;AC7CA;AD8CA;EACA,UAAA;EACA,gBAAA;AC5CA;AD8CA;EACA,UAAA;AC5CA;AD+CA;EACA,sBAAA;EACA,WAjCA;EAkCA,YAlCA;EAmCA,mBAAA;EACA,cAAA;EACA,uBAAA;EACA,iBAAA;EACA,kBAAA;EACA,UAAA;EACA,WAAA;AC7CA;;AAEA,uCAAuC","file":"Timeline.vue","sourcesContent":["<template>\n  <section class=\"timeline\">\n    <ol>\n      <li\n        v-for=\"(segment, idx) in segments\"\n        :key=\"idx\"\n        :style=\"segment.style\"\n        :class=\"segment.class\"\n      >\n        <span class=\"marker\" />\n        <p class=\"value\">\n          {{ segment.duration }}\n        </p>\n      </li>\n      <li class=\"end\">\n        <span class=\"marker\" />\n      </li>\n    </ol>\n  </section>\n</template>\n<script>\nimport { mapState } from 'vuex';\nimport { formatTime } from '../utils/formatTime.js';\nimport { UNKNOWN_DURATION } from '../constants';\n\nexport default {\n  props: {\n    values: {\n      type: Array,\n      required: true,\n    },\n  },\n  computed: {\n    segments() {\n      return this.values.map(x => ({\n        duration: x ? formatTime(x) : '',\n        style: `width: ${parseInt(100 * (x || UNKNOWN_DURATION)/this.maxDuration)}%;`,\n        class: x ? undefined : 'unknown',\n      }));\n    },\n    ...mapState([\n      'maxDuration',\n    ]),\n  },\n};\n</script>\n<style lang=\"scss\" scoped>\n$line-weight: 6px;\n$marker-size: 26px;\n.timeline {\n  height: 4em;\n  margin: 17px 20px;\n  padding-top: 1em;\n  ol {\n    display: flex;\n    list-style: none;\n    padding: 0;\n    > li {\n      border-bottom: $line-weight solid black;\n      position: relative;\n      &.unknown {\n        border-bottom-style: dotted;\n      }\n      &.end {\n        border-bottom-style: none;\n      }\n      p {\n        position: absolute;\n        display: block;\n        width: 100%;\n        text-align: center;\n        &.value {\n          top: 0.5em;\n          font-size: 1.5em;\n        }\n        &.title {\n          top: 2.5em;\n        }\n      }\n      .marker {\n        box-sizing: border-box;\n        width: $marker-size;\n        height: $marker-size;\n        border-radius: $marker-size/2;\n        display: block;\n        border: $line-weight solid black;\n        background: white;\n        position: absolute; \n        top: -#{((($marker-size - $line-weight)/2))};\n        left: -#{(($marker-size/2))};\n      }\n    }\n  }\n}\n</style>",".timeline {\n  height: 4em;\n  margin: 17px 20px;\n  padding-top: 1em;\n}\n.timeline ol {\n  display: flex;\n  list-style: none;\n  padding: 0;\n}\n.timeline ol > li {\n  border-bottom: 6px solid black;\n  position: relative;\n}\n.timeline ol > li.unknown {\n  border-bottom-style: dotted;\n}\n.timeline ol > li.end {\n  border-bottom-style: none;\n}\n.timeline ol > li p {\n  position: absolute;\n  display: block;\n  width: 100%;\n  text-align: center;\n}\n.timeline ol > li p.value {\n  top: 0.5em;\n  font-size: 1.5em;\n}\n.timeline ol > li p.title {\n  top: 2.5em;\n}\n.timeline ol > li .marker {\n  box-sizing: border-box;\n  width: 26px;\n  height: 26px;\n  border-radius: 13px;\n  display: block;\n  border: 6px solid black;\n  background: white;\n  position: absolute;\n  top: -10px;\n  left: -13px;\n}\n\n/*# sourceMappingURL=Timeline.vue.map */"]}, media: undefined });
+
+    };
+    /* scoped */
+    const __vue_scope_id__$2 = "data-v-77b1b2ea";
+    /* module identifier */
+    const __vue_module_identifier__$2 = undefined;
+    /* functional template */
+    const __vue_is_functional_template__$2 = false;
+    /* style inject SSR */
+    
+    /* style inject shadow dom */
+    
+
+    
+    const __vue_component__$2 = normalizeComponent(
+      { render: __vue_render__$2, staticRenderFns: __vue_staticRenderFns__$2 },
+      __vue_inject_styles__$2,
+      __vue_script__$2,
+      __vue_scope_id__$2,
+      __vue_is_functional_template__$2,
+      __vue_module_identifier__$2,
+      false,
+      createInjector,
+      undefined,
+      undefined
+    );
+
+  var script$3 = {
+    components: {
+      DisplayTimeline: __vue_component__$2
+    },
+    props: {
+      title: {
+        type: String,
+        required: true
+      },
+      details: {
+        type: Object,
+        required: false,
+        "default": function _default() {}
+      },
+      summarise: {
+        type: Function,
+        "default": function _default() {
+          return function () {
+            return null;
+          };
+        }
+      },
+      costFn: {
+        type: Function,
+        required: true
+      },
+      co2Fn: {
+        type: Function,
+        "default": function _default() {
+          return function () {
+            return 0;
+          };
+        }
+      },
+      displayFn: {
+        type: Function,
+        "default": function _default() {
+          return function () {
+            return true;
+          };
+        }
+      },
+      timeFn: {
+        type: Function,
+        "default": function _default() {
+          return function () {
+            return 0;
+          };
+        }
+      }
+    },
+    data: function data() {
+      return {
+        viewState: 'closed'
+      };
+    },
+    computed: {
+      summary: function summary() {
+        return this.summarise(this.$store.getters.journey);
+      },
+      cost: function cost() {
+        return this.costFn(this.$store.getters.journey);
+      },
+      emissions: function emissions() {
+        return this.co2Fn(this.$store.getters.journey);
+      },
+      shouldDisplay: function shouldDisplay() {
+        return this.displayFn(this.$store.getters.journey);
+      },
+      mapsURL: function mapsURL() {
+        var _this$$store$state = this.$store.state,
+            _this$$store$state$so = _this$$store$state.sourceDetails,
+            srcOptions = _this$$store$state$so.options,
+            selectedSrc = _this$$store$state$so.selected,
+            _this$$store$state$de = _this$$store$state.destinationDetails,
+            destOptions = _this$$store$state$de.options,
+            selectedDest = _this$$store$state$de.selected;
+        var srcLngLat = srcOptions[selectedSrc].lngLat;
+        var destLngLat = destOptions[selectedDest].lngLat;
+        return "https://www.google.com/maps/dir/?api=1&origin=".concat(srcLngLat[1], ",").concat(srcLngLat[0], "&destination=").concat(destLngLat[1], ",").concat(destLngLat[0], "&travelmode=");
+      },
+      time: function time() {
+        var time = this.timeFn(this.$store.getters.journey);
+        return time;
+      }
+    },
+    mounted: function mounted() {
+      this.$store.dispatch('storeDuration', {
+        mode: this.title,
+        values: this.time
+      });
+    },
+    methods: {
+      toggleView: function toggleView() {
+        var currentState = this.viewState;
+        this.viewState = currentState === 'open' ? 'closed' : 'open';
+      }
+    }
+  };
+
+  /* script */
+  const __vue_script__$3 = script$3;
+
+  /* template */
+  var __vue_render__$3 = function() {
+    var _vm = this;
+    var _h = _vm.$createElement;
+    var _c = _vm._self._c || _h;
+    return _vm.shouldDisplay
+      ? _c(
+          "section",
+          {
+            on: {
+              click: function($event) {
+                return _vm.toggleView()
+              }
+            }
+          },
+          [
+            _c(
+              "div",
+              [
+                _vm.viewState === "closed"
+                  ? _c("div", { staticClass: "open" }, [
+                      _vm._v("\n      more info\n    ")
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("h3", [_vm._v(_vm._s(_vm.title))]),
+                _vm._v(" "),
+                _c("display-timeline", { attrs: { values: _vm.time } }),
+                _vm._v(" "),
+                _c("p", { domProps: { innerHTML: _vm._s(_vm.summary) } }),
+                _vm._v(" "),
+                _c("p", [_vm._v("£" + _vm._s(_vm.cost))]),
+                _vm._v(" "),
+                _vm.emissions
+                  ? _c("p", [
+                      _vm._v("\n      " + _vm._s(_vm.emissions) + "kg CO"),
+                      _c("sub", [_vm._v("2")]),
+                      _vm._v(" emitted\n    ")
+                    ])
+                  : _vm._e()
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _vm.viewState === "open"
+              ? _c(_vm.details, { tag: "component" })
+              : _vm._e()
+          ],
+          1
+        )
+      : _vm._e()
+  };
+  var __vue_staticRenderFns__$3 = [];
+  __vue_render__$3._withStripped = true;
+
+    /* style */
+    const __vue_inject_styles__$3 = function (inject) {
+      if (!inject) return
+      inject("data-v-7158cf97_0", { source: "\n.open[data-v-7158cf97] {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n", map: {"version":3,"sources":["/Users/gilesdring/src/opnprd/greymiles/src/components/ModeOfTransport.vue"],"names":[],"mappings":";AA4BA;EACA,qBAAA;EACA,YAAA;EACA,kBAAA;EACA,kBAAA;AACA","file":"ModeOfTransport.vue","sourcesContent":["<template>\n  <section\n    v-if=\"shouldDisplay\"\n    @click=\"toggleView()\"\n  >\n    <div>\n      <div\n        v-if=\"viewState ==='closed'\"\n        class=\"open\"\n      >\n        more info\n      </div>\n      <h3>{{ title }}</h3>\n      <display-timeline :values=\"time\" />\n      <!-- eslint-disable-next-line vue/no-v-html -->\n      <p v-html=\"summary\" />\n      <p>£{{ cost }}</p>\n      <p v-if=\"emissions\">\n        {{ emissions }}kg CO<sub>2</sub> emitted\n      </p>\n    </div>\n    <component\n      :is=\"details\"\n      v-if=\"viewState ==='open'\"\n    />\n  </section>  \n</template>\n<style scoped>\n.open {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n</style>\n<script>\nimport DisplayTimeline from './Timeline.vue';\nexport default {\n  components: {\n    DisplayTimeline,\n  },\n  props: {\n    title: {\n      type: String,\n      required: true,\n    },\n    details: {\n      type: Object,\n      required: false,\n      default: () => {},\n    },\n    summarise: {\n      type: Function,\n      default: () => () => null,\n    },\n    costFn: {\n      type: Function,\n      required: true,\n    },\n    co2Fn: {\n      type: Function,\n      default: () => () => 0,\n    },\n    displayFn: {\n      type: Function,\n      default: () => () => true,\n    },\n    timeFn: {\n      type: Function,\n      default: () => () => 0,\n    },\n  },\n  data: function () {\n    return {\n      viewState: 'closed',\n    };\n  },\n  computed: {\n    summary() {\n      return this.summarise(this.$store.getters.journey);\n    },\n    cost() {\n      return this.costFn(this.$store.getters.journey);\n    },\n    emissions() {\n      return this.co2Fn(this.$store.getters.journey);\n    },\n    shouldDisplay() {\n      return this.displayFn(this.$store.getters.journey);\n    },\n    mapsURL() {\n      const {\n        sourceDetails: { options: srcOptions, selected: selectedSrc },\n        destinationDetails: { options: destOptions, selected: selectedDest },\n      } = this.$store.state;\n      const srcLngLat = srcOptions[selectedSrc].lngLat;\n      const destLngLat = destOptions[selectedDest].lngLat;\n      return `https://www.google.com/maps/dir/?api=1&origin=${srcLngLat[1]},${srcLngLat[0]}&destination=${destLngLat[1]},${destLngLat[0]}&travelmode=`;\n    },\n    time() {\n      const time = this.timeFn(this.$store.getters.journey);\n      return time;\n    },\n  },\n  mounted() {\n    this.$store.dispatch('storeDuration', { mode: this.title, values: this.time });\n  },\n  methods: {\n    toggleView() {\n      const currentState = this.viewState;\n      this.viewState = currentState === 'open' ? 'closed' : 'open';\n    },\n    \n  },\n};\n</script>"]}, media: undefined });
+
+    };
+    /* scoped */
+    const __vue_scope_id__$3 = "data-v-7158cf97";
+    /* module identifier */
+    const __vue_module_identifier__$3 = undefined;
+    /* functional template */
+    const __vue_is_functional_template__$3 = false;
+    /* style inject SSR */
+    
+    /* style inject shadow dom */
+    
+
+    
+    const __vue_component__$3 = normalizeComponent(
+      { render: __vue_render__$3, staticRenderFns: __vue_staticRenderFns__$3 },
+      __vue_inject_styles__$3,
+      __vue_script__$3,
+      __vue_scope_id__$3,
+      __vue_is_functional_template__$3,
+      __vue_module_identifier__$3,
+      false,
+      createInjector,
+      undefined,
+      undefined
+    );
+
+  //
+  var script$4 = {
+    components: {
+      SearchForm: __vue_component__$1,
+      ModeOfTransport: __vue_component__$3
+    },
+    props: {
+      modes: {
+        type: Array,
+        "default": function _default() {
+          return [];
+        }
+      },
+      rawModes: {
+        type: Array,
+        "default": function _default() {
+          return [];
+        }
+      }
+    },
+    computed: {
+      showModes: function showModes() {
+        if (this.$store.state.driving != null) return true;else return false;
+      }
+    } // created() {
+    //   this.$store.dispatch('getCouncilLocations');
+    // },
+
+  };
+
+  /* script */
+  const __vue_script__$4 = script$4;
 
   /* template */
   var __vue_render__$4 = function() {
+    var _vm = this;
+    var _h = _vm.$createElement;
+    var _c = _vm._self._c || _h;
+    return _c("article", { attrs: { id: "app" } }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { attrs: { id: "main" } }, [
+        _c(
+          "section",
+          [
+            _c("p", [
+              _vm._v(
+                "This tool shows you the greenest and most efficient way to make your journey. Reduce your emissions to help tackle the #ClimateEmergency."
+              )
+            ]),
+            _vm._v(" "),
+            _c("search-form")
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _vm.showModes
+          ? _c(
+              "ol",
+              { staticClass: "modes" },
+              _vm._l(_vm.modes, function(mode, i) {
+                return _c(
+                  "li",
+                  { key: i, class: "mode" + (i + 1) },
+                  [
+                    _c(
+                      "mode-of-transport",
+                      _vm._b({}, "mode-of-transport", mode, false)
+                    )
+                  ],
+                  1
+                )
+              }),
+              0
+            )
+          : _vm._e()
+      ])
+    ])
+  };
+  var __vue_staticRenderFns__$4 = [
+    function() {
+      var _vm = this;
+      var _h = _vm.$createElement;
+      var _c = _vm._self._c || _h;
+      return _c("header", [
+        _c("p", [_vm._v("Find the greenest way to get to your meeting")]),
+        _vm._v(" "),
+        _c("h1", [_vm._v("Staff Travel Options")]),
+        _vm._v(" "),
+        _c("img", { attrs: { src: "img/lcc.png", width: "224px" } })
+      ])
+    }
+  ];
+  __vue_render__$4._withStripped = true;
+
+    /* style */
+    const __vue_inject_styles__$4 = undefined;
+    /* scoped */
+    const __vue_scope_id__$4 = undefined;
+    /* module identifier */
+    const __vue_module_identifier__$4 = undefined;
+    /* functional template */
+    const __vue_is_functional_template__$4 = false;
+    /* style inject */
+    
+    /* style inject SSR */
+    
+    /* style inject shadow dom */
+    
+
+    
+    const __vue_component__$4 = normalizeComponent(
+      { render: __vue_render__$4, staticRenderFns: __vue_staticRenderFns__$4 },
+      __vue_inject_styles__$4,
+      __vue_script__$4,
+      __vue_scope_id__$4,
+      __vue_is_functional_template__$4,
+      __vue_module_identifier__$4,
+      false,
+      undefined,
+      undefined,
+      undefined
+    );
+
+  var $filter = arrayIteration.filter;
+
+
+
+  var HAS_SPECIES_SUPPORT$1 = arrayMethodHasSpeciesSupport('filter');
+  // Edge 14- issue
+  var USES_TO_LENGTH$1 = arrayMethodUsesToLength('filter');
+
+  // `Array.prototype.filter` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.filter
+  // with adding support of @@species
+  _export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT$1 || !USES_TO_LENGTH$1 }, {
+    filter: function filter(callbackfn /* , thisArg */) {
+      return $filter(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+    }
+  });
+
+  /* script */
+
+  /* template */
+  var __vue_render__$5 = function() {
     var _vm = this;
     var _h = _vm.$createElement;
     var _c = _vm._self._c || _h;
@@ -2157,7 +2914,7 @@
       ])
     ])
   };
-  var __vue_staticRenderFns__$4 = [
+  var __vue_staticRenderFns__$5 = [
     function() {
       var _vm = this;
       var _h = _vm.$createElement;
@@ -2200,16 +2957,16 @@
       ])
     }
   ];
-  __vue_render__$4._withStripped = true;
+  __vue_render__$5._withStripped = true;
 
     /* style */
-    const __vue_inject_styles__$4 = undefined;
+    const __vue_inject_styles__$5 = undefined;
     /* scoped */
-    const __vue_scope_id__$4 = undefined;
+    const __vue_scope_id__$5 = undefined;
     /* module identifier */
-    const __vue_module_identifier__$4 = undefined;
+    const __vue_module_identifier__$5 = undefined;
     /* functional template */
-    const __vue_is_functional_template__$4 = false;
+    const __vue_is_functional_template__$5 = false;
     /* style inject */
     
     /* style inject SSR */
@@ -2218,13 +2975,13 @@
     
 
     
-    const __vue_component__$4 = /*#__PURE__*/normalizeComponent(
-      { render: __vue_render__$4, staticRenderFns: __vue_staticRenderFns__$4 },
-      __vue_inject_styles__$4,
+    const __vue_component__$5 = normalizeComponent(
+      { render: __vue_render__$5, staticRenderFns: __vue_staticRenderFns__$5 },
+      __vue_inject_styles__$5,
       {},
-      __vue_scope_id__$4,
-      __vue_is_functional_template__$4,
-      __vue_module_identifier__$4,
+      __vue_scope_id__$5,
+      __vue_is_functional_template__$5,
+      __vue_module_identifier__$5,
       false,
       undefined,
       undefined,
@@ -2234,7 +2991,7 @@
   /* script */
 
   /* template */
-  var __vue_render__$5 = function() {
+  var __vue_render__$6 = function() {
     var _vm = this;
     var _h = _vm.$createElement;
     var _c = _vm._self._c || _h;
@@ -2257,7 +3014,7 @@
       ])
     ])
   };
-  var __vue_staticRenderFns__$5 = [
+  var __vue_staticRenderFns__$6 = [
     function() {
       var _vm = this;
       var _h = _vm.$createElement;
@@ -2276,16 +3033,16 @@
       ])
     }
   ];
-  __vue_render__$5._withStripped = true;
+  __vue_render__$6._withStripped = true;
 
     /* style */
-    const __vue_inject_styles__$5 = undefined;
+    const __vue_inject_styles__$6 = undefined;
     /* scoped */
-    const __vue_scope_id__$5 = undefined;
+    const __vue_scope_id__$6 = undefined;
     /* module identifier */
-    const __vue_module_identifier__$5 = undefined;
+    const __vue_module_identifier__$6 = undefined;
     /* functional template */
-    const __vue_is_functional_template__$5 = false;
+    const __vue_is_functional_template__$6 = false;
     /* style inject */
     
     /* style inject SSR */
@@ -2294,13 +3051,13 @@
     
 
     
-    const __vue_component__$5 = /*#__PURE__*/normalizeComponent(
-      { render: __vue_render__$5, staticRenderFns: __vue_staticRenderFns__$5 },
-      __vue_inject_styles__$5,
+    const __vue_component__$6 = normalizeComponent(
+      { render: __vue_render__$6, staticRenderFns: __vue_staticRenderFns__$6 },
+      __vue_inject_styles__$6,
       {},
-      __vue_scope_id__$5,
-      __vue_is_functional_template__$5,
-      __vue_module_identifier__$5,
+      __vue_scope_id__$6,
+      __vue_is_functional_template__$6,
+      __vue_module_identifier__$6,
       false,
       undefined,
       undefined,
@@ -2310,7 +3067,7 @@
   /* script */
 
   /* template */
-  var __vue_render__$6 = function() {
+  var __vue_render__$7 = function() {
     var _vm = this;
     var _h = _vm.$createElement;
     var _c = _vm._self._c || _h;
@@ -2337,7 +3094,7 @@
       ])
     ])
   };
-  var __vue_staticRenderFns__$6 = [
+  var __vue_staticRenderFns__$7 = [
     function() {
       var _vm = this;
       var _h = _vm.$createElement;
@@ -2369,16 +3126,16 @@
       ])
     }
   ];
-  __vue_render__$6._withStripped = true;
+  __vue_render__$7._withStripped = true;
 
     /* style */
-    const __vue_inject_styles__$6 = undefined;
+    const __vue_inject_styles__$7 = undefined;
     /* scoped */
-    const __vue_scope_id__$6 = undefined;
+    const __vue_scope_id__$7 = undefined;
     /* module identifier */
-    const __vue_module_identifier__$6 = undefined;
+    const __vue_module_identifier__$7 = undefined;
     /* functional template */
-    const __vue_is_functional_template__$6 = false;
+    const __vue_is_functional_template__$7 = false;
     /* style inject */
     
     /* style inject SSR */
@@ -2387,13 +3144,13 @@
     
 
     
-    const __vue_component__$6 = /*#__PURE__*/normalizeComponent(
-      { render: __vue_render__$6, staticRenderFns: __vue_staticRenderFns__$6 },
-      __vue_inject_styles__$6,
+    const __vue_component__$7 = normalizeComponent(
+      { render: __vue_render__$7, staticRenderFns: __vue_staticRenderFns__$7 },
+      __vue_inject_styles__$7,
       {},
-      __vue_scope_id__$6,
-      __vue_is_functional_template__$6,
-      __vue_module_identifier__$6,
+      __vue_scope_id__$7,
+      __vue_is_functional_template__$7,
+      __vue_module_identifier__$7,
       false,
       undefined,
       undefined,
@@ -2403,13 +3160,13 @@
   /* script */
 
   /* template */
-  var __vue_render__$7 = function() {
+  var __vue_render__$8 = function() {
     var _vm = this;
     var _h = _vm.$createElement;
     var _c = _vm._self._c || _h;
     return _vm._m(0)
   };
-  var __vue_staticRenderFns__$7 = [
+  var __vue_staticRenderFns__$8 = [
     function() {
       var _vm = this;
       var _h = _vm.$createElement;
@@ -2443,16 +3200,16 @@
       ])
     }
   ];
-  __vue_render__$7._withStripped = true;
+  __vue_render__$8._withStripped = true;
 
     /* style */
-    const __vue_inject_styles__$7 = undefined;
+    const __vue_inject_styles__$8 = undefined;
     /* scoped */
-    const __vue_scope_id__$7 = undefined;
+    const __vue_scope_id__$8 = undefined;
     /* module identifier */
-    const __vue_module_identifier__$7 = undefined;
+    const __vue_module_identifier__$8 = undefined;
     /* functional template */
-    const __vue_is_functional_template__$7 = false;
+    const __vue_is_functional_template__$8 = false;
     /* style inject */
     
     /* style inject SSR */
@@ -2461,13 +3218,13 @@
     
 
     
-    const __vue_component__$7 = /*#__PURE__*/normalizeComponent(
-      { render: __vue_render__$7, staticRenderFns: __vue_staticRenderFns__$7 },
-      __vue_inject_styles__$7,
+    const __vue_component__$8 = normalizeComponent(
+      { render: __vue_render__$8, staticRenderFns: __vue_staticRenderFns__$8 },
+      __vue_inject_styles__$8,
       {},
-      __vue_scope_id__$7,
-      __vue_is_functional_template__$7,
-      __vue_module_identifier__$7,
+      __vue_scope_id__$8,
+      __vue_is_functional_template__$8,
+      __vue_module_identifier__$8,
       false,
       undefined,
       undefined,
@@ -2477,7 +3234,7 @@
   /* script */
 
   /* template */
-  var __vue_render__$8 = function() {
+  var __vue_render__$9 = function() {
     var _vm = this;
     var _h = _vm.$createElement;
     var _c = _vm._self._c || _h;
@@ -2504,7 +3261,7 @@
       ])
     ])
   };
-  var __vue_staticRenderFns__$8 = [
+  var __vue_staticRenderFns__$9 = [
     function() {
       var _vm = this;
       var _h = _vm.$createElement;
@@ -2551,74 +3308,6 @@
       ])
     }
   ];
-  __vue_render__$8._withStripped = true;
-
-    /* style */
-    const __vue_inject_styles__$8 = undefined;
-    /* scoped */
-    const __vue_scope_id__$8 = undefined;
-    /* module identifier */
-    const __vue_module_identifier__$8 = undefined;
-    /* functional template */
-    const __vue_is_functional_template__$8 = false;
-    /* style inject */
-    
-    /* style inject SSR */
-    
-    /* style inject shadow dom */
-    
-
-    
-    const __vue_component__$8 = /*#__PURE__*/normalizeComponent(
-      { render: __vue_render__$8, staticRenderFns: __vue_staticRenderFns__$8 },
-      __vue_inject_styles__$8,
-      {},
-      __vue_scope_id__$8,
-      __vue_is_functional_template__$8,
-      __vue_module_identifier__$8,
-      false,
-      undefined,
-      undefined,
-      undefined
-    );
-
-  /* script */
-
-  /* template */
-  var __vue_render__$9 = function() {
-    var _vm = this;
-    var _h = _vm.$createElement;
-    var _c = _vm._self._c || _h;
-    return _vm._m(0)
-  };
-  var __vue_staticRenderFns__$9 = [
-    function() {
-      var _vm = this;
-      var _h = _vm.$createElement;
-      var _c = _vm._self._c || _h;
-      return _c("section", [
-        _c("p", [
-          _vm._v(
-            "Private hire taxis should only be used in exceptional situations. There needs to be an important business need.  If you do use a taxi you should use our contract if possible."
-          )
-        ]),
-        _vm._v(" "),
-        _c("ul", { staticClass: "grid" }, [
-          _c("li", [
-            _c("a", { attrs: { href: "" } }, [
-              _c("p", [_vm._v("Find out when you can use a taxi")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "" } }, [
-              _c("p", [_vm._v("Book a taxi through our contract")])
-            ])
-          ])
-        ])
-      ])
-    }
-  ];
   __vue_render__$9._withStripped = true;
 
     /* style */
@@ -2637,7 +3326,7 @@
     
 
     
-    const __vue_component__$9 = /*#__PURE__*/normalizeComponent(
+    const __vue_component__$9 = normalizeComponent(
       { render: __vue_render__$9, staticRenderFns: __vue_staticRenderFns__$9 },
       __vue_inject_styles__$9,
       {},
@@ -2667,8 +3356,22 @@
       return _c("section", [
         _c("p", [
           _vm._v(
-            "\n    Unless you have a low emissions vehicle, driving your own car should be a last resort because of its high environmental impact.\n  "
+            "Private hire taxis should only be used in exceptional situations. There needs to be an important business need.  If you do use a taxi you should use our contract if possible."
           )
+        ]),
+        _vm._v(" "),
+        _c("ul", { staticClass: "grid" }, [
+          _c("li", [
+            _c("a", { attrs: { href: "" } }, [
+              _c("p", [_vm._v("Find out when you can use a taxi")])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("a", { attrs: { href: "" } }, [
+              _c("p", [_vm._v("Book a taxi through our contract")])
+            ])
+          ])
         ])
       ])
     }
@@ -2691,7 +3394,7 @@
     
 
     
-    const __vue_component__$a = /*#__PURE__*/normalizeComponent(
+    const __vue_component__$a = normalizeComponent(
       { render: __vue_render__$a, staticRenderFns: __vue_staticRenderFns__$a },
       __vue_inject_styles__$a,
       {},
@@ -2704,6 +3407,69 @@
       undefined
     );
 
+  /* script */
+
+  /* template */
+  var __vue_render__$b = function() {
+    var _vm = this;
+    var _h = _vm.$createElement;
+    var _c = _vm._self._c || _h;
+    return _vm._m(0)
+  };
+  var __vue_staticRenderFns__$b = [
+    function() {
+      var _vm = this;
+      var _h = _vm.$createElement;
+      var _c = _vm._self._c || _h;
+      return _c("section", [
+        _c("p", [
+          _vm._v(
+            "\n    Unless you have a low emissions vehicle, driving your own car should be a last resort because of its high environmental impact.\n  "
+          )
+        ])
+      ])
+    }
+  ];
+  __vue_render__$b._withStripped = true;
+
+    /* style */
+    const __vue_inject_styles__$b = undefined;
+    /* scoped */
+    const __vue_scope_id__$b = undefined;
+    /* module identifier */
+    const __vue_module_identifier__$b = undefined;
+    /* functional template */
+    const __vue_is_functional_template__$b = false;
+    /* style inject */
+    
+    /* style inject SSR */
+    
+    /* style inject shadow dom */
+    
+
+    
+    const __vue_component__$b = normalizeComponent(
+      { render: __vue_render__$b, staticRenderFns: __vue_staticRenderFns__$b },
+      __vue_inject_styles__$b,
+      {},
+      __vue_scope_id__$b,
+      __vue_is_functional_template__$b,
+      __vue_module_identifier__$b,
+      false,
+      undefined,
+      undefined,
+      undefined
+    );
+
+  var calculateSegments = function calculateSegments(_ref) {
+    var travelTime = _ref.travelTime,
+        meetingTime = _ref.meetingTime,
+        _ref$isRoundTrip = _ref.isRoundTrip,
+        isRoundTrip = _ref$isRoundTrip === void 0 ? false : _ref$isRoundTrip;
+    return [travelTime, isRoundTrip ? meetingTime : undefined, isRoundTrip ? travelTime : undefined].filter(function (x) {
+      return x;
+    });
+  };
   /**
    * Each mode of transport is described below. The fields are as follows:
    * * title: Display name of the mode of transport
@@ -2714,9 +3480,10 @@
    * * displayFn: If applicable, function to determine whether the mode should be displayed. Defaults to true.
    */
 
+
   var modes = [{
     title: 'Skype Meeting',
-    details: __vue_component__$7,
+    details: __vue_component__$8,
     summarise: function summarise(j) {
       return "Skype facilities are available at ".concat(j.source);
     },
@@ -2728,10 +3495,16 @@
     },
     displayFn: function displayFn(j) {
       return !j.presenceRequired; //hide if presence is required
+    },
+    timeFn: function timeFn(j) {
+      return calculateSegments({
+        meetingTime: j.timeAtDest,
+        isRoundTrip: j.isRoundTrip
+      });
     }
   }, {
     title: 'Walk/Cycle',
-    details: __vue_component__$8,
+    details: __vue_component__$9,
     summarise: function summarise(j) {
       return "".concat(formatTime(j.walking.time.value), " walking or ").concat(formatTime(j.cycling.time.value), " by bike (xx ebikes nearby at ").concat(j.source, ")");
     },
@@ -2743,11 +3516,18 @@
     },
     displayFn: function displayFn(j) {
       return !j.carrying; //hide if user is carrying lots of stuff
+    },
+    timeFn: function timeFn(j) {
+      return calculateSegments({
+        meetingTime: j.timeAtDest,
+        travelTime: j.cycling.time.value,
+        isRoundTrip: j.isRoundTrip
+      });
     }
   }, {
     title: 'Bus/train',
     // should we split this into 2 options? different cost & emissions calculations
-    details: __vue_component__$4,
+    details: __vue_component__$5,
     summarise: function summarise(j) {
       return "".concat(formatTime(j.train.time.value), " by train or ").concat(formatTime(j.bus.time.value), " by bus (xx Metrocards are available at ").concat(j.source, " - <a href=\"\">check availability and booking</a>)");
     },
@@ -2758,10 +3538,17 @@
       var bus = 0.167227 * (j.isRoundTrip ? toMiles(j.bus.distance) * 2 : toMiles(j.bus.distance));
       var train = 0.065613 * (j.isRoundTrip ? toMiles(j.train.distance) * 2 : toMiles(j.train.distance));
       return ((bus + train) / 2).toFixed(2); //take the average for now
+    },
+    timeFn: function timeFn(j) {
+      return calculateSegments({
+        meetingTime: j.timeAtDest,
+        travelTime: j.bus.time.value,
+        isRoundTrip: j.isRoundTrip
+      });
     }
   }, {
     title: 'Electric pool vehicle',
-    details: __vue_component__$6,
+    details: __vue_component__$7,
     summarise: function summarise(j) {
       return "".concat(formatTime(j.driving.time.value), " drive (<a href=\"\">check availability and booking</a>)");
     },
@@ -2773,10 +3560,17 @@
     co2Fn: function co2Fn(j) {
       var dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
       return (0.09612 * dist).toFixed(2); // Assumes vehicle is an EV
+    },
+    timeFn: function timeFn(j) {
+      return [null].concat(_toConsumableArray(calculateSegments({
+        meetingTime: j.timeAtDest,
+        travelTime: j.driving.time.value,
+        isRoundTrip: j.isRoundTrip
+      })), [null]);
     }
   }, {
     title: 'Car club',
-    details: __vue_component__$5,
+    details: __vue_component__$6,
     summarise: function summarise(j) {
       return "".concat(formatTime(j.driving.time.value), " drive (xx cars at Cookridge Street - <a href=\"\">check availability and booking</a>)");
     },
@@ -2790,10 +3584,17 @@
     },
     co2Fn: function co2Fn(j) {
       return (0.25885349 * toMiles(j.driving.distance)).toFixed(2);
+    },
+    timeFn: function timeFn(j) {
+      return calculateSegments({
+        meetingTime: j.timeAtDest,
+        travelTime: j.driving.time.value,
+        isRoundTrip: j.isRoundTrip
+      });
     }
   }, {
     title: 'Taxi',
-    details: __vue_component__$9,
+    details: __vue_component__$a,
     summarise: function summarise(j) {
       return "".concat(formatTime(j.driving.time.value));
     },
@@ -2807,10 +3608,17 @@
     co2Fn: function co2Fn(j) {
       var dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
       return (0.24020217 * dist).toFixed(2);
+    },
+    timeFn: function timeFn(j) {
+      return calculateSegments({
+        meetingTime: j.timeAtDest,
+        travelTime: j.driving.time.value,
+        isRoundTrip: j.isRoundTrip
+      });
     }
   }, {
     title: 'Drive your own vehicle',
-    details: __vue_component__$a,
+    details: __vue_component__$b,
     summarise: function summarise(j) {
       return "".concat(formatTime(j.driving.time.value));
     },
@@ -2821,6 +3629,13 @@
     co2Fn: function co2Fn(j) {
       var dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
       return (0.28591256 * dist).toFixed(2);
+    },
+    timeFn: function timeFn(j) {
+      return calculateSegments({
+        meetingTime: j.timeAtDest,
+        travelTime: j.driving.time.value,
+        isRoundTrip: j.isRoundTrip
+      });
     }
   }]; // helper functions
 
@@ -2828,74 +3643,90 @@
     return dist.unit == 'km' ? dist.value / 1.609344 : dist.value;
   };
 
-  var formatTime = function formatTime(value) {
-    value = Number(value);
-    if (value < 60) return "".concat(value.toFixed(0), " minutes");else {
-      var hours = Math.floor(value / 60);
-      var mins = (value % 60).toFixed(0);
-      if (hours == 1) return "".concat(hours, " hour ").concat(mins, " minutes");else return "".concat(hours, " hours ").concat(mins, " minutes");
+  // `Array.prototype.{ reduce, reduceRight }` methods implementation
+  var createMethod$3 = function (IS_RIGHT) {
+    return function (that, callbackfn, argumentsLength, memo) {
+      aFunction$1(callbackfn);
+      var O = toObject(that);
+      var self = indexedObject(O);
+      var length = toLength(O.length);
+      var index = IS_RIGHT ? length - 1 : 0;
+      var i = IS_RIGHT ? -1 : 1;
+      if (argumentsLength < 2) while (true) {
+        if (index in self) {
+          memo = self[index];
+          index += i;
+          break;
+        }
+        index += i;
+        if (IS_RIGHT ? index < 0 : length <= index) {
+          throw TypeError('Reduce of empty array with no initial value');
+        }
+      }
+      for (;IS_RIGHT ? index >= 0 : length > index; index += i) if (index in self) {
+        memo = callbackfn(memo, self[index], index, O);
+      }
+      return memo;
+    };
+  };
+
+  var arrayReduce = {
+    // `Array.prototype.reduce` method
+    // https://tc39.github.io/ecma262/#sec-array.prototype.reduce
+    left: createMethod$3(false),
+    // `Array.prototype.reduceRight` method
+    // https://tc39.github.io/ecma262/#sec-array.prototype.reduceright
+    right: createMethod$3(true)
+  };
+
+  var arrayMethodIsStrict = function (METHOD_NAME, argument) {
+    var method = [][METHOD_NAME];
+    return !!method && fails(function () {
+      // eslint-disable-next-line no-useless-call,no-throw-literal
+      method.call(null, argument || function () { throw 1; }, 1);
+    });
+  };
+
+  var $reduce = arrayReduce.left;
+
+
+
+  var STRICT_METHOD = arrayMethodIsStrict('reduce');
+  var USES_TO_LENGTH$2 = arrayMethodUsesToLength('reduce', { 1: 0 });
+
+  // `Array.prototype.reduce` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.reduce
+  _export({ target: 'Array', proto: true, forced: !STRICT_METHOD || !USES_TO_LENGTH$2 }, {
+    reduce: function reduce(callbackfn /* , initialValue */) {
+      return $reduce(this, callbackfn, arguments.length, arguments.length > 1 ? arguments[1] : undefined);
     }
-  };
+  });
 
-  var TO_STRING_TAG = wellKnownSymbol('toStringTag');
-  var test = {};
+  var trim$2 = stringTrim.trim;
 
-  test[TO_STRING_TAG] = 'z';
 
-  var toStringTagSupport = String(test) === '[object z]';
+  var $parseFloat = global_1.parseFloat;
+  var FORCED$3 = 1 / $parseFloat(whitespaces + '-0') !== -Infinity;
 
-  var TO_STRING_TAG$1 = wellKnownSymbol('toStringTag');
-  // ES3 wrong here
-  var CORRECT_ARGUMENTS = classofRaw(function () { return arguments; }()) == 'Arguments';
+  // `parseFloat` method
+  // https://tc39.github.io/ecma262/#sec-parsefloat-string
+  var numberParseFloat = FORCED$3 ? function parseFloat(string) {
+    var trimmedString = trim$2(String(string));
+    var result = $parseFloat(trimmedString);
+    return result === 0 && trimmedString.charAt(0) == '-' ? -0 : result;
+  } : $parseFloat;
 
-  // fallback for IE11 Script Access Denied error
-  var tryGet = function (it, key) {
-    try {
-      return it[key];
-    } catch (error) { /* empty */ }
-  };
-
-  // getting tag from ES6+ `Object.prototype.toString`
-  var classof = toStringTagSupport ? classofRaw : function (it) {
-    var O, tag, result;
-    return it === undefined ? 'Undefined' : it === null ? 'Null'
-      // @@toStringTag case
-      : typeof (tag = tryGet(O = Object(it), TO_STRING_TAG$1)) == 'string' ? tag
-      // builtinTag case
-      : CORRECT_ARGUMENTS ? classofRaw(O)
-      // ES3 arguments fallback
-      : (result = classofRaw(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : result;
-  };
-
-  // `Object.prototype.toString` method implementation
-  // https://tc39.github.io/ecma262/#sec-object.prototype.tostring
-  var objectToString = toStringTagSupport ? {}.toString : function toString() {
-    return '[object ' + classof(this) + ']';
-  };
-
-  // `Object.prototype.toString` method
-  // https://tc39.github.io/ecma262/#sec-object.prototype.tostring
-  if (!toStringTagSupport) {
-    redefine(Object.prototype, 'toString', objectToString, { unsafe: true });
-  }
+  // `parseFloat` method
+  // https://tc39.github.io/ecma262/#sec-parsefloat-string
+  _export({ global: true, forced: parseFloat != numberParseFloat }, {
+    parseFloat: numberParseFloat
+  });
 
   var nativePromiseConstructor = global_1.Promise;
 
   var redefineAll = function (target, src, options) {
     for (var key in src) redefine(target, key, src[key], options);
     return target;
-  };
-
-  var defineProperty$2 = objectDefineProperty.f;
-
-
-
-  var TO_STRING_TAG$2 = wellKnownSymbol('toStringTag');
-
-  var setToStringTag = function (it, TAG, STATIC) {
-    if (it && !has(it = STATIC ? it : it.prototype, TO_STRING_TAG$2)) {
-      defineProperty$2(it, TO_STRING_TAG$2, { configurable: true, value: TAG });
-    }
   };
 
   var SPECIES$2 = wellKnownSymbol('species');
@@ -2912,55 +3743,24 @@
     }
   };
 
-  var aFunction$1 = function (it) {
-    if (typeof it != 'function') {
-      throw TypeError(String(it) + ' is not a function');
-    } return it;
-  };
-
   var anInstance = function (it, Constructor, name) {
     if (!(it instanceof Constructor)) {
       throw TypeError('Incorrect ' + (name ? name + ' ' : '') + 'invocation');
     } return it;
   };
 
-  var iterators = {};
-
-  var ITERATOR = wellKnownSymbol('iterator');
-  var ArrayPrototype = Array.prototype;
+  var ITERATOR$3 = wellKnownSymbol('iterator');
+  var ArrayPrototype$1 = Array.prototype;
 
   // check on default Array iterator
   var isArrayIteratorMethod = function (it) {
-    return it !== undefined && (iterators.Array === it || ArrayPrototype[ITERATOR] === it);
+    return it !== undefined && (iterators.Array === it || ArrayPrototype$1[ITERATOR$3] === it);
   };
 
-  // optional / simple context binding
-  var functionBindContext = function (fn, that, length) {
-    aFunction$1(fn);
-    if (that === undefined) return fn;
-    switch (length) {
-      case 0: return function () {
-        return fn.call(that);
-      };
-      case 1: return function (a) {
-        return fn.call(that, a);
-      };
-      case 2: return function (a, b) {
-        return fn.call(that, a, b);
-      };
-      case 3: return function (a, b, c) {
-        return fn.call(that, a, b, c);
-      };
-    }
-    return function (/* ...args */) {
-      return fn.apply(that, arguments);
-    };
-  };
-
-  var ITERATOR$1 = wellKnownSymbol('iterator');
+  var ITERATOR$4 = wellKnownSymbol('iterator');
 
   var getIteratorMethod = function (it) {
-    if (it != undefined) return it[ITERATOR$1]
+    if (it != undefined) return it[ITERATOR$4]
       || it['@@iterator']
       || iterators[classof(it)];
   };
@@ -3016,7 +3816,7 @@
   };
   });
 
-  var ITERATOR$2 = wellKnownSymbol('iterator');
+  var ITERATOR$5 = wellKnownSymbol('iterator');
   var SAFE_CLOSING = false;
 
   try {
@@ -3029,7 +3829,7 @@
         SAFE_CLOSING = true;
       }
     };
-    iteratorWithReturn[ITERATOR$2] = function () {
+    iteratorWithReturn[ITERATOR$5] = function () {
       return this;
     };
     // eslint-disable-next-line no-throw-literal
@@ -3041,7 +3841,7 @@
     var ITERATION_SUPPORT = false;
     try {
       var object = {};
-      object[ITERATOR$2] = function () {
+      object[ITERATOR$5] = function () {
         return {
           next: function () {
             return { done: ITERATION_SUPPORT = true };
@@ -3300,8 +4100,8 @@
 
   var SPECIES$4 = wellKnownSymbol('species');
   var PROMISE = 'Promise';
-  var getInternalState = internalState.get;
-  var setInternalState = internalState.set;
+  var getInternalState$1 = internalState.get;
+  var setInternalState$1 = internalState.set;
   var getInternalPromiseState = internalState.getterFor(PROMISE);
   var PromiseConstructor = nativePromiseConstructor;
   var TypeError$1 = global_1.TypeError;
@@ -3321,7 +4121,7 @@
   var UNHANDLED = 2;
   var Internal, OwnPromiseCapability, PromiseWrapper, nativeThen;
 
-  var FORCED$2 = isForced_1(PROMISE, function () {
+  var FORCED$4 = isForced_1(PROMISE, function () {
     var GLOBAL_CORE_JS_PROMISE = inspectSource(PromiseConstructor) !== String(PromiseConstructor);
     if (!GLOBAL_CORE_JS_PROMISE) {
       // V8 6.6 (Node 10 and Chrome 66) have a bug with resolving custom thenables
@@ -3345,7 +4145,7 @@
     return !(promise.then(function () { /* empty */ }) instanceof FakePromise);
   });
 
-  var INCORRECT_ITERATION = FORCED$2 || !checkCorrectnessOfIteration(function (iterable) {
+  var INCORRECT_ITERATION = FORCED$4 || !checkCorrectnessOfIteration(function (iterable) {
     PromiseConstructor.all(iterable)['catch'](function () { /* empty */ });
   });
 
@@ -3491,13 +4291,13 @@
   };
 
   // constructor polyfill
-  if (FORCED$2) {
+  if (FORCED$4) {
     // 25.4.3.1 Promise(executor)
     PromiseConstructor = function Promise(executor) {
       anInstance(this, PromiseConstructor, PROMISE);
       aFunction$1(executor);
       Internal.call(this);
-      var state = getInternalState(this);
+      var state = getInternalState$1(this);
       try {
         executor(bind(internalResolve, this, state), bind(internalReject, this, state));
       } catch (error) {
@@ -3506,7 +4306,7 @@
     };
     // eslint-disable-next-line no-unused-vars
     Internal = function Promise(executor) {
-      setInternalState(this, {
+      setInternalState$1(this, {
         type: PROMISE,
         done: false,
         notified: false,
@@ -3539,7 +4339,7 @@
     });
     OwnPromiseCapability = function () {
       var promise = new Internal();
-      var state = getInternalState(promise);
+      var state = getInternalState$1(promise);
       this.promise = promise;
       this.resolve = bind(internalResolve, promise, state);
       this.reject = bind(internalReject, promise, state);
@@ -3572,7 +4372,7 @@
     }
   }
 
-  _export({ global: true, wrap: true, forced: FORCED$2 }, {
+  _export({ global: true, wrap: true, forced: FORCED$4 }, {
     Promise: PromiseConstructor
   });
 
@@ -3582,7 +4382,7 @@
   PromiseWrapper = getBuiltIn(PROMISE);
 
   // statics
-  _export({ target: PROMISE, stat: true, forced: FORCED$2 }, {
+  _export({ target: PROMISE, stat: true, forced: FORCED$4 }, {
     // `Promise.reject` method
     // https://tc39.github.io/ecma262/#sec-promise.reject
     reject: function reject(r) {
@@ -3592,7 +4392,7 @@
     }
   });
 
-  _export({ target: PROMISE, stat: true, forced:  FORCED$2 }, {
+  _export({ target: PROMISE, stat: true, forced:  FORCED$4 }, {
     // `Promise.resolve` method
     // https://tc39.github.io/ecma262/#sec-promise.resolve
     resolve: function resolve(x) {
@@ -4378,209 +5178,8 @@
   }
   });
 
-  function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-    try {
-      var info = gen[key](arg);
-      var value = info.value;
-    } catch (error) {
-      reject(error);
-      return;
-    }
-
-    if (info.done) {
-      resolve(value);
-    } else {
-      Promise.resolve(value).then(_next, _throw);
-    }
-  }
-
-  function _asyncToGenerator(fn) {
-    return function () {
-      var self = this,
-          args = arguments;
-      return new Promise(function (resolve, reject) {
-        var gen = fn.apply(self, args);
-
-        function _next(value) {
-          asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-        }
-
-        function _throw(err) {
-          asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-        }
-
-        _next(undefined);
-      });
-    };
-  }
-
-  function _slicedToArray(arr, i) {
-    return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
-  }
-
-  function _toArray(arr) {
-    return _arrayWithHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableRest();
-  }
-
-  function _arrayWithHoles(arr) {
-    if (Array.isArray(arr)) return arr;
-  }
-
-  function _iterableToArray(iter) {
-    if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
-  }
-
-  function _iterableToArrayLimit(arr, i) {
-    if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;
-    var _arr = [];
-    var _n = true;
-    var _d = false;
-    var _e = undefined;
-
-    try {
-      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
-        _arr.push(_s.value);
-
-        if (i && _arr.length === i) break;
-      }
-    } catch (err) {
-      _d = true;
-      _e = err;
-    } finally {
-      try {
-        if (!_n && _i["return"] != null) _i["return"]();
-      } finally {
-        if (_d) throw _e;
-      }
-    }
-
-    return _arr;
-  }
-
-  function _unsupportedIterableToArray(o, minLen) {
-    if (!o) return;
-    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-    var n = Object.prototype.toString.call(o).slice(8, -1);
-    if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(o);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-  }
-
-  function _arrayLikeToArray(arr, len) {
-    if (len == null || len > arr.length) len = arr.length;
-
-    for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-
-    return arr2;
-  }
-
-  function _nonIterableRest() {
-    throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-  }
-
-  var push = [].push;
-
-  // `Array.prototype.{ forEach, map, filter, some, every, find, findIndex }` methods implementation
-  var createMethod$2 = function (TYPE) {
-    var IS_MAP = TYPE == 1;
-    var IS_FILTER = TYPE == 2;
-    var IS_SOME = TYPE == 3;
-    var IS_EVERY = TYPE == 4;
-    var IS_FIND_INDEX = TYPE == 6;
-    var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
-    return function ($this, callbackfn, that, specificCreate) {
-      var O = toObject($this);
-      var self = indexedObject(O);
-      var boundFunction = functionBindContext(callbackfn, that, 3);
-      var length = toLength(self.length);
-      var index = 0;
-      var create = specificCreate || arraySpeciesCreate;
-      var target = IS_MAP ? create($this, length) : IS_FILTER ? create($this, 0) : undefined;
-      var value, result;
-      for (;length > index; index++) if (NO_HOLES || index in self) {
-        value = self[index];
-        result = boundFunction(value, index, O);
-        if (TYPE) {
-          if (IS_MAP) target[index] = result; // map
-          else if (result) switch (TYPE) {
-            case 3: return true;              // some
-            case 5: return value;             // find
-            case 6: return index;             // findIndex
-            case 2: push.call(target, value); // filter
-          } else if (IS_EVERY) return false;  // every
-        }
-      }
-      return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : target;
-    };
-  };
-
-  var arrayIteration = {
-    // `Array.prototype.forEach` method
-    // https://tc39.github.io/ecma262/#sec-array.prototype.foreach
-    forEach: createMethod$2(0),
-    // `Array.prototype.map` method
-    // https://tc39.github.io/ecma262/#sec-array.prototype.map
-    map: createMethod$2(1),
-    // `Array.prototype.filter` method
-    // https://tc39.github.io/ecma262/#sec-array.prototype.filter
-    filter: createMethod$2(2),
-    // `Array.prototype.some` method
-    // https://tc39.github.io/ecma262/#sec-array.prototype.some
-    some: createMethod$2(3),
-    // `Array.prototype.every` method
-    // https://tc39.github.io/ecma262/#sec-array.prototype.every
-    every: createMethod$2(4),
-    // `Array.prototype.find` method
-    // https://tc39.github.io/ecma262/#sec-array.prototype.find
-    find: createMethod$2(5),
-    // `Array.prototype.findIndex` method
-    // https://tc39.github.io/ecma262/#sec-array.prototype.findIndex
-    findIndex: createMethod$2(6)
-  };
-
-  var defineProperty$3 = Object.defineProperty;
-  var cache = {};
-
-  var thrower = function (it) { throw it; };
-
-  var arrayMethodUsesToLength = function (METHOD_NAME, options) {
-    if (has(cache, METHOD_NAME)) return cache[METHOD_NAME];
-    if (!options) options = {};
-    var method = [][METHOD_NAME];
-    var ACCESSORS = has(options, 'ACCESSORS') ? options.ACCESSORS : false;
-    var argument0 = has(options, 0) ? options[0] : thrower;
-    var argument1 = has(options, 1) ? options[1] : undefined;
-
-    return cache[METHOD_NAME] = !!method && !fails(function () {
-      if (ACCESSORS && !descriptors) return true;
-      var O = { length: -1 };
-
-      if (ACCESSORS) defineProperty$3(O, 1, { enumerable: true, get: thrower });
-      else O[1] = 1;
-
-      method.call(O, argument0, argument1);
-    });
-  };
-
-  var $map = arrayIteration.map;
-
-
-
-  var HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('map');
-  // FF49- issue
-  var USES_TO_LENGTH = arrayMethodUsesToLength('map');
-
-  // `Array.prototype.map` method
-  // https://tc39.github.io/ecma262/#sec-array.prototype.map
-  // with adding support of @@species
-  _export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT || !USES_TO_LENGTH }, {
-    map: function map(callbackfn /* , thisArg */) {
-      return $map(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
-    }
-  });
-
-  var HAS_SPECIES_SUPPORT$1 = arrayMethodHasSpeciesSupport('slice');
-  var USES_TO_LENGTH$1 = arrayMethodUsesToLength('slice', { ACCESSORS: true, 0: 0, 1: 2 });
+  var HAS_SPECIES_SUPPORT$2 = arrayMethodHasSpeciesSupport('slice');
+  var USES_TO_LENGTH$3 = arrayMethodUsesToLength('slice', { ACCESSORS: true, 0: 0, 1: 2 });
 
   var SPECIES$5 = wellKnownSymbol('species');
   var nativeSlice = [].slice;
@@ -4589,7 +5188,7 @@
   // `Array.prototype.slice` method
   // https://tc39.github.io/ecma262/#sec-array.prototype.slice
   // fallback for not array-like ES3 strings and DOM objects
-  _export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT$1 || !USES_TO_LENGTH$1 }, {
+  _export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT$2 || !USES_TO_LENGTH$3 }, {
     slice: function slice(start, end) {
       var O = toIndexedObject(this);
       var length = toLength(O.length);
@@ -4798,213 +5397,6 @@
     return _geoCode.apply(this, arguments);
   }
 
-  var UNSCOPABLES = wellKnownSymbol('unscopables');
-  var ArrayPrototype$1 = Array.prototype;
-
-  // Array.prototype[@@unscopables]
-  // https://tc39.github.io/ecma262/#sec-array.prototype-@@unscopables
-  if (ArrayPrototype$1[UNSCOPABLES] == undefined) {
-    objectDefineProperty.f(ArrayPrototype$1, UNSCOPABLES, {
-      configurable: true,
-      value: objectCreate(null)
-    });
-  }
-
-  // add a key to Array.prototype[@@unscopables]
-  var addToUnscopables = function (key) {
-    ArrayPrototype$1[UNSCOPABLES][key] = true;
-  };
-
-  var correctPrototypeGetter = !fails(function () {
-    function F() { /* empty */ }
-    F.prototype.constructor = null;
-    return Object.getPrototypeOf(new F()) !== F.prototype;
-  });
-
-  var IE_PROTO$1 = sharedKey('IE_PROTO');
-  var ObjectPrototype = Object.prototype;
-
-  // `Object.getPrototypeOf` method
-  // https://tc39.github.io/ecma262/#sec-object.getprototypeof
-  var objectGetPrototypeOf = correctPrototypeGetter ? Object.getPrototypeOf : function (O) {
-    O = toObject(O);
-    if (has(O, IE_PROTO$1)) return O[IE_PROTO$1];
-    if (typeof O.constructor == 'function' && O instanceof O.constructor) {
-      return O.constructor.prototype;
-    } return O instanceof Object ? ObjectPrototype : null;
-  };
-
-  var ITERATOR$3 = wellKnownSymbol('iterator');
-  var BUGGY_SAFARI_ITERATORS = false;
-
-  var returnThis = function () { return this; };
-
-  // `%IteratorPrototype%` object
-  // https://tc39.github.io/ecma262/#sec-%iteratorprototype%-object
-  var IteratorPrototype, PrototypeOfArrayIteratorPrototype, arrayIterator;
-
-  if ([].keys) {
-    arrayIterator = [].keys();
-    // Safari 8 has buggy iterators w/o `next`
-    if (!('next' in arrayIterator)) BUGGY_SAFARI_ITERATORS = true;
-    else {
-      PrototypeOfArrayIteratorPrototype = objectGetPrototypeOf(objectGetPrototypeOf(arrayIterator));
-      if (PrototypeOfArrayIteratorPrototype !== Object.prototype) IteratorPrototype = PrototypeOfArrayIteratorPrototype;
-    }
-  }
-
-  if (IteratorPrototype == undefined) IteratorPrototype = {};
-
-  // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-  if ( !has(IteratorPrototype, ITERATOR$3)) {
-    createNonEnumerableProperty(IteratorPrototype, ITERATOR$3, returnThis);
-  }
-
-  var iteratorsCore = {
-    IteratorPrototype: IteratorPrototype,
-    BUGGY_SAFARI_ITERATORS: BUGGY_SAFARI_ITERATORS
-  };
-
-  var IteratorPrototype$1 = iteratorsCore.IteratorPrototype;
-
-
-
-
-
-  var returnThis$1 = function () { return this; };
-
-  var createIteratorConstructor = function (IteratorConstructor, NAME, next) {
-    var TO_STRING_TAG = NAME + ' Iterator';
-    IteratorConstructor.prototype = objectCreate(IteratorPrototype$1, { next: createPropertyDescriptor(1, next) });
-    setToStringTag(IteratorConstructor, TO_STRING_TAG, false);
-    iterators[TO_STRING_TAG] = returnThis$1;
-    return IteratorConstructor;
-  };
-
-  var IteratorPrototype$2 = iteratorsCore.IteratorPrototype;
-  var BUGGY_SAFARI_ITERATORS$1 = iteratorsCore.BUGGY_SAFARI_ITERATORS;
-  var ITERATOR$4 = wellKnownSymbol('iterator');
-  var KEYS = 'keys';
-  var VALUES = 'values';
-  var ENTRIES = 'entries';
-
-  var returnThis$2 = function () { return this; };
-
-  var defineIterator = function (Iterable, NAME, IteratorConstructor, next, DEFAULT, IS_SET, FORCED) {
-    createIteratorConstructor(IteratorConstructor, NAME, next);
-
-    var getIterationMethod = function (KIND) {
-      if (KIND === DEFAULT && defaultIterator) return defaultIterator;
-      if (!BUGGY_SAFARI_ITERATORS$1 && KIND in IterablePrototype) return IterablePrototype[KIND];
-      switch (KIND) {
-        case KEYS: return function keys() { return new IteratorConstructor(this, KIND); };
-        case VALUES: return function values() { return new IteratorConstructor(this, KIND); };
-        case ENTRIES: return function entries() { return new IteratorConstructor(this, KIND); };
-      } return function () { return new IteratorConstructor(this); };
-    };
-
-    var TO_STRING_TAG = NAME + ' Iterator';
-    var INCORRECT_VALUES_NAME = false;
-    var IterablePrototype = Iterable.prototype;
-    var nativeIterator = IterablePrototype[ITERATOR$4]
-      || IterablePrototype['@@iterator']
-      || DEFAULT && IterablePrototype[DEFAULT];
-    var defaultIterator = !BUGGY_SAFARI_ITERATORS$1 && nativeIterator || getIterationMethod(DEFAULT);
-    var anyNativeIterator = NAME == 'Array' ? IterablePrototype.entries || nativeIterator : nativeIterator;
-    var CurrentIteratorPrototype, methods, KEY;
-
-    // fix native
-    if (anyNativeIterator) {
-      CurrentIteratorPrototype = objectGetPrototypeOf(anyNativeIterator.call(new Iterable()));
-      if (IteratorPrototype$2 !== Object.prototype && CurrentIteratorPrototype.next) {
-        if ( objectGetPrototypeOf(CurrentIteratorPrototype) !== IteratorPrototype$2) {
-          if (objectSetPrototypeOf) {
-            objectSetPrototypeOf(CurrentIteratorPrototype, IteratorPrototype$2);
-          } else if (typeof CurrentIteratorPrototype[ITERATOR$4] != 'function') {
-            createNonEnumerableProperty(CurrentIteratorPrototype, ITERATOR$4, returnThis$2);
-          }
-        }
-        // Set @@toStringTag to native iterators
-        setToStringTag(CurrentIteratorPrototype, TO_STRING_TAG, true);
-      }
-    }
-
-    // fix Array#{values, @@iterator}.name in V8 / FF
-    if (DEFAULT == VALUES && nativeIterator && nativeIterator.name !== VALUES) {
-      INCORRECT_VALUES_NAME = true;
-      defaultIterator = function values() { return nativeIterator.call(this); };
-    }
-
-    // define iterator
-    if ( IterablePrototype[ITERATOR$4] !== defaultIterator) {
-      createNonEnumerableProperty(IterablePrototype, ITERATOR$4, defaultIterator);
-    }
-    iterators[NAME] = defaultIterator;
-
-    // export additional methods
-    if (DEFAULT) {
-      methods = {
-        values: getIterationMethod(VALUES),
-        keys: IS_SET ? defaultIterator : getIterationMethod(KEYS),
-        entries: getIterationMethod(ENTRIES)
-      };
-      if (FORCED) for (KEY in methods) {
-        if (BUGGY_SAFARI_ITERATORS$1 || INCORRECT_VALUES_NAME || !(KEY in IterablePrototype)) {
-          redefine(IterablePrototype, KEY, methods[KEY]);
-        }
-      } else _export({ target: NAME, proto: true, forced: BUGGY_SAFARI_ITERATORS$1 || INCORRECT_VALUES_NAME }, methods);
-    }
-
-    return methods;
-  };
-
-  var ARRAY_ITERATOR = 'Array Iterator';
-  var setInternalState$1 = internalState.set;
-  var getInternalState$1 = internalState.getterFor(ARRAY_ITERATOR);
-
-  // `Array.prototype.entries` method
-  // https://tc39.github.io/ecma262/#sec-array.prototype.entries
-  // `Array.prototype.keys` method
-  // https://tc39.github.io/ecma262/#sec-array.prototype.keys
-  // `Array.prototype.values` method
-  // https://tc39.github.io/ecma262/#sec-array.prototype.values
-  // `Array.prototype[@@iterator]` method
-  // https://tc39.github.io/ecma262/#sec-array.prototype-@@iterator
-  // `CreateArrayIterator` internal method
-  // https://tc39.github.io/ecma262/#sec-createarrayiterator
-  var es_array_iterator = defineIterator(Array, 'Array', function (iterated, kind) {
-    setInternalState$1(this, {
-      type: ARRAY_ITERATOR,
-      target: toIndexedObject(iterated), // target
-      index: 0,                          // next index
-      kind: kind                         // kind
-    });
-  // `%ArrayIteratorPrototype%.next` method
-  // https://tc39.github.io/ecma262/#sec-%arrayiteratorprototype%.next
-  }, function () {
-    var state = getInternalState$1(this);
-    var target = state.target;
-    var kind = state.kind;
-    var index = state.index++;
-    if (!target || index >= target.length) {
-      state.target = undefined;
-      return { value: undefined, done: true };
-    }
-    if (kind == 'keys') return { value: index, done: false };
-    if (kind == 'values') return { value: target[index], done: false };
-    return { value: [index, target[index]], done: false };
-  }, 'values');
-
-  // argumentsList[@@iterator] is %ArrayProto_values%
-  // https://tc39.github.io/ecma262/#sec-createunmappedargumentsobject
-  // https://tc39.github.io/ecma262/#sec-createmappedargumentsobject
-  iterators.Arguments = iterators.Array;
-
-  // https://tc39.github.io/ecma262/#sec-array.prototype-@@unscopables
-  addToUnscopables('keys');
-  addToUnscopables('values');
-  addToUnscopables('entries');
-
   var DatePrototype = Date.prototype;
   var INVALID_DATE = 'Invalid Date';
   var TO_STRING = 'toString';
@@ -5042,7 +5434,7 @@
   }
 
   // `String.prototype.{ codePointAt, at }` methods implementation
-  var createMethod$3 = function (CONVERT_TO_STRING) {
+  var createMethod$4 = function (CONVERT_TO_STRING) {
     return function ($this, pos) {
       var S = String(requireObjectCoercible($this));
       var position = toInteger(pos);
@@ -5060,10 +5452,10 @@
   var stringMultibyte = {
     // `String.prototype.codePointAt` method
     // https://tc39.github.io/ecma262/#sec-string.prototype.codepointat
-    codeAt: createMethod$3(false),
+    codeAt: createMethod$4(false),
     // `String.prototype.at` method
     // https://github.com/mathiasbynens/String.prototype.at
-    charAt: createMethod$3(true)
+    charAt: createMethod$4(true)
   };
 
   var charAt = stringMultibyte.charAt;
@@ -5094,70 +5486,6 @@
     state.index += point.length;
     return { value: point, done: false };
   });
-
-  // iterable DOM collections
-  // flag - `iterable` interface - 'entries', 'keys', 'values', 'forEach' methods
-  var domIterables = {
-    CSSRuleList: 0,
-    CSSStyleDeclaration: 0,
-    CSSValueList: 0,
-    ClientRectList: 0,
-    DOMRectList: 0,
-    DOMStringList: 0,
-    DOMTokenList: 1,
-    DataTransferItemList: 0,
-    FileList: 0,
-    HTMLAllCollection: 0,
-    HTMLCollection: 0,
-    HTMLFormElement: 0,
-    HTMLSelectElement: 0,
-    MediaList: 0,
-    MimeTypeArray: 0,
-    NamedNodeMap: 0,
-    NodeList: 1,
-    PaintRequestList: 0,
-    Plugin: 0,
-    PluginArray: 0,
-    SVGLengthList: 0,
-    SVGNumberList: 0,
-    SVGPathSegList: 0,
-    SVGPointList: 0,
-    SVGStringList: 0,
-    SVGTransformList: 0,
-    SourceBufferList: 0,
-    StyleSheetList: 0,
-    TextTrackCueList: 0,
-    TextTrackList: 0,
-    TouchList: 0
-  };
-
-  var ITERATOR$5 = wellKnownSymbol('iterator');
-  var TO_STRING_TAG$3 = wellKnownSymbol('toStringTag');
-  var ArrayValues = es_array_iterator.values;
-
-  for (var COLLECTION_NAME in domIterables) {
-    var Collection = global_1[COLLECTION_NAME];
-    var CollectionPrototype = Collection && Collection.prototype;
-    if (CollectionPrototype) {
-      // some Chrome versions have non-configurable methods on DOMTokenList
-      if (CollectionPrototype[ITERATOR$5] !== ArrayValues) try {
-        createNonEnumerableProperty(CollectionPrototype, ITERATOR$5, ArrayValues);
-      } catch (error) {
-        CollectionPrototype[ITERATOR$5] = ArrayValues;
-      }
-      if (!CollectionPrototype[TO_STRING_TAG$3]) {
-        createNonEnumerableProperty(CollectionPrototype, TO_STRING_TAG$3, COLLECTION_NAME);
-      }
-      if (domIterables[COLLECTION_NAME]) for (var METHOD_NAME in es_array_iterator) {
-        // some Chrome versions have non-configurable methods on DOMTokenList
-        if (CollectionPrototype[METHOD_NAME] !== es_array_iterator[METHOD_NAME]) try {
-          createNonEnumerableProperty(CollectionPrototype, METHOD_NAME, es_array_iterator[METHOD_NAME]);
-        } catch (error) {
-          CollectionPrototype[METHOD_NAME] = es_array_iterator[METHOD_NAME];
-        }
-      }
-    }
-  }
 
   /* eslint-disable no-undef */
   function getPublicTransport(origin, destination, method) {
@@ -5285,41 +5613,16 @@
     return _ref.apply(this, arguments);
   }
 
-  var $filter = arrayIteration.filter;
-
-
-
-  var HAS_SPECIES_SUPPORT$2 = arrayMethodHasSpeciesSupport('filter');
-  // Edge 14- issue
-  var USES_TO_LENGTH$2 = arrayMethodUsesToLength('filter');
-
-  // `Array.prototype.filter` method
-  // https://tc39.github.io/ecma262/#sec-array.prototype.filter
-  // with adding support of @@species
-  _export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT$2 || !USES_TO_LENGTH$2 }, {
-    filter: function filter(callbackfn /* , thisArg */) {
-      return $filter(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
-    }
-  });
-
-  var arrayMethodIsStrict = function (METHOD_NAME, argument) {
-    var method = [][METHOD_NAME];
-    return !!method && fails(function () {
-      // eslint-disable-next-line no-useless-call,no-throw-literal
-      method.call(null, argument || function () { throw 1; }, 1);
-    });
-  };
-
   var $forEach = arrayIteration.forEach;
 
 
 
-  var STRICT_METHOD = arrayMethodIsStrict('forEach');
-  var USES_TO_LENGTH$3 = arrayMethodUsesToLength('forEach');
+  var STRICT_METHOD$1 = arrayMethodIsStrict('forEach');
+  var USES_TO_LENGTH$4 = arrayMethodUsesToLength('forEach');
 
   // `Array.prototype.forEach` method implementation
   // https://tc39.github.io/ecma262/#sec-array.prototype.foreach
-  var arrayForEach = (!STRICT_METHOD || !USES_TO_LENGTH$3) ? function forEach(callbackfn /* , thisArg */) {
+  var arrayForEach = (!STRICT_METHOD$1 || !USES_TO_LENGTH$4) ? function forEach(callbackfn /* , thisArg */) {
     return $forEach(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
   } : [].forEach;
 
@@ -5333,11 +5636,11 @@
 
 
 
-  var USES_TO_LENGTH$4 = arrayMethodUsesToLength('indexOf', { ACCESSORS: true, 1: 0 });
+  var USES_TO_LENGTH$5 = arrayMethodUsesToLength('indexOf', { ACCESSORS: true, 1: 0 });
 
   // `Array.prototype.includes` method
   // https://tc39.github.io/ecma262/#sec-array.prototype.includes
-  _export({ target: 'Array', proto: true, forced: !USES_TO_LENGTH$4 }, {
+  _export({ target: 'Array', proto: true, forced: !USES_TO_LENGTH$5 }, {
     includes: function includes(el /* , fromIndex = 0 */) {
       return $includes(this, el, arguments.length > 1 ? arguments[1] : undefined);
     }
@@ -5717,7 +6020,7 @@
 
   function _planTravel() {
     _planTravel = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(context) {
-      var state, commit, _state$sourceDetails, selectedSource, sourceOptions, _state$destinationDet, selectedDest, destOptions, _ref, from, to, data;
+      var state, commit, _state$sourceDetails, selectedSource, sourceOptions, _state$destinationDet, selectedDest, destOptions, _ref3, from, to, data;
 
       return regeneratorRuntime.wrap(function _callee4$(_context4) {
         while (1) {
@@ -5725,16 +6028,17 @@
             case 0:
               console.log('BEING CALLED');
               state = context.state, commit = context.commit;
+              commit('clearModeDurations');
               _state$sourceDetails = state.sourceDetails, selectedSource = _state$sourceDetails.selected, sourceOptions = _state$sourceDetails.options, _state$destinationDet = state.destinationDetails, selectedDest = _state$destinationDet.selected, destOptions = _state$destinationDet.options;
-              _ref = [sourceOptions[selectedSource].lngLat, destOptions[selectedDest].lngLat], from = _ref[0], to = _ref[1];
-              _context4.next = 6;
+              _ref3 = [sourceOptions[selectedSource].lngLat, destOptions[selectedDest].lngLat], from = _ref3[0], to = _ref3[1];
+              _context4.next = 7;
               return journey(from, to);
 
-            case 6:
+            case 7:
               data = _context4.sent;
               commit('setTravelDetails', data);
 
-            case 8:
+            case 9:
             case "end":
               return _context4.stop();
           }
@@ -5744,33 +6048,70 @@
     return _planTravel.apply(this, arguments);
   }
 
+  function storeDuration(_ref, _ref2) {
+    var commit = _ref.commit;
+    var mode = _ref2.mode,
+        _ref2$values = _ref2.values,
+        values = _ref2$values === void 0 ? [] : _ref2$values;
+    var sum = values.map(function (x) {
+      return x ? x : UNKNOWN_DURATION;
+    }).reduce(function (a, c) {
+      return a + parseFloat(c);
+    }, 0);
+    commit('setModeDuration', {
+      modeName: mode,
+      duration: sum
+    });
+  }
+
   var actions = {
     getCouncilLocations: getCouncilLocations,
     lookupCouncilDestination: lookupCouncilDestination,
     lookupCouncilSource: lookupCouncilSource,
     lookupDestination: lookupDestination,
     lookupSource: lookupSource,
-    planTravel: planTravel
+    planTravel: planTravel,
+    storeDuration: storeDuration
   };
 
-  var trim$1 = stringTrim.trim;
+  var propertyIsEnumerable = objectPropertyIsEnumerable.f;
 
+  // `Object.{ entries, values }` methods implementation
+  var createMethod$5 = function (TO_ENTRIES) {
+    return function (it) {
+      var O = toIndexedObject(it);
+      var keys = objectKeys(O);
+      var length = keys.length;
+      var i = 0;
+      var result = [];
+      var key;
+      while (length > i) {
+        key = keys[i++];
+        if (!descriptors || propertyIsEnumerable.call(O, key)) {
+          result.push(TO_ENTRIES ? [key, O[key]] : O[key]);
+        }
+      }
+      return result;
+    };
+  };
 
-  var $parseFloat = global_1.parseFloat;
-  var FORCED$3 = 1 / $parseFloat(whitespaces + '-0') !== -Infinity;
+  var objectToArray = {
+    // `Object.entries` method
+    // https://tc39.github.io/ecma262/#sec-object.entries
+    entries: createMethod$5(true),
+    // `Object.values` method
+    // https://tc39.github.io/ecma262/#sec-object.values
+    values: createMethod$5(false)
+  };
 
-  // `parseFloat` method
-  // https://tc39.github.io/ecma262/#sec-parsefloat-string
-  var numberParseFloat = FORCED$3 ? function parseFloat(string) {
-    var trimmedString = trim$1(String(string));
-    var result = $parseFloat(trimmedString);
-    return result === 0 && trimmedString.charAt(0) == '-' ? -0 : result;
-  } : $parseFloat;
+  var $values = objectToArray.values;
 
-  // `parseFloat` method
-  // https://tc39.github.io/ecma262/#sec-parsefloat-string
-  _export({ global: true, forced: parseFloat != numberParseFloat }, {
-    parseFloat: numberParseFloat
+  // `Object.values` method
+  // https://tc39.github.io/ecma262/#sec-object.values
+  _export({ target: 'Object', stat: true }, {
+    values: function values(O) {
+      return $values(O);
+    }
   });
 
   function appendDestOptions(state, update) {
@@ -5794,6 +6135,20 @@
 
   function selectSource(state, update) {
     state.sourceDetails.selected = update;
+  }
+
+  function clearModeDurations(state) {
+    state.durations = {};
+    state.maxDuration = null;
+  }
+
+  function setModeDuration(state, _ref) {
+    var modeName = _ref.modeName,
+        duration = _ref.duration;
+    state.durations[modeName] = duration;
+    state.maxDuration = Object.values(state.durations).reduce(function (p, c) {
+      return Math.max(p, c);
+    }, 0);
   }
 
   function setTravelDetails(state, update) {
@@ -5850,9 +6205,11 @@
   var mutations = {
     appendDestOptions: appendDestOptions,
     appendSourceOptions: appendSourceOptions,
+    clearModeDurations: clearModeDurations,
     clearTravelDetails: clearTravelDetails,
     selectDestination: selectDestination,
     selectSource: selectSource,
+    setModeDuration: setModeDuration,
     setTravelDetails: setTravelDetails,
     updateCarrying: updateCarrying,
     updateCouncilLocations: updateCouncilLocations,
@@ -5865,8 +6222,8 @@
     updateTimeAtDest: updateTimeAtDest
   };
 
-  Vue.use(Vuex);
-  var store$2 = new Vuex.Store({
+  Vue.use(Vuex__default);
+  var store$2 = new Vuex__default.Store({
     actions: actions,
     mutations: mutations,
     state: {
@@ -5893,7 +6250,9 @@
       train: null,
       driving: null,
       cycling: null,
-      walking: null
+      walking: null,
+      durations: {},
+      maxDuration: null
     },
     getters: {
       journey: function journey(state) {
@@ -5932,7 +6291,7 @@
       store$2.dispatch('getCouncilLocations');
     },
     render: function render(h) {
-      return h(__vue_component__$3, {
+      return h(__vue_component__$4, {
         props: {
           modes: modes
         }

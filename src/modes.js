@@ -7,6 +7,15 @@ import Teleconf from './components/modes/Teleconf.vue';
 import WalkCycle from './components/modes/WalkCycle.vue';
 import Taxi from './components/modes/Taxi.vue';
 import SelfDrive from './components/modes/SelfDrive.vue';
+import { formatTime } from './utils/formatTime';
+
+const calculateSegments = ({ travelTime, meetingTime, isRoundTrip = false}) => {
+  return [
+    travelTime,
+    isRoundTrip ? meetingTime : undefined,
+    isRoundTrip ? travelTime : undefined,
+  ].filter(x => x);
+};
 
 /**
  * Each mode of transport is described below. The fields are as follows:
@@ -33,6 +42,12 @@ export default [
     displayFn(j) {
       return !j.presenceRequired; //hide if presence is required
     },
+    timeFn(j) {
+      return calculateSegments({
+        meetingTime: j.timeAtDest,
+        isRoundTrip: j.isRoundTrip,
+      });
+    },
   },
   {
     title: 'Walk/Cycle',
@@ -49,6 +64,13 @@ export default [
     displayFn(j) {
       return !j.carrying; //hide if user is carrying lots of stuff
     },
+    timeFn(j) {
+      return calculateSegments({
+        meetingTime: j.timeAtDest,
+        travelTime: j.cycling.time.value,
+        isRoundTrip: j.isRoundTrip,
+      });
+    },
   },
   {
     title: 'Bus/train', // should we split this into 2 options? different cost & emissions calculations
@@ -63,6 +85,13 @@ export default [
       const bus =  0.167227 * (j.isRoundTrip ? toMiles(j.bus.distance) * 2 : toMiles(j.bus.distance));
       const train = 0.065613 * (j.isRoundTrip ? toMiles(j.train.distance) * 2 : toMiles(j.train.distance));
       return ((bus + train) / 2).toFixed(2);  //take the average for now
+    },
+    timeFn(j) {
+      return calculateSegments({
+        meetingTime: j.timeAtDest,
+        travelTime: j.bus.time.value,
+        isRoundTrip: j.isRoundTrip,
+      });
     },
   },
   {
@@ -80,6 +109,17 @@ export default [
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
       return (0.09612 * dist).toFixed(2); // Assumes vehicle is an EV
     },
+    timeFn(j) {
+      return [
+        null,
+        ...calculateSegments({
+          meetingTime: j.timeAtDest,
+          travelTime: j.driving.time.value,
+          isRoundTrip: j.isRoundTrip,
+        }),
+        null,
+      ];
+    },
   },
   {
     title: 'Car club',
@@ -95,6 +135,13 @@ export default [
     },
     co2Fn(j) {
       return (0.25885349 * toMiles(j.driving.distance)).toFixed(2);
+    },
+    timeFn(j) {
+      return calculateSegments({
+        meetingTime: j.timeAtDest,
+        travelTime: j.driving.time.value,
+        isRoundTrip: j.isRoundTrip,
+      });
     },
   },
   {
@@ -113,6 +160,13 @@ export default [
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
       return (0.24020217 * dist).toFixed(2);
     },
+    timeFn(j) {
+      return calculateSegments({
+        meetingTime: j.timeAtDest,
+        travelTime: j.driving.time.value,
+        isRoundTrip: j.isRoundTrip,
+      });
+    },
   },
   {
     title: 'Drive your own vehicle',
@@ -128,19 +182,16 @@ export default [
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
       return (0.28591256 * dist).toFixed(2);
     },
+    timeFn(j) {
+      return calculateSegments({
+        meetingTime: j.timeAtDest,
+        travelTime: j.driving.time.value,
+        isRoundTrip: j.isRoundTrip,
+      });
+    },
   },
 ];
 
 // helper functions
 const toMiles = dist => dist.unit == 'km' ? dist.value / 1.609344 : dist.value;
 
-const formatTime = value => {
-  value = Number(value);
-  if (value < 60) return `${value.toFixed(0)} minutes`;
-  else {
-    let hours = Math.floor(value / 60);
-    let mins = (value % 60).toFixed(0);
-    if (hours == 1) return `${hours} hour ${mins} minutes`;
-    else return `${hours} hours ${mins} minutes`;
-  }
-};

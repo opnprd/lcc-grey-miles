@@ -1,6 +1,7 @@
 import geoCode from '../resources/geocode';
 import journey from '../resources/journeys';
 import searchCouncilLocations from '../resources/search';
+import { UNKNOWN_DURATION } from '../constants';
 
 async function getCouncilLocations(context) {
   const { commit } = context;
@@ -41,6 +42,7 @@ async function lookupSource(context) {
 async function planTravel(context) {
   console.log('BEING CALLED');
   const { state, commit } = context;
+  commit('clearModeDurations');
   const {
     sourceDetails: { selected: selectedSource, options: sourceOptions },
     destinationDetails: { selected: selectedDest, options: destOptions },
@@ -50,6 +52,11 @@ async function planTravel(context) {
   commit('setTravelDetails', data);
 }
 
+function storeDuration({ commit }, { mode, values = []}) {
+  const sum = values.map(x => x ? x : UNKNOWN_DURATION).reduce((a, c) => a + parseFloat(c), 0);
+  commit('setModeDuration', { modeName: mode, duration: sum });
+}
+
 export default {
   getCouncilLocations,
   lookupCouncilDestination,
@@ -57,4 +64,5 @@ export default {
   lookupDestination,
   lookupSource,
   planTravel,
+  storeDuration,
 };

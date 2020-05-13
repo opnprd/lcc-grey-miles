@@ -21,6 +21,16 @@ function selectSource(state, update) {
   state.sourceDetails.selected = update;
 }
 
+function clearModeDurations(state) {
+  state.durations = {};
+  state.maxDuration = null;
+}
+
+function setModeDuration(state, { modeName, duration }) {
+  state.durations[modeName] = duration;
+  state.maxDuration = Object.values(state.durations).reduce((p, c) => Math.max(p, c), 0);
+}
+
 function setTravelDetails(state, update) {
   const { driving, cycling, walking, bus, train } = update;
   state.cycling = cycling;
@@ -71,9 +81,11 @@ function updateTimeAtDest(state, update) {
 export default {
   appendDestOptions,
   appendSourceOptions,
+  clearModeDurations,
   clearTravelDetails,
   selectDestination,
   selectSource,
+  setModeDuration,
   setTravelDetails,
   updateCarrying,
   updateCouncilLocations,

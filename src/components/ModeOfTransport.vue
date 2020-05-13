@@ -11,6 +11,8 @@
         more info
       </div>
       <h3>{{ title }}</h3>
+      <display-timeline :values="time" />
+      <!-- eslint-disable-next-line vue/no-v-html -->
       <p v-html="summary" />
       <p>£{{ cost }}</p>
       <p v-if="emissions">
@@ -32,7 +34,11 @@
 }
 </style>
 <script>
+import DisplayTimeline from './Timeline.vue';
 export default {
+  components: {
+    DisplayTimeline,
+  },
   props: {
     title: {
       type: String,
@@ -58,6 +64,10 @@ export default {
     displayFn: {
       type: Function,
       default: () => () => true,
+    },
+    timeFn: {
+      type: Function,
+      default: () => () => 0,
     },
   },
   data: function () {
@@ -87,12 +97,20 @@ export default {
       const destLngLat = destOptions[selectedDest].lngLat;
       return `https://www.google.com/maps/dir/?api=1&origin=${srcLngLat[1]},${srcLngLat[0]}&destination=${destLngLat[1]},${destLngLat[0]}&travelmode=`;
     },
+    time() {
+      const time = this.timeFn(this.$store.getters.journey);
+      return time;
+    },
+  },
+  mounted() {
+    this.$store.dispatch('storeDuration', { mode: this.title, values: this.time });
   },
   methods: {
     toggleView() {
       const currentState = this.viewState;
       this.viewState = currentState === 'open' ? 'closed' : 'open';
     },
+    
   },
 };
 </script>

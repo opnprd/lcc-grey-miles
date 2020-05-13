@@ -30,6 +30,8 @@ export default new Vuex.Store({
     driving: null,
     cycling: null,
     walking: null,
+    durations: {},
+    maxDuration: null,
   },
   getters: {
     journey: (state) => {
