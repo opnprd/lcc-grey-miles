@@ -4,7 +4,7 @@
       <p>Find the greenest way to get to your meeting</p>
       <h1>Staff Travel Options</h1>
       <img
-        src="/img/lcc.png"
+        src="img/lcc.png"
         width="224px"
       >
     </header>
