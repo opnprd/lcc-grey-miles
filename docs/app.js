@@ -872,7 +872,7 @@
     
 
     
-    const __vue_component__ = normalizeComponent(
+    const __vue_component__ = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__, staticRenderFns: __vue_staticRenderFns__ },
       __vue_inject_styles__,
       __vue_script__,
@@ -1271,37 +1271,49 @@
           }
         }),
         _vm._v(" "),
-        _c("label", { attrs: { for: "roundtrip" } }, [
-          _vm._v("I am going and then coming back again")
-        ])
+        _c("label", { attrs: { for: "roundtrip" } }, [_vm._v("Return Journey")])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "row" }, [
-        _c("label", { attrs: { for: "timeatdest" } }, [
-          _vm._v("Minutes spent at location")
-        ]),
-        _vm._v(" "),
-        _c("input", {
+      _c(
+        "div",
+        {
           directives: [
             {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.timeAtDest,
-              expression: "timeAtDest"
+              name: "show",
+              rawName: "v-show",
+              value: _vm.isRoundTrip,
+              expression: "isRoundTrip"
             }
           ],
-          attrs: { id: "timeatdest", name: "timeAtDest", type: "number" },
-          domProps: { value: _vm.timeAtDest },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+          staticClass: "row"
+        },
+        [
+          _c("label", { attrs: { for: "timeatdest" } }, [
+            _vm._v("How long is your meeting (in minutes)?")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.timeAtDest,
+                expression: "timeAtDest"
               }
-              _vm.timeAtDest = $event.target.value;
+            ],
+            attrs: { id: "timeatdest", name: "timeAtDest", type: "number" },
+            domProps: { value: _vm.timeAtDest },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.timeAtDest = $event.target.value;
+              }
             }
-          }
-        })
-      ]),
+          })
+        ]
+      ),
       _vm._v(" "),
       _c("div", { staticClass: "row" }, [
         _c("input", {
@@ -1385,7 +1397,7 @@
         }),
         _vm._v(" "),
         _c("label", { attrs: { for: "carrying" } }, [
-          _vm._v("I am transporting a lot of stuff")
+          _vm._v("I'm transporting a lot of stuff")
         ])
       ]),
       _vm._v(" "),
@@ -1409,7 +1421,7 @@
     /* style */
     const __vue_inject_styles__$1 = function (inject) {
       if (!inject) return
-      inject("data-v-0ceef1ba_0", { source: "\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  position: absolute;\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  max-width: 90vw;\n  margin-top: 20px;\n  margin-left: 95px;\n}\n.search-results li {\n  padding: 8px;\n  max-width: max-content;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.selected {\n  background-color: #ededed;\n} \n", map: {"version":3,"sources":["/Users/gilesdring/src/opnprd/greymiles/src/components/Search.vue"],"names":[],"mappings":";AA6MA;EACA,sBAAA;AACA;AACA;EACA,kBAAA;EACA,YAAA;EACA,uBAAA;EACA,6BAAA;EACA,eAAA;EACA,gBAAA;EACA,iBAAA;AACA;AACA;EACA,YAAA;EACA,sBAAA;AACA;AACA;EACA,eAAA;EACA,oBAAA;EACA,SAAA;EACA,YAAA;EACA,gBAAA;EACA,0BAAA;EACA,eAAA;AACA;AACA;EACA,yBAAA;AACA","file":"Search.vue","sourcesContent":["<template>\n  <form>\n    <div class=\"row\">\n      <label for=\"from\">From:</label>\n      <input\n        id=\"from\"\n        ref=\"from\"\n        v-model=\"origin\"\n        type=\"text\"\n        @keyup=\"handleSourceInput($event)\"\n      >\n      <div\n        v-show=\"showSourceOptions\"\n        class=\"search-results\"\n      >\n        <location-options\n          :options=\"sourceOptions\"\n          :action=\"selectSource\"\n          :selected=\"selectedSource\"\n          @click=\"showSourceOptions = false;\"\n        />\n        <button\n          v-show=\"showSourceSearchButton\"\n          type=\"button\"\n          @click=\"lookupExternalSource()\"\n        >\n          Search for more locations...\n        </button>\n      </div>\n    </div>\n    <div class=\"row\">\n      <label for=\"to\">To:</label>\n      <input\n        id=\"to\"\n        ref=\"to\"\n        v-model=\"destination\"\n        type=\"text\"\n        @keyup=\"handleDestinationInput($event)\"\n      >\n      <div\n        v-show=\"showDestinationOptions\"\n        class=\"search-results\"\n      >\n        <location-options\n          :options=\"destinationOptions\"\n          :action=\"selectDestination\"\n          :selected=\"selectedDestination\"\n          @click=\"showDestinationOptions = false;\"\n        />\n        <button\n          v-show=\"showDestinationSearchButton\"\n          type=\"button\"\n          @click=\"lookupExternalDestination()\"\n        >\n          Search for more locations...\n        </button>\n      </div>\n    </div>\n    <div class=\"row\" />\n    <div class=\"row\">\n      <input\n        id=\"roundtrip\"\n        v-model=\"isRoundTrip\"\n        name=\"roundtrip\"\n        type=\"checkbox\"\n      >\n      <label for=\"roundtrip\">I am going and then coming back again</label>\n    </div>\n    <div class=\"row\">\n      <label for=\"timeatdest\">Minutes spent at location</label>\n      <input\n        id=\"timeatdest\"\n        v-model=\"timeAtDest\"\n        name=\"timeAtDest\"\n        type=\"number\"\n      >\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"presence\"\n        v-model=\"presenceRequired\"\n        name=\"presence\"\n        type=\"checkbox\"\n      >\n      <label for=\"presence\">I need to travel to the destination</label>\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"carrying\"\n        v-model=\"carrying\"\n        name=\"carrying\"\n        type=\"checkbox\"\n      >\n      <label for=\"carrying\">I am transporting a lot of stuff</label>\n    </div>\n    <button\n      type=\"button\"\n      @click=\"calculate()\"\n    >\n      Calculate\n    </button>\n  </form>\n</template>\n<script>\nimport LocationOptions from './LocationOptions.vue';\nexport default {\n  components: {\n    LocationOptions,\n  },\n  data() {\n    return {\n      showSourceOptions: false,\n      showDestinationOptions: false,\n      showSourceSearchButton: true,\n      showDestinationSearchButton: true,\n    };\n  },\n  computed: {\n    origin: {\n      get() { return this.$store.state.source; },\n      set(value) { this.$store.commit('updateSource', value); },\n    },\n    destination: {\n      get() { return this.$store.state.destination; },\n      set(value) { this.$store.commit('updateDestination', value); },\n    },\n    isRoundTrip: {\n      get() { return this.$store.state.isRoundTrip; },\n      set(value) { this.$store.commit('updateIsRoundTrip', value); },\n    },\n    timeAtDest: {\n      get() { return this.$store.state.timeAtDest; },\n      set(value) { this.$store.commit('updateTimeAtDest', value); },\n    },\n    presenceRequired: {\n      get() { return this.$store.state.presenceRequired; },\n      set(value) { this.$store.commit('updatePresenceRequired', value); },\n    },\n    carrying: {\n      get() { return this.$store.state.carrying; },\n      set(value) { this.$store.commit('updateCarrying', value); },\n    },\n    sourceOptions() { return this.$store.state.sourceDetails.options; },\n    selectedSource() { return this.$store.state.sourceDetails.selected; },\n    destinationOptions() { return this.$store.state.destinationDetails.options; },\n    selectedDestination() { return this.$store.state.destinationDetails.selected; },\n  },\n  methods: {\n    calculate() {\n      this.$store.dispatch('planTravel');\n    },\n    handleDestinationInput(event) {\n      //do nothing if the input field is empty\n      if(!this.destination) this.showDestinationOptions = false;\n\n      //keyboard navigation\n      else if(event.key == 'ArrowDown' && this.selectedDestination < (this.destinationOptions.length - 1)) this.selectDestination(this.selectedDestination + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedDestination > 0) this.selectDestination(this.selectedDestination - 1, false);\n      else if(event.key == 'Enter') this.showDestinationOptions = false;\n\n      //if a character is entered, search the council location list again\n      else if(this.destination.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilDestination');\n        this.showDestinationOptions = true;\n        this.showDestinationSearchButton = true;\n      }\n    },\n    handleSourceInput(event) {\n      if(!this.origin) this.showSourceOptions = false;\n      if(event.key == 'ArrowDown' && this.selectedSource < (this.sourceOptions.length - 1)) this.selectSource(this.selectedSource + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedSource > 0) this.selectSource(this.selectedSource - 1, false);\n      else if(event.key == 'Enter') this.showSourceOptions = false;\n      else if(this.origin.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilSource');\n        this.showSourceOptions = true;\n        this.showSourceSearchButton = true;\n      }\n    },\n    lookupExternalDestination() {\n      this.$store.dispatch('lookupDestination');\n      this.showDestinationOptions = true;\n      this.showDestinationSearchButton = false;\n      this.$refs.to.focus(); //keep focus on the input field so that the keyboard can be used to navigate\n    },\n    lookupExternalSource() {\n      this.$store.dispatch('lookupSource');\n      this.showSourceOptions = true;\n      this.showSourceSearchButton = false;\n      this.$refs.from.focus();\n    },\n    selectDestination(key, hideOptions=true) {\n      this.$store.commit('selectDestination', key);\n      this.destination = this.destinationOptions[key].name;\n      if(hideOptions) this.showDestinationOptions = false;\n    },\n    selectSource(key, hideOptions=true) {\n      this.$store.commit('selectSource', key);\n      this.origin = this.sourceOptions[key].name;\n      if(hideOptions) this.showSourceOptions = false;\n    },\n  },\n};\n</script>\n\n<style>\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  position: absolute;\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  max-width: 90vw;\n  margin-top: 20px;\n  margin-left: 95px;\n}\n.search-results li {\n  padding: 8px;\n  max-width: max-content;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.selected {\n  background-color: #ededed;\n} \n</style>"]}, media: undefined });
+      inject("data-v-413f00a0_0", { source: "\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  position: absolute;\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  max-width: 90vw;\n  margin-top: 20px;\n  margin-left: 95px;\n}\n.search-results li {\n  padding: 8px;\n  max-width: max-content;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.selected {\n  background-color: #ededed;\n} \n", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/Search.vue"],"names":[],"mappings":";AAgNA;EACA,sBAAA;AACA;AACA;EACA,kBAAA;EACA,YAAA;EACA,uBAAA;EACA,6BAAA;EACA,eAAA;EACA,gBAAA;EACA,iBAAA;AACA;AACA;EACA,YAAA;EACA,sBAAA;AACA;AACA;EACA,eAAA;EACA,oBAAA;EACA,SAAA;EACA,YAAA;EACA,gBAAA;EACA,0BAAA;EACA,eAAA;AACA;AACA;EACA,yBAAA;AACA","file":"Search.vue","sourcesContent":["<template>\n  <form>\n    <div class=\"row\">\n      <label for=\"from\">From:</label>\n      <input\n        id=\"from\"\n        ref=\"from\"\n        v-model=\"origin\"\n        type=\"text\"\n        @keyup=\"handleSourceInput($event)\"\n      >\n      <div\n        v-show=\"showSourceOptions\"\n        class=\"search-results\"\n      >\n        <location-options\n          :options=\"sourceOptions\"\n          :action=\"selectSource\"\n          :selected=\"selectedSource\"\n          @click=\"showSourceOptions = false;\"\n        />\n        <button\n          v-show=\"showSourceSearchButton\"\n          type=\"button\"\n          @click=\"lookupExternalSource()\"\n        >\n          Search for more locations...\n        </button>\n      </div>\n    </div>\n    <div class=\"row\">\n      <label for=\"to\">To:</label>\n      <input\n        id=\"to\"\n        ref=\"to\"\n        v-model=\"destination\"\n        type=\"text\"\n        @keyup=\"handleDestinationInput($event)\"\n      >\n      <div\n        v-show=\"showDestinationOptions\"\n        class=\"search-results\"\n      >\n        <location-options\n          :options=\"destinationOptions\"\n          :action=\"selectDestination\"\n          :selected=\"selectedDestination\"\n          @click=\"showDestinationOptions = false;\"\n        />\n        <button\n          v-show=\"showDestinationSearchButton\"\n          type=\"button\"\n          @click=\"lookupExternalDestination()\"\n        >\n          Search for more locations...\n        </button>\n      </div>\n    </div>\n    <div class=\"row\" />\n    <div class=\"row\">\n      <input\n        id=\"roundtrip\"\n        v-model=\"isRoundTrip\"\n        name=\"roundtrip\"\n        type=\"checkbox\"\n      >\n      <label for=\"roundtrip\">Return Journey</label>\n    </div>\n    <div\n      v-show=\"isRoundTrip\"\n      class=\"row\"\n    >\n      <label for=\"timeatdest\">How long is your meeting (in minutes)?</label>\n      <input\n        id=\"timeatdest\"\n        v-model=\"timeAtDest\"\n        name=\"timeAtDest\"\n        type=\"number\"\n      >\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"presence\"\n        v-model=\"presenceRequired\"\n        name=\"presence\"\n        type=\"checkbox\"\n      >\n      <label for=\"presence\">I need to travel to the destination</label>\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"carrying\"\n        v-model=\"carrying\"\n        name=\"carrying\"\n        type=\"checkbox\"\n      >\n      <label for=\"carrying\">I'm transporting a lot of stuff</label>\n    </div>\n    <button\n      type=\"button\"\n      @click=\"calculate()\"\n    >\n      Calculate\n    </button>\n  </form>\n</template>\n<script>\nimport LocationOptions from './LocationOptions.vue';\nexport default {\n  components: {\n    LocationOptions,\n  },\n  data() {\n    return {\n      showSourceOptions: false,\n      showDestinationOptions: false,\n      showSourceSearchButton: true,\n      showDestinationSearchButton: true,\n    };\n  },\n  computed: {\n    origin: {\n      get() { return this.$store.state.source; },\n      set(value) { this.$store.commit('updateSource', value); },\n    },\n    destination: {\n      get() { return this.$store.state.destination; },\n      set(value) { this.$store.commit('updateDestination', value); },\n    },\n    isRoundTrip: {\n      get() { return this.$store.state.isRoundTrip; },\n      set(value) { this.$store.commit('updateIsRoundTrip', value); },\n    },\n    timeAtDest: {\n      get() { return this.$store.state.timeAtDest; },\n      set(value) { this.$store.commit('updateTimeAtDest', value); },\n    },\n    presenceRequired: {\n      get() { return this.$store.state.presenceRequired; },\n      set(value) { this.$store.commit('updatePresenceRequired', value); },\n    },\n    carrying: {\n      get() { return this.$store.state.carrying; },\n      set(value) { this.$store.commit('updateCarrying', value); },\n    },\n    sourceOptions() { return this.$store.state.sourceDetails.options; },\n    selectedSource() { return this.$store.state.sourceDetails.selected; },\n    destinationOptions() { return this.$store.state.destinationDetails.options; },\n    selectedDestination() { return this.$store.state.destinationDetails.selected; },\n  },\n  methods: {\n    calculate() {\n      this.$store.dispatch('planTravel');\n    },\n    handleDestinationInput(event) {\n      //do nothing if the input field is empty\n      if(!this.destination) this.showDestinationOptions = false;\n\n      //keyboard navigation\n      else if(event.key == 'ArrowDown' && this.selectedDestination < (this.destinationOptions.length - 1)) this.selectDestination(this.selectedDestination + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedDestination > 0) this.selectDestination(this.selectedDestination - 1, false);\n      else if(event.key == 'Enter') this.showDestinationOptions = false;\n\n      //if a character is entered, search the council location list again\n      else if(this.destination.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilDestination');\n        this.showDestinationOptions = true;\n        this.showDestinationSearchButton = true;\n      }\n    },\n    handleSourceInput(event) {\n      if(!this.origin) this.showSourceOptions = false;\n      if(event.key == 'ArrowDown' && this.selectedSource < (this.sourceOptions.length - 1)) this.selectSource(this.selectedSource + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedSource > 0) this.selectSource(this.selectedSource - 1, false);\n      else if(event.key == 'Enter') this.showSourceOptions = false;\n      else if(this.origin.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilSource');\n        this.showSourceOptions = true;\n        this.showSourceSearchButton = true;\n      }\n    },\n    lookupExternalDestination() {\n      this.$store.dispatch('lookupDestination');\n      this.showDestinationOptions = true;\n      this.showDestinationSearchButton = false;\n      this.$refs.to.focus(); //keep focus on the input field so that the keyboard can be used to navigate\n    },\n    lookupExternalSource() {\n      this.$store.dispatch('lookupSource');\n      this.showSourceOptions = true;\n      this.showSourceSearchButton = false;\n      this.$refs.from.focus();\n    },\n    selectDestination(key, hideOptions=true) {\n      this.$store.commit('selectDestination', key);\n      this.destination = this.destinationOptions[key].name;\n      if(hideOptions) this.showDestinationOptions = false;\n    },\n    selectSource(key, hideOptions=true) {\n      this.$store.commit('selectSource', key);\n      this.origin = this.sourceOptions[key].name;\n      if(hideOptions) this.showSourceOptions = false;\n    },\n  },\n};\n</script>\n\n<style>\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  position: absolute;\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  max-width: 90vw;\n  margin-top: 20px;\n  margin-left: 95px;\n}\n.search-results li {\n  padding: 8px;\n  max-width: max-content;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.selected {\n  background-color: #ededed;\n} \n</style>"]}, media: undefined });
 
     };
     /* scoped */
@@ -1424,7 +1436,7 @@
     
 
     
-    const __vue_component__$1 = normalizeComponent(
+    const __vue_component__$1 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$1, staticRenderFns: __vue_staticRenderFns__$1 },
       __vue_inject_styles__$1,
       __vue_script__$1,
@@ -1433,311 +1445,6 @@
       __vue_module_identifier__$1,
       false,
       createInjector,
-      undefined,
-      undefined
-    );
-
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  var script$2 = {
-    props: {
-      title: {
-        type: String,
-        required: true
-      },
-      details: {
-        type: Object,
-        required: false,
-        "default": function _default() {}
-      },
-      summarise: {
-        type: Function,
-        "default": function _default() {
-          return function () {
-            return null;
-          };
-        }
-      },
-      costFn: {
-        type: Function,
-        required: true
-      },
-      co2Fn: {
-        type: Function,
-        "default": function _default() {
-          return function () {
-            return 0;
-          };
-        }
-      },
-      displayFn: {
-        type: Function,
-        "default": function _default() {
-          return function () {
-            return true;
-          };
-        }
-      }
-    },
-    data: function data() {
-      return {
-        viewState: 'closed'
-      };
-    },
-    computed: {
-      summary: function summary() {
-        return this.summarise(this.$store.getters.journey);
-      },
-      cost: function cost() {
-        return this.costFn(this.$store.getters.journey);
-      },
-      emissions: function emissions() {
-        return this.co2Fn(this.$store.getters.journey);
-      },
-      shouldDisplay: function shouldDisplay() {
-        return this.displayFn(this.$store.getters.journey);
-      }
-    },
-    methods: {
-      toggleView: function toggleView() {
-        var currentState = this.viewState;
-        this.viewState = currentState === 'open' ? 'closed' : 'open';
-      }
-    }
-  };
-
-  /* script */
-  const __vue_script__$2 = script$2;
-
-  /* template */
-  var __vue_render__$2 = function() {
-    var _vm = this;
-    var _h = _vm.$createElement;
-    var _c = _vm._self._c || _h;
-    return _vm.shouldDisplay
-      ? _c(
-          "section",
-          {
-            on: {
-              click: function($event) {
-                return _vm.toggleView()
-              }
-            }
-          },
-          [
-            _c("div", [
-              _vm.viewState === "closed"
-                ? _c("div", { staticClass: "open" }, [
-                    _vm._v("\n      more info\n    ")
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              _c("h3", [_vm._v(_vm._s(_vm.title))]),
-              _vm._v(" "),
-              _c("p", [_vm._v(_vm._s(_vm.summary))]),
-              _vm._v(" "),
-              _c("p", [_vm._v("£" + _vm._s(_vm.cost))]),
-              _vm._v(" "),
-              _vm.emissions
-                ? _c("p", [
-                    _vm._v("\n      " + _vm._s(_vm.emissions) + "kg CO"),
-                    _c("sub", [_vm._v("2")]),
-                    _vm._v(" emissions\n    ")
-                  ])
-                : _vm._e()
-            ]),
-            _vm._v(" "),
-            _vm.viewState === "open"
-              ? _c(_vm.details, { tag: "component" })
-              : _vm._e()
-          ],
-          1
-        )
-      : _vm._e()
-  };
-  var __vue_staticRenderFns__$2 = [];
-  __vue_render__$2._withStripped = true;
-
-    /* style */
-    const __vue_inject_styles__$2 = function (inject) {
-      if (!inject) return
-      inject("data-v-4ce3658e_0", { source: "\n.open[data-v-4ce3658e] {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n", map: {"version":3,"sources":["/Users/gilesdring/src/opnprd/greymiles/src/components/ModeOfTransport.vue"],"names":[],"mappings":";AA0BA;EACA,qBAAA;EACA,YAAA;EACA,kBAAA;EACA,kBAAA;AACA","file":"ModeOfTransport.vue","sourcesContent":["<template>\n  <section\n    v-if=\"shouldDisplay\"\n    @click=\"toggleView()\"\n  >\n    <div>\n      <div\n        v-if=\"viewState ==='closed'\"\n        class=\"open\"\n      >\n        more info\n      </div>\n      <h3>{{ title }}</h3>\n      <p>{{ summary }}</p>\n      <p>£{{ cost }}</p>\n      <p v-if=\"emissions\">\n        {{ emissions }}kg CO<sub>2</sub> emissions\n      </p>\n    </div>\n    <component\n      :is=\"details\"\n      v-if=\"viewState ==='open'\"\n    />\n  </section>  \n</template>\n<style scoped>\n.open {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n</style>\n<script>\nexport default {\n  props: {\n    title: {\n      type: String,\n      required: true,\n    },\n    details: {\n      type: Object,\n      required: false,\n      default: () => {},\n    },\n    summarise: {\n      type: Function,\n      default: () => () => null,\n    },\n    costFn: {\n      type: Function,\n      required: true,\n    },\n    co2Fn: {\n      type: Function,\n      default: () => () => 0,\n    },\n    displayFn: {\n      type: Function,\n      default: () => () => true,\n    },\n  },\n  data: function () {\n    return {\n      viewState: 'closed',\n    };\n  },\n  computed: {\n    summary() {\n      return this.summarise(this.$store.getters.journey);\n    },\n    cost() {\n      return this.costFn(this.$store.getters.journey);\n    },\n    emissions() {\n      return this.co2Fn(this.$store.getters.journey);\n    },\n    shouldDisplay() {\n      return this.displayFn(this.$store.getters.journey);\n    },\n  },\n  methods: {\n    toggleView() {\n      const currentState = this.viewState;\n      this.viewState = currentState === 'open' ? 'closed' : 'open';\n    },\n  },\n};\n</script>"]}, media: undefined });
-
-    };
-    /* scoped */
-    const __vue_scope_id__$2 = "data-v-4ce3658e";
-    /* module identifier */
-    const __vue_module_identifier__$2 = undefined;
-    /* functional template */
-    const __vue_is_functional_template__$2 = false;
-    /* style inject SSR */
-    
-    /* style inject shadow dom */
-    
-
-    
-    const __vue_component__$2 = normalizeComponent(
-      { render: __vue_render__$2, staticRenderFns: __vue_staticRenderFns__$2 },
-      __vue_inject_styles__$2,
-      __vue_script__$2,
-      __vue_scope_id__$2,
-      __vue_is_functional_template__$2,
-      __vue_module_identifier__$2,
-      false,
-      createInjector,
-      undefined,
-      undefined
-    );
-
-  //
-  var script$3 = {
-    components: {
-      SearchForm: __vue_component__$1,
-      ModeOfTransport: __vue_component__$2
-    },
-    props: {
-      modes: {
-        type: Array,
-        "default": function _default() {
-          return [];
-        }
-      },
-      rawModes: {
-        type: Array,
-        "default": function _default() {
-          return [];
-        }
-      }
-    },
-    computed: {
-      showModes: function showModes() {
-        if (this.$store.state.driving != null) return true;else return false;
-      }
-    } // created() {
-    //   this.$store.dispatch('getCouncilLocations');
-    // },
-
-  };
-
-  /* script */
-  const __vue_script__$3 = script$3;
-
-  /* template */
-  var __vue_render__$3 = function() {
-    var _vm = this;
-    var _h = _vm.$createElement;
-    var _c = _vm._self._c || _h;
-    return _c("article", { attrs: { id: "app" } }, [
-      _vm._m(0),
-      _vm._v(" "),
-      _c("div", { attrs: { id: "main" } }, [
-        _c(
-          "section",
-          [
-            _c("p", [
-              _vm._v(
-                "Can you make your journey cleaner? Move up Leeds City Council's travel hierarchy to reduce your emissions and help tackle the #ClimateEmergency"
-              )
-            ]),
-            _vm._v(" "),
-            _c("search-form")
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _vm.showModes
-          ? _c(
-              "ol",
-              { staticClass: "modes" },
-              _vm._l(_vm.modes, function(mode, i) {
-                return _c(
-                  "li",
-                  { key: i, class: "mode" + (i + 1) },
-                  [
-                    _c(
-                      "mode-of-transport",
-                      _vm._b({}, "mode-of-transport", mode, false)
-                    )
-                  ],
-                  1
-                )
-              }),
-              0
-            )
-          : _vm._e()
-      ])
-    ])
-  };
-  var __vue_staticRenderFns__$3 = [
-    function() {
-      var _vm = this;
-      var _h = _vm.$createElement;
-      var _c = _vm._self._c || _h;
-      return _c("header", [
-        _c("p", [_vm._v("Towards a lower emissions city")]),
-        _vm._v(" "),
-        _c("h1", [_vm._v("Leeds Council Staff Travel Options")])
-      ])
-    }
-  ];
-  __vue_render__$3._withStripped = true;
-
-    /* style */
-    const __vue_inject_styles__$3 = undefined;
-    /* scoped */
-    const __vue_scope_id__$3 = undefined;
-    /* module identifier */
-    const __vue_module_identifier__$3 = undefined;
-    /* functional template */
-    const __vue_is_functional_template__$3 = false;
-    /* style inject */
-    
-    /* style inject SSR */
-    
-    /* style inject shadow dom */
-    
-
-    
-    const __vue_component__$3 = normalizeComponent(
-      { render: __vue_render__$3, staticRenderFns: __vue_staticRenderFns__$3 },
-      __vue_inject_styles__$3,
-      __vue_script__$3,
-      __vue_scope_id__$3,
-      __vue_is_functional_template__$3,
-      __vue_module_identifier__$3,
-      false,
-      undefined,
       undefined,
       undefined
     );
@@ -1961,6 +1668,323 @@
     }
   });
 
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  var script$2 = {
+    props: {
+      title: {
+        type: String,
+        required: true
+      },
+      details: {
+        type: Object,
+        required: false,
+        "default": function _default() {}
+      },
+      summarise: {
+        type: Function,
+        "default": function _default() {
+          return function () {
+            return null;
+          };
+        }
+      },
+      costFn: {
+        type: Function,
+        required: true
+      },
+      co2Fn: {
+        type: Function,
+        "default": function _default() {
+          return function () {
+            return 0;
+          };
+        }
+      },
+      displayFn: {
+        type: Function,
+        "default": function _default() {
+          return function () {
+            return true;
+          };
+        }
+      }
+    },
+    data: function data() {
+      return {
+        viewState: 'closed'
+      };
+    },
+    computed: {
+      summary: function summary() {
+        return this.summarise(this.$store.getters.journey);
+      },
+      cost: function cost() {
+        return this.costFn(this.$store.getters.journey);
+      },
+      emissions: function emissions() {
+        return this.co2Fn(this.$store.getters.journey);
+      },
+      shouldDisplay: function shouldDisplay() {
+        return this.displayFn(this.$store.getters.journey);
+      },
+      mapsURL: function mapsURL() {
+        var _this$$store$state = this.$store.state,
+            _this$$store$state$so = _this$$store$state.sourceDetails,
+            srcOptions = _this$$store$state$so.options,
+            selectedSrc = _this$$store$state$so.selected,
+            _this$$store$state$de = _this$$store$state.destinationDetails,
+            destOptions = _this$$store$state$de.options,
+            selectedDest = _this$$store$state$de.selected;
+        var srcLngLat = srcOptions[selectedSrc].lngLat;
+        var destLngLat = destOptions[selectedDest].lngLat;
+        return "https://www.google.com/maps/dir/?api=1&origin=".concat(srcLngLat[1], ",").concat(srcLngLat[0], "&destination=").concat(destLngLat[1], ",").concat(destLngLat[0], "&travelmode=");
+      }
+    },
+    methods: {
+      toggleView: function toggleView() {
+        var currentState = this.viewState;
+        this.viewState = currentState === 'open' ? 'closed' : 'open';
+      }
+    }
+  };
+
+  /* script */
+  const __vue_script__$2 = script$2;
+
+  /* template */
+  var __vue_render__$2 = function() {
+    var _vm = this;
+    var _h = _vm.$createElement;
+    var _c = _vm._self._c || _h;
+    return _vm.shouldDisplay
+      ? _c(
+          "section",
+          {
+            on: {
+              click: function($event) {
+                return _vm.toggleView()
+              }
+            }
+          },
+          [
+            _c("div", [
+              _vm.viewState === "closed"
+                ? _c("div", { staticClass: "open" }, [
+                    _vm._v("\n      more info\n    ")
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _c("h3", [_vm._v(_vm._s(_vm.title))]),
+              _vm._v(" "),
+              _c("p", { domProps: { innerHTML: _vm._s(_vm.summary) } }),
+              _vm._v(" "),
+              _c("p", [_vm._v("£" + _vm._s(_vm.cost))]),
+              _vm._v(" "),
+              _vm.emissions
+                ? _c("p", [
+                    _vm._v("\n      " + _vm._s(_vm.emissions) + "kg CO"),
+                    _c("sub", [_vm._v("2")]),
+                    _vm._v(" emitted\n    ")
+                  ])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _vm.viewState === "open"
+              ? _c(_vm.details, { tag: "component" })
+              : _vm._e()
+          ],
+          1
+        )
+      : _vm._e()
+  };
+  var __vue_staticRenderFns__$2 = [];
+  __vue_render__$2._withStripped = true;
+
+    /* style */
+    const __vue_inject_styles__$2 = function (inject) {
+      if (!inject) return
+      inject("data-v-86f8c432_0", { source: "\n.open[data-v-86f8c432] {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/ModeOfTransport.vue"],"names":[],"mappings":";AA0BA;EACA,qBAAA;EACA,YAAA;EACA,kBAAA;EACA,kBAAA;AACA","file":"ModeOfTransport.vue","sourcesContent":["<template>\n  <section\n    v-if=\"shouldDisplay\"\n    @click=\"toggleView()\"\n  >\n    <div>\n      <div\n        v-if=\"viewState ==='closed'\"\n        class=\"open\"\n      >\n        more info\n      </div>\n      <h3>{{ title }}</h3>\n      <p v-html=\"summary\" />\n      <p>£{{ cost }}</p>\n      <p v-if=\"emissions\">\n        {{ emissions }}kg CO<sub>2</sub> emitted\n      </p>\n    </div>\n    <component\n      :is=\"details\"\n      v-if=\"viewState ==='open'\"\n    />\n  </section>  \n</template>\n<style scoped>\n.open {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n</style>\n<script>\nexport default {\n  props: {\n    title: {\n      type: String,\n      required: true,\n    },\n    details: {\n      type: Object,\n      required: false,\n      default: () => {},\n    },\n    summarise: {\n      type: Function,\n      default: () => () => null,\n    },\n    costFn: {\n      type: Function,\n      required: true,\n    },\n    co2Fn: {\n      type: Function,\n      default: () => () => 0,\n    },\n    displayFn: {\n      type: Function,\n      default: () => () => true,\n    },\n  },\n  data: function () {\n    return {\n      viewState: 'closed',\n    };\n  },\n  computed: {\n    summary() {\n      return this.summarise(this.$store.getters.journey);\n    },\n    cost() {\n      return this.costFn(this.$store.getters.journey);\n    },\n    emissions() {\n      return this.co2Fn(this.$store.getters.journey);\n    },\n    shouldDisplay() {\n      return this.displayFn(this.$store.getters.journey);\n    },\n    mapsURL() {\n      const {\n        sourceDetails: { options: srcOptions, selected: selectedSrc },\n        destinationDetails: { options: destOptions, selected: selectedDest },\n      } = this.$store.state;\n      const srcLngLat = srcOptions[selectedSrc].lngLat;\n      const destLngLat = destOptions[selectedDest].lngLat;\n      return `https://www.google.com/maps/dir/?api=1&origin=${srcLngLat[1]},${srcLngLat[0]}&destination=${destLngLat[1]},${destLngLat[0]}&travelmode=`;\n    },\n  },\n  methods: {\n    toggleView() {\n      const currentState = this.viewState;\n      this.viewState = currentState === 'open' ? 'closed' : 'open';\n    },\n  },\n};\n</script>"]}, media: undefined });
+
+    };
+    /* scoped */
+    const __vue_scope_id__$2 = "data-v-86f8c432";
+    /* module identifier */
+    const __vue_module_identifier__$2 = undefined;
+    /* functional template */
+    const __vue_is_functional_template__$2 = false;
+    /* style inject SSR */
+    
+    /* style inject shadow dom */
+    
+
+    
+    const __vue_component__$2 = /*#__PURE__*/normalizeComponent(
+      { render: __vue_render__$2, staticRenderFns: __vue_staticRenderFns__$2 },
+      __vue_inject_styles__$2,
+      __vue_script__$2,
+      __vue_scope_id__$2,
+      __vue_is_functional_template__$2,
+      __vue_module_identifier__$2,
+      false,
+      createInjector,
+      undefined,
+      undefined
+    );
+
+  //
+  var script$3 = {
+    components: {
+      SearchForm: __vue_component__$1,
+      ModeOfTransport: __vue_component__$2
+    },
+    props: {
+      modes: {
+        type: Array,
+        "default": function _default() {
+          return [];
+        }
+      },
+      rawModes: {
+        type: Array,
+        "default": function _default() {
+          return [];
+        }
+      }
+    },
+    computed: {
+      showModes: function showModes() {
+        if (this.$store.state.driving != null) return true;else return false;
+      }
+    } // created() {
+    //   this.$store.dispatch('getCouncilLocations');
+    // },
+
+  };
+
+  /* script */
+  const __vue_script__$3 = script$3;
+
+  /* template */
+  var __vue_render__$3 = function() {
+    var _vm = this;
+    var _h = _vm.$createElement;
+    var _c = _vm._self._c || _h;
+    return _c("article", { attrs: { id: "app" } }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { attrs: { id: "main" } }, [
+        _c(
+          "section",
+          [
+            _c("p", [
+              _vm._v(
+                "Can you make your journey cleaner? Move up Leeds City Council's travel hierarchy to reduce your emissions and help tackle the #ClimateEmergency"
+              )
+            ]),
+            _vm._v(" "),
+            _c("search-form")
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _vm.showModes
+          ? _c(
+              "ol",
+              { staticClass: "modes" },
+              _vm._l(_vm.modes, function(mode, i) {
+                return _c(
+                  "li",
+                  { key: i, class: "mode" + (i + 1) },
+                  [
+                    _c(
+                      "mode-of-transport",
+                      _vm._b({}, "mode-of-transport", mode, false)
+                    )
+                  ],
+                  1
+                )
+              }),
+              0
+            )
+          : _vm._e()
+      ])
+    ])
+  };
+  var __vue_staticRenderFns__$3 = [
+    function() {
+      var _vm = this;
+      var _h = _vm.$createElement;
+      var _c = _vm._self._c || _h;
+      return _c("header", [
+        _c("p", [_vm._v("Towards a lower emissions city")]),
+        _vm._v(" "),
+        _c("h1", [_vm._v("Leeds Council Staff Travel Options")])
+      ])
+    }
+  ];
+  __vue_render__$3._withStripped = true;
+
+    /* style */
+    const __vue_inject_styles__$3 = undefined;
+    /* scoped */
+    const __vue_scope_id__$3 = undefined;
+    /* module identifier */
+    const __vue_module_identifier__$3 = undefined;
+    /* functional template */
+    const __vue_is_functional_template__$3 = false;
+    /* style inject */
+    
+    /* style inject SSR */
+    
+    /* style inject shadow dom */
+    
+
+    
+    const __vue_component__$3 = /*#__PURE__*/normalizeComponent(
+      { render: __vue_render__$3, staticRenderFns: __vue_staticRenderFns__$3 },
+      __vue_inject_styles__$3,
+      __vue_script__$3,
+      __vue_scope_id__$3,
+      __vue_is_functional_template__$3,
+      __vue_module_identifier__$3,
+      false,
+      undefined,
+      undefined,
+      undefined
+    );
+
   // `thisNumberValue` abstract operation
   // https://tc39.github.io/ecma262/#sec-thisnumbervalue
   var thisNumberValue = function (value) {
@@ -2108,78 +2132,67 @@
     var _vm = this;
     var _h = _vm.$createElement;
     var _c = _vm._self._c || _h;
-    return _vm._m(0)
+    return _c("section", [
+      _c("p", [
+        _vm._v(
+          "Public transport is a low carbon option for your travel. Metrocards are available to borrow and use free of charge from most council building receptions. "
+        )
+      ]),
+      _vm._v(" "),
+      _c("ul", { staticClass: "grid" }, [
+        _c("li", [
+          _c("a", { attrs: { href: _vm.$parent.mapsURL + "transit" } }, [
+            _c("h2", [_vm._v("Plan your journey")]),
+            _c("p", [_vm._v("Google Maps")])
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _vm._m(1),
+        _vm._v(" "),
+        _vm._m(2)
+      ])
+    ])
   };
   var __vue_staticRenderFns__$4 = [
     function() {
       var _vm = this;
       var _h = _vm.$createElement;
       var _c = _vm._self._c || _h;
-      return _c("section", [
-        _c("p", [
-          _vm._v(
-            "Did you know that there are Metro cards available for staff to use? "
-          ),
-          _c("a", { attrs: { href: "" } }, [_vm._v("Find out more")]),
-          _vm._v(".")
-        ]),
-        _vm._v(" "),
-        _c("p", [_vm._v("Bus and train options:")]),
-        _vm._v(" "),
-        _c("ul", [
-          _c("li", [
+      return _c("li", [
+        _c(
+          "a",
+          {
+            staticClass: "c12-bg",
+            attrs: { href: "https://planner.wymetro.com/lts/#/travelInfo" }
+          },
+          [
+            _c("h2", [_vm._v("Public transport journey planner")]),
+            _c("p", [_vm._v("WY Metro")])
+          ]
+        )
+      ])
+    },
+    function() {
+      var _vm = this;
+      var _h = _vm.$createElement;
+      var _c = _vm._self._c || _h;
+      return _c("li", [
+        _c("a", { attrs: { href: "" } }, [_vm._v("Access a council Metro Card")])
+      ])
+    },
+    function() {
+      var _vm = this;
+      var _h = _vm.$createElement;
+      var _c = _vm._self._c || _h;
+      return _c("li", [
+        _c("a", { attrs: { href: "" } }, [
+          _c("h2", [_vm._v("No Metro Card nearby?")]),
+          _c("p", [
             _vm._v(
-              "4 minute walk to Albion Street. 13:42 X11 bus from blah to somewhere. 5 minute walk"
+              "Find out how to request that your department gets a Metro card for bus and train travel within West Yorkshire."
             )
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _vm._v(
-              "8 minute walk to Leeds Station. 13:45 train to Bramley. 5 minute walk"
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _vm._v(
-              "4 minute walk to Albion Street. 14:35 X11 bus from blah to somewhere. 5 minute walk"
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("ul", { staticClass: "grid" }, [
-          _c("li", [
-            _c(
-              "a",
-              {
-                staticClass: "c12-bg",
-                attrs: {
-                  href:
-                    "https://planner.wymetro.com/lts/#/travelInfo?originLatitude=53.79776064711342&originLongitude=-1.5423548931625677&originId=N0077039&originName=Leeds%20City%20Centre,%20West%20Yorkshire&originType=LOCALITY&originRegion=&destinationLatitude=53.79865625203192&destinationLongitude=-1.641909584429088&destinationId=&destinationName=Leeds%20City%20Council,%20Hough%20Top%20Court,%20Hough%20Top,%20%20Leeds,%20%20LS134QP&destinationType=LOCATION&destinationRegion=&type=LEAVE_AFTER&date=1571236959320&time=1571236959320&modes=%7CBUS%7CCOACH%7CTRAIN&maxWalkTime=30&minComfortWaitTime=5&routeType=FASTEST&walkingSpeed=1&cycleRouteType=BALANCED&cycleSpeedIntervals=20&operator="
-                }
-              },
-              [
-                _c("h2", [_vm._v("Public transport journey planner")]),
-                _c("p", [_vm._v("WY Metro")])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "" } }, [
-              _c("h2", [_vm._v("Access a council Metro Card")]),
-              _c("p", [_vm._v("Do this")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "" } }, [
-              _c("h2", [_vm._v("No Metro Card nearby")]),
-              _c("p", [
-                _vm._v(
-                  "Find out how to request that your department gets a Metro card for bus and train travel within West Yorkshire."
-                )
-              ])
-            ])
           ])
         ])
       ])
@@ -2203,7 +2216,7 @@
     
 
     
-    const __vue_component__$4 = normalizeComponent(
+    const __vue_component__$4 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$4, staticRenderFns: __vue_staticRenderFns__$4 },
       __vue_inject_styles__$4,
       {},
@@ -2223,35 +2236,41 @@
     var _vm = this;
     var _h = _vm.$createElement;
     var _c = _vm._self._c || _h;
-    return _vm._m(0)
+    return _c("section", [
+      _c("p", [
+        _vm._v(
+          "\n    More pool cars can be borrowed through our scheme run by Enterprise, with a range of vehicles available and parked in a number of city centre locations.\n  "
+        )
+      ]),
+      _vm._v(" "),
+      _c("ul", { staticClass: "grid" }, [
+        _c("li", [
+          _c("a", { attrs: { href: _vm.$parent.mapsURL + "driving" } }, [
+            _c("h2", [_vm._v("Driving directions")]),
+            _c("p", [_vm._v("Google Maps")])
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(0)
+      ])
+    ])
   };
   var __vue_staticRenderFns__$5 = [
     function() {
       var _vm = this;
       var _h = _vm.$createElement;
       var _c = _vm._self._c || _h;
-      return _c("section", [
-        _c("p", [
-          _vm._v(
-            "Car clubs are the cleanest way of travelling in a private vehicle because the are ultra-low emission and they encourage journeys to be shorter. The prices are around £5.20 per hour or £41.95 daily. The car will need to be returned to its location."
-          )
-        ]),
-        _vm._v(" "),
-        _c("ul", { staticClass: "grid" }, [
-          _c("li", [
-            _c(
-              "a",
-              {
-                staticClass: "c2-bg",
-                attrs: {
-                  href:
-                    "https://www.enterprisecarclub.co.uk/gb/en/programs/regions/north-east-england/leeds.html"
-                }
-              },
-              [_c("h2", [_vm._v("CarClub")])]
-            )
-          ])
-        ])
+      return _c("li", [
+        _c(
+          "a",
+          {
+            attrs: {
+              href:
+                "https://www.enterprisecarclub.co.uk/gb/en/programs/regions/north-east-england/leeds.html"
+            }
+          },
+          [_c("p", [_vm._v("Enterprise Car Club")])]
+        )
       ])
     }
   ];
@@ -2273,7 +2292,7 @@
     
 
     
-    const __vue_component__$5 = normalizeComponent(
+    const __vue_component__$5 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$5, staticRenderFns: __vue_staticRenderFns__$5 },
       __vue_inject_styles__$5,
       {},
@@ -2293,47 +2312,57 @@
     var _vm = this;
     var _h = _vm.$createElement;
     var _c = _vm._self._c || _h;
-    return _vm._m(0)
+    return _c("section", [
+      _c("p", [
+        _vm._v(
+          "\n    We have low carbon electric pool vehicles available to book from some\n    locations. You’ll need to complete a driver assessment before your first\n    use (contact Fleet Services at XXXX). This is an excellent option if you\n    need to use these vehicles regularly.\n  "
+        )
+      ]),
+      _vm._v(" "),
+      _c("ul", { staticClass: "grid" }, [
+        _c("li", [
+          _c("a", { attrs: { href: _vm.$parent.mapsURL + "driving" } }, [
+            _c("h2", [_vm._v("Driving directions")]),
+            _c("p", [_vm._v("Google Maps")])
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _vm._m(1),
+        _vm._v(" "),
+        _vm._m(2)
+      ])
+    ])
   };
   var __vue_staticRenderFns__$6 = [
     function() {
       var _vm = this;
       var _h = _vm.$createElement;
       var _c = _vm._self._c || _h;
-      return _c("section", [
-        _c("p", [
-          _vm._v(
-            "This option relies on having access to a pool car. It is better than car clubs if you are travelling all day but requires some logistics to obtain a car."
-          )
-        ]),
-        _vm._v(" "),
-        _c("p", [_vm._v("Other options:")]),
-        _vm._v(" "),
-        _c("ul", [
-          _c("li", [
-            _c("a", { attrs: { href: "" } }, [_vm._v("e-Bike / 30-40 minutes")])
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "" } }, [
-              _vm._v("Train / 23 minutes from Leeds Railway Station")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "" } }, [
-              _vm._v("Bus / 28 minutes from Albion Street")
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("ul", { staticClass: "grid" }, [
-          _c("li", [
-            _c("a", { staticClass: "c1-bg", attrs: { href: "" } }, [
-              _c("h2", [_vm._v("Book a pool car")]),
-              _c("p", [_vm._v("From Fleet Services")])
-            ])
-          ])
+      return _c("li", [
+        _c("a", { attrs: { href: "" } }, [
+          _c("p", [_vm._v("Check availability and booking")])
+        ])
+      ])
+    },
+    function() {
+      var _vm = this;
+      var _h = _vm.$createElement;
+      var _c = _vm._self._c || _h;
+      return _c("li", [
+        _c("a", { attrs: { href: "" } }, [
+          _c("p", [_vm._v("Book a driver assessment")])
+        ])
+      ])
+    },
+    function() {
+      var _vm = this;
+      var _h = _vm.$createElement;
+      var _c = _vm._self._c || _h;
+      return _c("li", [
+        _c("a", { attrs: { href: "" } }, [
+          _c("p", [_vm._v("Find out more about our pool vehicle scheme")])
         ])
       ])
     }
@@ -2356,7 +2385,7 @@
     
 
     
-    const __vue_component__$6 = normalizeComponent(
+    const __vue_component__$6 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$6, staticRenderFns: __vue_staticRenderFns__$6 },
       __vue_inject_styles__$6,
       {},
@@ -2386,26 +2415,26 @@
       return _c("section", [
         _c("p", [
           _vm._v(
-            "Save time and reduce travel emissions completely by having a virtual meeting. This option may not be practical for all services or situations. There are a variety of videoconferencing facilities available."
+            "Do you need to attend in person? Skype calls are free, carbon neutral and save time on travel."
           )
         ]),
         _vm._v(" "),
         _c("ul", { staticClass: "grid" }, [
           _c("li", [
+            _c(
+              "a",
+              {
+                attrs: {
+                  href: "https://support.office.com/en-gb/skype-for-business"
+                }
+              },
+              [_c("h2", [_vm._v("Find out how to use Skype")])]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", [
             _c("a", { attrs: { href: "" } }, [
               _c("h2", [_vm._v("Book Skype facilities")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "" } }, [
-              _c("h2", [_vm._v("How to use the equipment")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "" } }, [
-              _c("h2", [_vm._v("Teleconferencing training")])
             ])
           ])
         ])
@@ -2430,7 +2459,7 @@
     
 
     
-    const __vue_component__$7 = normalizeComponent(
+    const __vue_component__$7 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$7, staticRenderFns: __vue_staticRenderFns__$7 },
       __vue_inject_styles__$7,
       {},
@@ -2450,84 +2479,73 @@
     var _vm = this;
     var _h = _vm.$createElement;
     var _c = _vm._self._c || _h;
-    return _vm._m(0)
+    return _c("section", [
+      _c("p", [
+        _vm._v(
+          "Walking and cycling are healthy, cheap and carbon neutral. You can claim 20 pence per mile for journeys on your own bike, or there are e-bikes to borrow from some city centre locations."
+        )
+      ]),
+      _vm._v(" "),
+      _c("ul", { staticClass: "grid" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("li", [
+          _c("a", { attrs: { href: _vm.$parent.mapsURL + "walking" } }, [
+            _c("h2", [_vm._v("Directions")]),
+            _c("p", [_vm._v("Google Maps")])
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(1),
+        _vm._v(" "),
+        _vm._m(2)
+      ])
+    ])
   };
   var __vue_staticRenderFns__$8 = [
     function() {
       var _vm = this;
       var _h = _vm.$createElement;
       var _c = _vm._self._c || _h;
-      return _c("section", [
-        _c("p"),
-        _vm._v(" "),
-        _c("ul", { staticClass: "grid" }, [
-          _c("li", [
-            _c("a", { attrs: { href: "" } }, [
-              _c("h2", [_vm._v("e-Bike")]),
-              _c("p", [_vm._v("Borrow an e-Bike from Merrion House")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c(
-              "a",
-              {
-                attrs: {
-                  href: "https://www.cyclecityconnect.co.uk/journey-planner/"
-                }
-              },
-              [
-                _c("h2", [_vm._v("Plan your cycle journey")]),
-                _c("p", [_vm._v("City Connect")])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c(
-              "a",
-              {
-                attrs: {
-                  href:
-                    "https://github.com/odileeds/west-yorkshire-mapping/blob/master/data/leeds/leeds-amenities-bicycle_parking.geojson"
-                }
-              },
-              [_c("h2", [_vm._v("Cycle parking facilities")])]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c(
-              "a",
-              {
-                attrs: {
-                  href:
-                    "http://walkit.com/?city=leeds&from=Merrion+Street&fuid=&to=&tuid=&rta=&direct=0"
-                }
-              },
-              [
-                _c("h2", [_vm._v("Walking directions")]),
-                _c("p", [_vm._v("Walkit")])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c(
-              "a",
-              {
-                attrs: {
-                  href:
-                    "https://www.google.com/maps/dir/Merrion+House,+Merrion+Way,+Leeds+LS2+8PD/Hough+Top,+Leeds/@53.7978393,-1.6290147,13z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x48795c1c9367fd93:0xe92b938ab9b454f3!2m2!1d-1.5449067!2d53.8026793!1m5!1m1!1s0x48795f44cabb111d:0x7280a679a7a7329f!2m2!1d-1.6431878!2d53.7978499!3e2"
-                }
-              },
-              [
-                _c("h2", [_vm._v("Walking directions")]),
-                _c("p", [_vm._v("Google Directions")])
-              ]
-            )
-          ])
+      return _c("li", [
+        _c("a", { attrs: { href: "" } }, [
+          _c("h2", [_vm._v("e-Bike")]),
+          _c("p", [_vm._v("Borrow an e-Bike from Merrion House")])
         ])
+      ])
+    },
+    function() {
+      var _vm = this;
+      var _h = _vm.$createElement;
+      var _c = _vm._self._c || _h;
+      return _c("li", [
+        _c(
+          "a",
+          {
+            attrs: { href: "https://www.cyclecityconnect.co.uk/journey-planner/" }
+          },
+          [
+            _c("h2", [_vm._v("Plan your cycle journey")]),
+            _c("p", [_vm._v("City Connect")])
+          ]
+        )
+      ])
+    },
+    function() {
+      var _vm = this;
+      var _h = _vm.$createElement;
+      var _c = _vm._self._c || _h;
+      return _c("li", [
+        _c(
+          "a",
+          {
+            attrs: {
+              href:
+                "https://github.com/odileeds/west-yorkshire-mapping/blob/master/data/leeds/leeds-amenities-bicycle_parking.geojson"
+            }
+          },
+          [_c("h2", [_vm._v("Map of cycle parking facilities")])]
+        )
       ])
     }
   ];
@@ -2549,7 +2567,7 @@
     
 
     
-    const __vue_component__$8 = normalizeComponent(
+    const __vue_component__$8 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$8, staticRenderFns: __vue_staticRenderFns__$8 },
       __vue_inject_styles__$8,
       {},
@@ -2569,9 +2587,36 @@
     var _vm = this;
     var _h = _vm.$createElement;
     var _c = _vm._self._c || _h;
-    return _c("p", [_vm._v("Take a cab!")])
+    return _vm._m(0)
   };
-  var __vue_staticRenderFns__$9 = [];
+  var __vue_staticRenderFns__$9 = [
+    function() {
+      var _vm = this;
+      var _h = _vm.$createElement;
+      var _c = _vm._self._c || _h;
+      return _c("section", [
+        _c("p", [
+          _vm._v(
+            "Private hire taxis should only be used in exceptional situations. There needs to be an important business need.  If you do use a taxi you should use our contract if possible."
+          )
+        ]),
+        _vm._v(" "),
+        _c("ul", { staticClass: "grid" }, [
+          _c("li", [
+            _c("a", { attrs: { href: "" } }, [
+              _c("p", [_vm._v("Find out when you can use a taxi")])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("a", { attrs: { href: "" } }, [
+              _c("p", [_vm._v("Book a taxi through our contract")])
+            ])
+          ])
+        ])
+      ])
+    }
+  ];
   __vue_render__$9._withStripped = true;
 
     /* style */
@@ -2590,7 +2635,7 @@
     
 
     
-    const __vue_component__$9 = normalizeComponent(
+    const __vue_component__$9 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$9, staticRenderFns: __vue_staticRenderFns__$9 },
       __vue_inject_styles__$9,
       {},
@@ -2620,32 +2665,8 @@
       return _c("section", [
         _c("p", [
           _vm._v(
-            "The council would prefer you not to use your own car (unless it is a fully electric vehicle) as it contributes the most to our emissions and contributes to congestion. Where possible - depending on your service - the following options may be available instead:"
+            "\n    Unless you have a low emissions vehicle, driving your own car should be a last resort because of its high environmental impact.\n  "
           )
-        ]),
-        _vm._v(" "),
-        _c("ul", [
-          _c("li", [
-            _c("a", { attrs: { href: "#2" } }, [_vm._v("e-Bike / 30-40 minutes")])
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "#3" } }, [
-              _vm._v("Train / 23 minutes from Leeds Railway Station")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "#4" } }, [
-              _vm._v("Bus / 28 minutes from Albion Street")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("a", { attrs: { href: "#5" } }, [
-              _vm._v("CarClub / 22 minutes from Cookridge Street")
-            ])
-          ])
         ])
       ])
     }
@@ -2668,7 +2689,7 @@
     
 
     
-    const __vue_component__$a = normalizeComponent(
+    const __vue_component__$a = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$a, staticRenderFns: __vue_staticRenderFns__$a },
       __vue_inject_styles__$a,
       {},
@@ -2692,10 +2713,10 @@
    */
 
   var modes = [{
-    title: 'Tele/videoconference',
+    title: 'Skype Meeting',
     details: __vue_component__$7,
     summarise: function summarise(j) {
-      return "Skype facilities at ".concat(j.source);
+      return "Skype facilities are available at ".concat(j.source);
     },
     costFn: function costFn(j) {
       return 0;
@@ -2726,72 +2747,83 @@
     // should we split this into 2 options? different cost & emissions calculations
     details: __vue_component__$4,
     summarise: function summarise(j) {
-      return "".concat(formatTime(j.train.time.value), " by train or ").concat(formatTime(j.bus.time.value), " by bus (xx Metro cards are available nearby)");
+      return "".concat(formatTime(j.train.time.value), " by train or ").concat(formatTime(j.bus.time.value), " by bus (xx Metrocards are available at ").concat(j.source, " - <a href=\"\">check availability and booking</a>)");
     },
     costFn: function costFn(j) {
-      // TODO Need to calculate cost with/without metro card
-      return 5;
+      return '0 (corporate MetroCard) or £4.30 (dayrider ticket)';
     },
     co2Fn: function co2Fn(j) {
-      var bus = 0.167227 * miles(j.bus.distance.value);
-      var train = 0.065613 * miles(j.train.distance.value);
+      var bus = 0.167227 * (j.isRoundTrip ? toMiles(j.bus.distance) * 2 : toMiles(j.bus.distance));
+      var train = 0.065613 * (j.isRoundTrip ? toMiles(j.train.distance) * 2 : toMiles(j.train.distance));
       return ((bus + train) / 2).toFixed(2); //take the average for now
     }
   }, {
-    title: 'Pool vehicle',
+    title: 'Electric pool vehicle',
     details: __vue_component__$6,
     summarise: function summarise(j) {
-      return "".concat(formatTime(j.driving.time.value), " drive (needs booking in advance)");
+      return "".concat(formatTime(j.driving.time.value), " drive (<a href=\"\">check availability and booking</a>)");
     },
     costFn: function costFn(j) {
-      return (0.04 * miles(j.driving.distance.value)).toFixed(2); //Cost of electricity only - do we need to factor in lease & maintenance?
+      var dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance); // const perMile = (19700 / 7 + 1285) / 7500 + 0.04;  //this is if vehicle and maintainance cost are included
+
+      return (0.04 * dist).toFixed(2);
     },
     co2Fn: function co2Fn(j) {
-      return (0.2446754 * miles(j.driving.distance.value)).toFixed(2); //assuming same as Car Club
+      var dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
+      return (0.09612 * dist).toFixed(2); // Assumes vehicle is an EV
     }
   }, {
     title: 'Car club',
     details: __vue_component__$5,
     summarise: function summarise(j) {
-      return "".concat(formatTime(j.driving.time.value), " drive (xx cars at Cookridge Street)");
+      return "".concat(formatTime(j.driving.time.value), " drive (xx cars at Cookridge Street - <a href=\"\">check availability and booking</a>)");
     },
     costFn: function costFn(j) {
-      return (3.71 * j.driving.time.value / 60).toFixed(2); //£3.71 per hour
+      var dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
+      var time = Math.ceil(j.isRoundTrip ? (j.driving.time.value * 2 + j.timeAtDest) / 60 : j.driving.time.value / 60); //time in hours, rounded up
+
+      time = Math.max(time, 2); //2 hours minimum
+
+      return (3.71 * time + 0.18 * dist).toFixed(2);
     },
     co2Fn: function co2Fn(j) {
-      return (0.2446754 * miles(j.driving.distance.value)).toFixed(2);
+      return (0.25885349 * toMiles(j.driving.distance)).toFixed(2);
     }
   }, {
     title: 'Taxi',
     details: __vue_component__$9,
     summarise: function summarise(j) {
-      return "".concat(formatTime(j.driving.time.value), " (AAA Taxis)");
+      return "".concat(formatTime(j.driving.time.value));
     },
     costFn: function costFn(j) {
-      var dist = miles(j.driving.distance.value);
+      var dist = Math.ceil(toMiles(j.driving.distance));
       var cost = 3.5 + 1.6 * (dist - 1); // £3.50 for first mile then £1.60
 
-      return Math.max(3.5, cost).toFixed(2);
+      var total = j.isRoundTrip ? cost * 2 : cost;
+      return total.toFixed(2);
     },
     co2Fn: function co2Fn(j) {
-      return (0.24020217 * miles(j.driving.distance.value)).toFixed(2);
+      var dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
+      return (0.24020217 * dist).toFixed(2);
     }
   }, {
-    title: 'Self drive',
+    title: 'Drive your own vehicle',
     details: __vue_component__$a,
     summarise: function summarise(j) {
       return "".concat(formatTime(j.driving.time.value));
     },
     costFn: function costFn(j) {
-      return (0.45 * miles(j.driving.distance.value)).toFixed(2); //worst case cost scenario (ie. casual car user doing <10k annual miles)
+      var dist = Math.ceil(j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance));
+      return (0.45 * dist).toFixed(2); //worst case cost scenario (ie. casual car user doing <10k annual miles)
     },
     co2Fn: function co2Fn(j) {
-      return (0.28591256 * miles(j.driving.distance.value)).toFixed(2);
+      var dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
+      return (0.28591256 * dist).toFixed(2);
     }
   }]; // helper functions
 
-  var miles = function miles(km) {
-    return km / 1.609344;
+  var toMiles = function toMiles(dist) {
+    return dist.unit == 'km' ? dist.value / 1.609344 : dist.value;
   };
 
   var formatTime = function formatTime(value) {
@@ -4428,7 +4460,7 @@
     if (typeof o === "string") return _arrayLikeToArray(o, minLen);
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(n);
+    if (n === "Map" || n === "Set") return Array.from(o);
     if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
   }
 
@@ -5719,6 +5751,26 @@
     planTravel: planTravel
   };
 
+  var trim$1 = stringTrim.trim;
+
+
+  var $parseFloat = global_1.parseFloat;
+  var FORCED$3 = 1 / $parseFloat(whitespaces + '-0') !== -Infinity;
+
+  // `parseFloat` method
+  // https://tc39.github.io/ecma262/#sec-parsefloat-string
+  var numberParseFloat = FORCED$3 ? function parseFloat(string) {
+    var trimmedString = trim$1(String(string));
+    var result = $parseFloat(trimmedString);
+    return result === 0 && trimmedString.charAt(0) == '-' ? -0 : result;
+  } : $parseFloat;
+
+  // `parseFloat` method
+  // https://tc39.github.io/ecma262/#sec-parsefloat-string
+  _export({ global: true, forced: parseFloat != numberParseFloat }, {
+    parseFloat: numberParseFloat
+  });
+
   function appendDestOptions(state, update) {
     state.destinationDetails.options = state.destinationDetails.options.concat(update);
   }
@@ -5790,7 +5842,7 @@
   }
 
   function updateTimeAtDest(state, update) {
-    state.timeAtDest = Number(update);
+    state.timeAtDest = parseFloat(update);
   }
 
   var mutations = {
@@ -5820,7 +5872,7 @@
       sourceDetails: {
         selected: null,
         // Index to option. Defaults to 0 when search done.
-        options: [] // Array of { name: string, latLng: array, addr: string } - addr only for council locations
+        options: [] // Array of { name: string, lngLat: array, addr: string } - addr only for council locations
 
       },
       destination: '',

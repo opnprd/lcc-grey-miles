@@ -64,10 +64,13 @@
         name="roundtrip"
         type="checkbox"
       >
-      <label for="roundtrip">I am going and then coming back again</label>
+      <label for="roundtrip">Return Journey</label>
     </div>
-    <div class="row">
-      <label for="timeatdest">Minutes spent at location</label>
+    <div
+      v-show="isRoundTrip"
+      class="row"
+    >
+      <label for="timeatdest">How long is your meeting (in minutes)?</label>
       <input
         id="timeatdest"
         v-model="timeAtDest"
@@ -91,7 +94,7 @@
         name="carrying"
         type="checkbox"
       >
-      <label for="carrying">I am transporting a lot of stuff</label>
+      <label for="carrying">I'm transporting a lot of stuff</label>
     </div>
     <button
       type="button"

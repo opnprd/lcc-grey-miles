@@ -19,10 +19,10 @@ import SelfDrive from './components/modes/SelfDrive.vue';
  */
 export default [
   {
-    title: 'Tele/videoconference',
+    title: 'Skype Meeting',
     details: Teleconf,
     summarise(j) {
-      return `Skype facilities at ${j.source}`;
+      return `Skype facilities are available at ${j.source}`;
     },
     costFn(j) {
       return 0;
@@ -54,76 +54,85 @@ export default [
     title: 'Bus/train', // should we split this into 2 options? different cost & emissions calculations
     details: BusTrain,
     summarise(j) {
-      return `${formatTime(j.train.time.value)} by train or ${formatTime(j.bus.time.value)} by bus (xx Metro cards are available nearby)`;
+      return `${formatTime(j.train.time.value)} by train or ${formatTime(j.bus.time.value)} by bus (xx Metrocards are available at ${j.source} - <a href="">check availability and booking</a>)`;
     },
     costFn(j) {
-      // TODO Need to calculate cost with/without metro card
-      return 5;
+      return '0 (corporate MetroCard) or £4.30 (dayrider ticket)';
     },
     co2Fn(j) {
-      const bus =  0.167227 * miles(j.bus.distance.value);
-      const train = 0.065613 * miles(j.train.distance.value);
+      const bus =  0.167227 * (j.isRoundTrip ? toMiles(j.bus.distance) * 2 : toMiles(j.bus.distance));
+      const train = 0.065613 * (j.isRoundTrip ? toMiles(j.train.distance) * 2 : toMiles(j.train.distance));
       return ((bus + train) / 2).toFixed(2);  //take the average for now
     },
   },
   {
-    title: 'Pool vehicle',
+    title: 'Electric pool vehicle',
     details: PoolVehicle,
     summarise(j) {
-      return `${formatTime(j.driving.time.value)} drive (needs booking in advance)`;
+      return `${formatTime(j.driving.time.value)} drive (<a href="">check availability and booking</a>)`;
     },
     costFn(j) {
-      return (0.04 * miles(j.driving.distance.value)).toFixed(2); //Cost of electricity only - do we need to factor in lease & maintenance?
+      const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
+      // const perMile = (19700 / 7 + 1285) / 7500 + 0.04;  //this is if vehicle and maintainance cost are included
+      return (0.04 * dist).toFixed(2);
     },
     co2Fn(j) {
-      return (0.2446754 * miles(j.driving.distance.value)).toFixed(2); //assuming same as Car Club
+      const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
+      return (0.09612 * dist).toFixed(2); // Assumes vehicle is an EV
     },
   },
   {
     title: 'Car club',
     details: CarClub,
     summarise(j) {
-      return `${formatTime(j.driving.time.value)} drive (xx cars at Cookridge Street)`;
+      return `${formatTime(j.driving.time.value)} drive (xx cars at Cookridge Street - <a href="">check availability and booking</a>)`;
     },
     costFn(j) {
-      return (3.71*j.driving.time.value/60).toFixed(2); //£3.71 per hour
+      const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
+      let time = Math.ceil(j.isRoundTrip ? (j.driving.time.value * 2 + j.timeAtDest) / 60 : j.driving.time.value / 60); //time in hours, rounded up
+      time = Math.max(time, 2); //2 hours minimum
+      return ((3.71 * time) + (0.18 * dist)).toFixed(2);
     },
     co2Fn(j) {
-      return (0.2446754 * miles(j.driving.distance.value)).toFixed(2);
+      return (0.25885349 * toMiles(j.driving.distance)).toFixed(2);
     },
   },
   {
     title: 'Taxi',
     details: Taxi,
     summarise(j) {
-      return `${formatTime(j.driving.time.value)} (AAA Taxis)`;
+      return `${formatTime(j.driving.time.value)}`;
     },
     costFn(j) {
-      const dist = miles(j.driving.distance.value);
+      const dist = Math.ceil(toMiles(j.driving.distance));
       const cost =  (3.5 + (1.6 * (dist - 1))); // £3.50 for first mile then £1.60
-      return Math.max(3.5, cost).toFixed(2);
+      const total = j.isRoundTrip ? cost * 2 : cost;
+      return total.toFixed(2);
     },
     co2Fn(j) {
-      return (0.24020217 * miles(j.driving.distance.value)).toFixed(2);
+      const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
+      return (0.24020217 * dist).toFixed(2);
     },
   },
   {
-    title: 'Self drive',
+    title: 'Drive your own vehicle',
     details: SelfDrive,
     summarise(j) {
       return `${formatTime(j.driving.time.value)}`;
     },
     costFn(j) {
-      return (0.45*miles(j.driving.distance.value)).toFixed(2); //worst case cost scenario (ie. casual car user doing <10k annual miles)
+      const dist = Math.ceil(j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance));
+      return (0.45 * dist).toFixed(2); //worst case cost scenario (ie. casual car user doing <10k annual miles)
     },
     co2Fn(j) {
-      return (0.28591256 * miles(j.driving.distance.value)).toFixed(2);
+      const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
+      return (0.28591256 * dist).toFixed(2);
     },
   },
 ];
 
 // helper functions
-const miles = km => km / 1.609344;
+const toMiles = dist => dist.unit == 'km' ? dist.value / 1.609344 : dist.value;
 
 const formatTime = value => {
   value = Number(value);

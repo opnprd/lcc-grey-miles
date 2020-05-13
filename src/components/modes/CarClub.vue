@@ -1,8 +1,11 @@
 <template>
   <section>
-    <p>Car clubs are the cleanest way of travelling in a private vehicle because the are ultra-low emission and they encourage journeys to be shorter. The prices are around &pound;5.20 per hour or &pound;41.95 daily. The car will need to be returned to its location.</p>
+    <p>
+      More pool cars can be borrowed through our scheme run by Enterprise, with a range of vehicles available and parked in a number of city centre locations.
+    </p>
     <ul class="grid">
-      <li><a href="https://www.enterprisecarclub.co.uk/gb/en/programs/regions/north-east-england/leeds.html" class="c2-bg"><h2>CarClub</h2></a></li>
+      <li><a :href="$parent.mapsURL + 'driving'"><h2>Driving directions</h2><p>Google Maps</p></a></li>
+      <li><a href="https://www.enterprisecarclub.co.uk/gb/en/programs/regions/north-east-england/leeds.html"><p>Enterprise Car Club</p></a></li>
     </ul>
   </section>
 </template>

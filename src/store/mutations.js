@@ -65,7 +65,7 @@ function updateSourceOptions(state, update) {
 }
 
 function updateTimeAtDest(state, update) {
-  state.timeAtDest = Number(update);
+  state.timeAtDest = parseFloat(update);
 }
 
 export default {

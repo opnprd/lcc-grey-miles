@@ -1,14 +1,16 @@
 <template>
   <section>
-    <p>This option relies on having access to a pool car. It is better than car clubs if you are travelling all day but requires some logistics to obtain a car.</p>
-    <p>Other options:</p>
-    <ul>
-      <li><a href="">e-Bike / 30-40 minutes</a></li>
-      <li><a href="">Train / 23 minutes from Leeds Railway Station</a></li>
-      <li><a href="">Bus / 28 minutes from Albion Street</a></li>
-    </ul>
+    <p>
+      We have low carbon electric pool vehicles available to book from some
+      locations. You’ll need to complete a driver assessment before your first
+      use (contact Fleet Services at XXXX). This is an excellent option if you
+      need to use these vehicles regularly.
+    </p>
     <ul class="grid">
-      <li><a href="" class="c1-bg"><h2>Book a pool car</h2><p>From Fleet Services</p></a></li>
+      <li><a :href="$parent.mapsURL + 'driving'"><h2>Driving directions</h2><p>Google Maps</p></a></li>
+      <li><a href=""><p>Check availability and booking</p></a></li>
+      <li><a href=""><p>Book a driver assessment</p></a></li>
+      <li><a href=""><p>Find out more about our pool vehicle scheme</p></a></li>
     </ul>
   </section>
 </template>
