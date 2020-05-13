@@ -872,7 +872,7 @@
     
 
     
-    const __vue_component__ = normalizeComponent(
+    const __vue_component__ = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__, staticRenderFns: __vue_staticRenderFns__ },
       __vue_inject_styles__,
       __vue_script__,
@@ -1409,7 +1409,7 @@
     /* style */
     const __vue_inject_styles__$1 = function (inject) {
       if (!inject) return
-      inject("data-v-0ceef1ba_0", { source: "\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  position: absolute;\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  max-width: 90vw;\n  margin-top: 20px;\n  margin-left: 95px;\n}\n.search-results li {\n  padding: 8px;\n  max-width: max-content;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.selected {\n  background-color: #ededed;\n} \n", map: {"version":3,"sources":["/Users/gilesdring/src/opnprd/greymiles/src/components/Search.vue"],"names":[],"mappings":";AA6MA;EACA,sBAAA;AACA;AACA;EACA,kBAAA;EACA,YAAA;EACA,uBAAA;EACA,6BAAA;EACA,eAAA;EACA,gBAAA;EACA,iBAAA;AACA;AACA;EACA,YAAA;EACA,sBAAA;AACA;AACA;EACA,eAAA;EACA,oBAAA;EACA,SAAA;EACA,YAAA;EACA,gBAAA;EACA,0BAAA;EACA,eAAA;AACA;AACA;EACA,yBAAA;AACA","file":"Search.vue","sourcesContent":["<template>\n  <form>\n    <div class=\"row\">\n      <label for=\"from\">From:</label>\n      <input\n        id=\"from\"\n        ref=\"from\"\n        v-model=\"origin\"\n        type=\"text\"\n        @keyup=\"handleSourceInput($event)\"\n      >\n      <div\n        v-show=\"showSourceOptions\"\n        class=\"search-results\"\n      >\n        <location-options\n          :options=\"sourceOptions\"\n          :action=\"selectSource\"\n          :selected=\"selectedSource\"\n          @click=\"showSourceOptions = false;\"\n        />\n        <button\n          v-show=\"showSourceSearchButton\"\n          type=\"button\"\n          @click=\"lookupExternalSource()\"\n        >\n          Search for more locations...\n        </button>\n      </div>\n    </div>\n    <div class=\"row\">\n      <label for=\"to\">To:</label>\n      <input\n        id=\"to\"\n        ref=\"to\"\n        v-model=\"destination\"\n        type=\"text\"\n        @keyup=\"handleDestinationInput($event)\"\n      >\n      <div\n        v-show=\"showDestinationOptions\"\n        class=\"search-results\"\n      >\n        <location-options\n          :options=\"destinationOptions\"\n          :action=\"selectDestination\"\n          :selected=\"selectedDestination\"\n          @click=\"showDestinationOptions = false;\"\n        />\n        <button\n          v-show=\"showDestinationSearchButton\"\n          type=\"button\"\n          @click=\"lookupExternalDestination()\"\n        >\n          Search for more locations...\n        </button>\n      </div>\n    </div>\n    <div class=\"row\" />\n    <div class=\"row\">\n      <input\n        id=\"roundtrip\"\n        v-model=\"isRoundTrip\"\n        name=\"roundtrip\"\n        type=\"checkbox\"\n      >\n      <label for=\"roundtrip\">I am going and then coming back again</label>\n    </div>\n    <div class=\"row\">\n      <label for=\"timeatdest\">Minutes spent at location</label>\n      <input\n        id=\"timeatdest\"\n        v-model=\"timeAtDest\"\n        name=\"timeAtDest\"\n        type=\"number\"\n      >\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"presence\"\n        v-model=\"presenceRequired\"\n        name=\"presence\"\n        type=\"checkbox\"\n      >\n      <label for=\"presence\">I need to travel to the destination</label>\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"carrying\"\n        v-model=\"carrying\"\n        name=\"carrying\"\n        type=\"checkbox\"\n      >\n      <label for=\"carrying\">I am transporting a lot of stuff</label>\n    </div>\n    <button\n      type=\"button\"\n      @click=\"calculate()\"\n    >\n      Calculate\n    </button>\n  </form>\n</template>\n<script>\nimport LocationOptions from './LocationOptions.vue';\nexport default {\n  components: {\n    LocationOptions,\n  },\n  data() {\n    return {\n      showSourceOptions: false,\n      showDestinationOptions: false,\n      showSourceSearchButton: true,\n      showDestinationSearchButton: true,\n    };\n  },\n  computed: {\n    origin: {\n      get() { return this.$store.state.source; },\n      set(value) { this.$store.commit('updateSource', value); },\n    },\n    destination: {\n      get() { return this.$store.state.destination; },\n      set(value) { this.$store.commit('updateDestination', value); },\n    },\n    isRoundTrip: {\n      get() { return this.$store.state.isRoundTrip; },\n      set(value) { this.$store.commit('updateIsRoundTrip', value); },\n    },\n    timeAtDest: {\n      get() { return this.$store.state.timeAtDest; },\n      set(value) { this.$store.commit('updateTimeAtDest', value); },\n    },\n    presenceRequired: {\n      get() { return this.$store.state.presenceRequired; },\n      set(value) { this.$store.commit('updatePresenceRequired', value); },\n    },\n    carrying: {\n      get() { return this.$store.state.carrying; },\n      set(value) { this.$store.commit('updateCarrying', value); },\n    },\n    sourceOptions() { return this.$store.state.sourceDetails.options; },\n    selectedSource() { return this.$store.state.sourceDetails.selected; },\n    destinationOptions() { return this.$store.state.destinationDetails.options; },\n    selectedDestination() { return this.$store.state.destinationDetails.selected; },\n  },\n  methods: {\n    calculate() {\n      this.$store.dispatch('planTravel');\n    },\n    handleDestinationInput(event) {\n      //do nothing if the input field is empty\n      if(!this.destination) this.showDestinationOptions = false;\n\n      //keyboard navigation\n      else if(event.key == 'ArrowDown' && this.selectedDestination < (this.destinationOptions.length - 1)) this.selectDestination(this.selectedDestination + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedDestination > 0) this.selectDestination(this.selectedDestination - 1, false);\n      else if(event.key == 'Enter') this.showDestinationOptions = false;\n\n      //if a character is entered, search the council location list again\n      else if(this.destination.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilDestination');\n        this.showDestinationOptions = true;\n        this.showDestinationSearchButton = true;\n      }\n    },\n    handleSourceInput(event) {\n      if(!this.origin) this.showSourceOptions = false;\n      if(event.key == 'ArrowDown' && this.selectedSource < (this.sourceOptions.length - 1)) this.selectSource(this.selectedSource + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedSource > 0) this.selectSource(this.selectedSource - 1, false);\n      else if(event.key == 'Enter') this.showSourceOptions = false;\n      else if(this.origin.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilSource');\n        this.showSourceOptions = true;\n        this.showSourceSearchButton = true;\n      }\n    },\n    lookupExternalDestination() {\n      this.$store.dispatch('lookupDestination');\n      this.showDestinationOptions = true;\n      this.showDestinationSearchButton = false;\n      this.$refs.to.focus(); //keep focus on the input field so that the keyboard can be used to navigate\n    },\n    lookupExternalSource() {\n      this.$store.dispatch('lookupSource');\n      this.showSourceOptions = true;\n      this.showSourceSearchButton = false;\n      this.$refs.from.focus();\n    },\n    selectDestination(key, hideOptions=true) {\n      this.$store.commit('selectDestination', key);\n      this.destination = this.destinationOptions[key].name;\n      if(hideOptions) this.showDestinationOptions = false;\n    },\n    selectSource(key, hideOptions=true) {\n      this.$store.commit('selectSource', key);\n      this.origin = this.sourceOptions[key].name;\n      if(hideOptions) this.showSourceOptions = false;\n    },\n  },\n};\n</script>\n\n<style>\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  position: absolute;\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  max-width: 90vw;\n  margin-top: 20px;\n  margin-left: 95px;\n}\n.search-results li {\n  padding: 8px;\n  max-width: max-content;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.selected {\n  background-color: #ededed;\n} \n</style>"]}, media: undefined });
+      inject("data-v-5b0c29e4_0", { source: "\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  position: absolute;\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  max-width: 90vw;\n  margin-top: 20px;\n  margin-left: 95px;\n}\n.search-results li {\n  padding: 8px;\n  max-width: max-content;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.selected {\n  background-color: #ededed;\n} \n", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/Search.vue"],"names":[],"mappings":";AA6MA;EACA,sBAAA;AACA;AACA;EACA,kBAAA;EACA,YAAA;EACA,uBAAA;EACA,6BAAA;EACA,eAAA;EACA,gBAAA;EACA,iBAAA;AACA;AACA;EACA,YAAA;EACA,sBAAA;AACA;AACA;EACA,eAAA;EACA,oBAAA;EACA,SAAA;EACA,YAAA;EACA,gBAAA;EACA,0BAAA;EACA,eAAA;AACA;AACA;EACA,yBAAA;AACA","file":"Search.vue","sourcesContent":["<template>\n  <form>\n    <div class=\"row\">\n      <label for=\"from\">From:</label>\n      <input\n        id=\"from\"\n        ref=\"from\"\n        v-model=\"origin\"\n        type=\"text\"\n        @keyup=\"handleSourceInput($event)\"\n      >\n      <div\n        v-show=\"showSourceOptions\"\n        class=\"search-results\"\n      >\n        <location-options\n          :options=\"sourceOptions\"\n          :action=\"selectSource\"\n          :selected=\"selectedSource\"\n          @click=\"showSourceOptions = false;\"\n        />\n        <button\n          v-show=\"showSourceSearchButton\"\n          type=\"button\"\n          @click=\"lookupExternalSource()\"\n        >\n          Search for more locations...\n        </button>\n      </div>\n    </div>\n    <div class=\"row\">\n      <label for=\"to\">To:</label>\n      <input\n        id=\"to\"\n        ref=\"to\"\n        v-model=\"destination\"\n        type=\"text\"\n        @keyup=\"handleDestinationInput($event)\"\n      >\n      <div\n        v-show=\"showDestinationOptions\"\n        class=\"search-results\"\n      >\n        <location-options\n          :options=\"destinationOptions\"\n          :action=\"selectDestination\"\n          :selected=\"selectedDestination\"\n          @click=\"showDestinationOptions = false;\"\n        />\n        <button\n          v-show=\"showDestinationSearchButton\"\n          type=\"button\"\n          @click=\"lookupExternalDestination()\"\n        >\n          Search for more locations...\n        </button>\n      </div>\n    </div>\n    <div class=\"row\" />\n    <div class=\"row\">\n      <input\n        id=\"roundtrip\"\n        v-model=\"isRoundTrip\"\n        name=\"roundtrip\"\n        type=\"checkbox\"\n      >\n      <label for=\"roundtrip\">I am going and then coming back again</label>\n    </div>\n    <div class=\"row\">\n      <label for=\"timeatdest\">Minutes spent at location</label>\n      <input\n        id=\"timeatdest\"\n        v-model=\"timeAtDest\"\n        name=\"timeAtDest\"\n        type=\"number\"\n      >\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"presence\"\n        v-model=\"presenceRequired\"\n        name=\"presence\"\n        type=\"checkbox\"\n      >\n      <label for=\"presence\">I need to travel to the destination</label>\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"carrying\"\n        v-model=\"carrying\"\n        name=\"carrying\"\n        type=\"checkbox\"\n      >\n      <label for=\"carrying\">I am transporting a lot of stuff</label>\n    </div>\n    <button\n      type=\"button\"\n      @click=\"calculate()\"\n    >\n      Calculate\n    </button>\n  </form>\n</template>\n<script>\nimport LocationOptions from './LocationOptions.vue';\nexport default {\n  components: {\n    LocationOptions,\n  },\n  data() {\n    return {\n      showSourceOptions: false,\n      showDestinationOptions: false,\n      showSourceSearchButton: true,\n      showDestinationSearchButton: true,\n    };\n  },\n  computed: {\n    origin: {\n      get() { return this.$store.state.source; },\n      set(value) { this.$store.commit('updateSource', value); },\n    },\n    destination: {\n      get() { return this.$store.state.destination; },\n      set(value) { this.$store.commit('updateDestination', value); },\n    },\n    isRoundTrip: {\n      get() { return this.$store.state.isRoundTrip; },\n      set(value) { this.$store.commit('updateIsRoundTrip', value); },\n    },\n    timeAtDest: {\n      get() { return this.$store.state.timeAtDest; },\n      set(value) { this.$store.commit('updateTimeAtDest', value); },\n    },\n    presenceRequired: {\n      get() { return this.$store.state.presenceRequired; },\n      set(value) { this.$store.commit('updatePresenceRequired', value); },\n    },\n    carrying: {\n      get() { return this.$store.state.carrying; },\n      set(value) { this.$store.commit('updateCarrying', value); },\n    },\n    sourceOptions() { return this.$store.state.sourceDetails.options; },\n    selectedSource() { return this.$store.state.sourceDetails.selected; },\n    destinationOptions() { return this.$store.state.destinationDetails.options; },\n    selectedDestination() { return this.$store.state.destinationDetails.selected; },\n  },\n  methods: {\n    calculate() {\n      this.$store.dispatch('planTravel');\n    },\n    handleDestinationInput(event) {\n      //do nothing if the input field is empty\n      if(!this.destination) this.showDestinationOptions = false;\n\n      //keyboard navigation\n      else if(event.key == 'ArrowDown' && this.selectedDestination < (this.destinationOptions.length - 1)) this.selectDestination(this.selectedDestination + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedDestination > 0) this.selectDestination(this.selectedDestination - 1, false);\n      else if(event.key == 'Enter') this.showDestinationOptions = false;\n\n      //if a character is entered, search the council location list again\n      else if(this.destination.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilDestination');\n        this.showDestinationOptions = true;\n        this.showDestinationSearchButton = true;\n      }\n    },\n    handleSourceInput(event) {\n      if(!this.origin) this.showSourceOptions = false;\n      if(event.key == 'ArrowDown' && this.selectedSource < (this.sourceOptions.length - 1)) this.selectSource(this.selectedSource + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedSource > 0) this.selectSource(this.selectedSource - 1, false);\n      else if(event.key == 'Enter') this.showSourceOptions = false;\n      else if(this.origin.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilSource');\n        this.showSourceOptions = true;\n        this.showSourceSearchButton = true;\n      }\n    },\n    lookupExternalDestination() {\n      this.$store.dispatch('lookupDestination');\n      this.showDestinationOptions = true;\n      this.showDestinationSearchButton = false;\n      this.$refs.to.focus(); //keep focus on the input field so that the keyboard can be used to navigate\n    },\n    lookupExternalSource() {\n      this.$store.dispatch('lookupSource');\n      this.showSourceOptions = true;\n      this.showSourceSearchButton = false;\n      this.$refs.from.focus();\n    },\n    selectDestination(key, hideOptions=true) {\n      this.$store.commit('selectDestination', key);\n      this.destination = this.destinationOptions[key].name;\n      if(hideOptions) this.showDestinationOptions = false;\n    },\n    selectSource(key, hideOptions=true) {\n      this.$store.commit('selectSource', key);\n      this.origin = this.sourceOptions[key].name;\n      if(hideOptions) this.showSourceOptions = false;\n    },\n  },\n};\n</script>\n\n<style>\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  position: absolute;\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  max-width: 90vw;\n  margin-top: 20px;\n  margin-left: 95px;\n}\n.search-results li {\n  padding: 8px;\n  max-width: max-content;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.selected {\n  background-color: #ededed;\n} \n</style>"]}, media: undefined });
 
     };
     /* scoped */
@@ -1424,7 +1424,7 @@
     
 
     
-    const __vue_component__$1 = normalizeComponent(
+    const __vue_component__$1 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$1, staticRenderFns: __vue_staticRenderFns__$1 },
       __vue_inject_styles__$1,
       __vue_script__$1,
@@ -1592,11 +1592,11 @@
     /* style */
     const __vue_inject_styles__$2 = function (inject) {
       if (!inject) return
-      inject("data-v-4ce3658e_0", { source: "\n.open[data-v-4ce3658e] {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n", map: {"version":3,"sources":["/Users/gilesdring/src/opnprd/greymiles/src/components/ModeOfTransport.vue"],"names":[],"mappings":";AA0BA;EACA,qBAAA;EACA,YAAA;EACA,kBAAA;EACA,kBAAA;AACA","file":"ModeOfTransport.vue","sourcesContent":["<template>\n  <section\n    v-if=\"shouldDisplay\"\n    @click=\"toggleView()\"\n  >\n    <div>\n      <div\n        v-if=\"viewState ==='closed'\"\n        class=\"open\"\n      >\n        more info\n      </div>\n      <h3>{{ title }}</h3>\n      <p>{{ summary }}</p>\n      <p>£{{ cost }}</p>\n      <p v-if=\"emissions\">\n        {{ emissions }}kg CO<sub>2</sub> emissions\n      </p>\n    </div>\n    <component\n      :is=\"details\"\n      v-if=\"viewState ==='open'\"\n    />\n  </section>  \n</template>\n<style scoped>\n.open {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n</style>\n<script>\nexport default {\n  props: {\n    title: {\n      type: String,\n      required: true,\n    },\n    details: {\n      type: Object,\n      required: false,\n      default: () => {},\n    },\n    summarise: {\n      type: Function,\n      default: () => () => null,\n    },\n    costFn: {\n      type: Function,\n      required: true,\n    },\n    co2Fn: {\n      type: Function,\n      default: () => () => 0,\n    },\n    displayFn: {\n      type: Function,\n      default: () => () => true,\n    },\n  },\n  data: function () {\n    return {\n      viewState: 'closed',\n    };\n  },\n  computed: {\n    summary() {\n      return this.summarise(this.$store.getters.journey);\n    },\n    cost() {\n      return this.costFn(this.$store.getters.journey);\n    },\n    emissions() {\n      return this.co2Fn(this.$store.getters.journey);\n    },\n    shouldDisplay() {\n      return this.displayFn(this.$store.getters.journey);\n    },\n  },\n  methods: {\n    toggleView() {\n      const currentState = this.viewState;\n      this.viewState = currentState === 'open' ? 'closed' : 'open';\n    },\n  },\n};\n</script>"]}, media: undefined });
+      inject("data-v-b5682590_0", { source: "\n.open[data-v-b5682590] {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/ModeOfTransport.vue"],"names":[],"mappings":";AA0BA;EACA,qBAAA;EACA,YAAA;EACA,kBAAA;EACA,kBAAA;AACA","file":"ModeOfTransport.vue","sourcesContent":["<template>\n  <section\n    v-if=\"shouldDisplay\"\n    @click=\"toggleView()\"\n  >\n    <div>\n      <div\n        v-if=\"viewState ==='closed'\"\n        class=\"open\"\n      >\n        more info\n      </div>\n      <h3>{{ title }}</h3>\n      <p>{{ summary }}</p>\n      <p>£{{ cost }}</p>\n      <p v-if=\"emissions\">\n        {{ emissions }}kg CO<sub>2</sub> emissions\n      </p>\n    </div>\n    <component\n      :is=\"details\"\n      v-if=\"viewState ==='open'\"\n    />\n  </section>  \n</template>\n<style scoped>\n.open {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n</style>\n<script>\nexport default {\n  props: {\n    title: {\n      type: String,\n      required: true,\n    },\n    details: {\n      type: Object,\n      required: false,\n      default: () => {},\n    },\n    summarise: {\n      type: Function,\n      default: () => () => null,\n    },\n    costFn: {\n      type: Function,\n      required: true,\n    },\n    co2Fn: {\n      type: Function,\n      default: () => () => 0,\n    },\n    displayFn: {\n      type: Function,\n      default: () => () => true,\n    },\n  },\n  data: function () {\n    return {\n      viewState: 'closed',\n    };\n  },\n  computed: {\n    summary() {\n      return this.summarise(this.$store.getters.journey);\n    },\n    cost() {\n      return this.costFn(this.$store.getters.journey);\n    },\n    emissions() {\n      return this.co2Fn(this.$store.getters.journey);\n    },\n    shouldDisplay() {\n      return this.displayFn(this.$store.getters.journey);\n    },\n  },\n  methods: {\n    toggleView() {\n      const currentState = this.viewState;\n      this.viewState = currentState === 'open' ? 'closed' : 'open';\n    },\n  },\n};\n</script>"]}, media: undefined });
 
     };
     /* scoped */
-    const __vue_scope_id__$2 = "data-v-4ce3658e";
+    const __vue_scope_id__$2 = "data-v-b5682590";
     /* module identifier */
     const __vue_module_identifier__$2 = undefined;
     /* functional template */
@@ -1607,7 +1607,7 @@
     
 
     
-    const __vue_component__$2 = normalizeComponent(
+    const __vue_component__$2 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$2, staticRenderFns: __vue_staticRenderFns__$2 },
       __vue_inject_styles__$2,
       __vue_script__$2,
@@ -1729,7 +1729,7 @@
     
 
     
-    const __vue_component__$3 = normalizeComponent(
+    const __vue_component__$3 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$3, staticRenderFns: __vue_staticRenderFns__$3 },
       __vue_inject_styles__$3,
       __vue_script__$3,
@@ -2203,7 +2203,7 @@
     
 
     
-    const __vue_component__$4 = normalizeComponent(
+    const __vue_component__$4 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$4, staticRenderFns: __vue_staticRenderFns__$4 },
       __vue_inject_styles__$4,
       {},
@@ -2273,7 +2273,7 @@
     
 
     
-    const __vue_component__$5 = normalizeComponent(
+    const __vue_component__$5 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$5, staticRenderFns: __vue_staticRenderFns__$5 },
       __vue_inject_styles__$5,
       {},
@@ -2356,7 +2356,7 @@
     
 
     
-    const __vue_component__$6 = normalizeComponent(
+    const __vue_component__$6 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$6, staticRenderFns: __vue_staticRenderFns__$6 },
       __vue_inject_styles__$6,
       {},
@@ -2430,7 +2430,7 @@
     
 
     
-    const __vue_component__$7 = normalizeComponent(
+    const __vue_component__$7 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$7, staticRenderFns: __vue_staticRenderFns__$7 },
       __vue_inject_styles__$7,
       {},
@@ -2549,7 +2549,7 @@
     
 
     
-    const __vue_component__$8 = normalizeComponent(
+    const __vue_component__$8 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$8, staticRenderFns: __vue_staticRenderFns__$8 },
       __vue_inject_styles__$8,
       {},
@@ -2590,7 +2590,7 @@
     
 
     
-    const __vue_component__$9 = normalizeComponent(
+    const __vue_component__$9 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$9, staticRenderFns: __vue_staticRenderFns__$9 },
       __vue_inject_styles__$9,
       {},
@@ -2668,7 +2668,7 @@
     
 
     
-    const __vue_component__$a = normalizeComponent(
+    const __vue_component__$a = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$a, staticRenderFns: __vue_staticRenderFns__$a },
       __vue_inject_styles__$a,
       {},
@@ -2730,11 +2730,11 @@
     },
     costFn: function costFn(j) {
       // TODO Need to calculate cost with/without metro card
-      return 5;
+      return 4.30; //price of bus dayrider
     },
     co2Fn: function co2Fn(j) {
-      var bus = 0.167227 * miles(j.bus.distance.value);
-      var train = 0.065613 * miles(j.train.distance.value);
+      var bus = 0.167227 * (j.isRoundTrip ? toMiles(j.bus.distance) * 2 : toMiles(j.bus.distance));
+      var train = 0.065613 * (j.isRoundTrip ? toMiles(j.train.distance) * 2 : toMiles(j.train.distance));
       return ((bus + train) / 2).toFixed(2); //take the average for now
     }
   }, {
@@ -2744,10 +2744,13 @@
       return "".concat(formatTime(j.driving.time.value), " drive (needs booking in advance)");
     },
     costFn: function costFn(j) {
-      return (0.04 * miles(j.driving.distance.value)).toFixed(2); //Cost of electricity only - do we need to factor in lease & maintenance?
+      var dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
+      var perMile = (19700 / 7 + 1285) / 7500 + 0.04;
+      return (perMile * dist).toFixed(2);
     },
     co2Fn: function co2Fn(j) {
-      return (0.2446754 * miles(j.driving.distance.value)).toFixed(2); //assuming same as Car Club
+      var dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
+      return (0.09612 * dist).toFixed(2); // Assumes vehicle is an EV
     }
   }, {
     title: 'Car club',
@@ -2756,10 +2759,13 @@
       return "".concat(formatTime(j.driving.time.value), " drive (xx cars at Cookridge Street)");
     },
     costFn: function costFn(j) {
-      return (3.71 * j.driving.time.value / 60).toFixed(2); //£3.71 per hour
+      var dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
+      var time = Math.ceil(j.isRoundTrip ? (j.driving.time.value * 2 + j.timeAtDest) / 60 : j.driving.time.value / 60); //time in hours, rounded up
+
+      return (3.71 * time + 0.18 * dist).toFixed(2);
     },
     co2Fn: function co2Fn(j) {
-      return (0.2446754 * miles(j.driving.distance.value)).toFixed(2);
+      return (0.25885349 * toMiles(j.driving.distance)).toFixed(2);
     }
   }, {
     title: 'Taxi',
@@ -2768,13 +2774,15 @@
       return "".concat(formatTime(j.driving.time.value), " (AAA Taxis)");
     },
     costFn: function costFn(j) {
-      var dist = miles(j.driving.distance.value);
+      var dist = Math.ceil(j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance)); //round up miles
+
       var cost = 3.5 + 1.6 * (dist - 1); // £3.50 for first mile then £1.60
 
-      return Math.max(3.5, cost).toFixed(2);
+      return cost.toFixed(2);
     },
     co2Fn: function co2Fn(j) {
-      return (0.24020217 * miles(j.driving.distance.value)).toFixed(2);
+      var dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
+      return (0.24020217 * dist).toFixed(2);
     }
   }, {
     title: 'Self drive',
@@ -2783,15 +2791,17 @@
       return "".concat(formatTime(j.driving.time.value));
     },
     costFn: function costFn(j) {
-      return (0.45 * miles(j.driving.distance.value)).toFixed(2); //worst case cost scenario (ie. casual car user doing <10k annual miles)
+      var dist = Math.ceil(j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance));
+      return (0.45 * toMiles(j.driving.distance)).toFixed(2); //worst case cost scenario (ie. casual car user doing <10k annual miles)
     },
     co2Fn: function co2Fn(j) {
-      return (0.28591256 * miles(j.driving.distance.value)).toFixed(2);
+      var dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
+      return (0.28591256 * dist).toFixed(2);
     }
   }]; // helper functions
 
-  var miles = function miles(km) {
-    return km / 1.609344;
+  var toMiles = function toMiles(dist) {
+    return dist.unit == 'km' ? dist.value / 1.609344 : dist.value;
   };
 
   var formatTime = function formatTime(value) {
@@ -4428,7 +4438,7 @@
     if (typeof o === "string") return _arrayLikeToArray(o, minLen);
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(n);
+    if (n === "Map" || n === "Set") return Array.from(o);
     if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
   }
 
