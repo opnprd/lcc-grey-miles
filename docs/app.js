@@ -2762,6 +2762,8 @@
       var dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
       var time = Math.ceil(j.isRoundTrip ? (j.driving.time.value * 2 + j.timeAtDest) / 60 : j.driving.time.value / 60); //time in hours, rounded up
 
+      time = Math.max(time, 2); //2 hours minimum
+
       return (3.71 * time + 0.18 * dist).toFixed(2);
     },
     co2Fn: function co2Fn(j) {
@@ -2792,7 +2794,7 @@
     },
     costFn: function costFn(j) {
       var dist = Math.ceil(j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance));
-      return (0.45 * toMiles(j.driving.distance)).toFixed(2); //worst case cost scenario (ie. casual car user doing <10k annual miles)
+      return (0.45 * dist).toFixed(2); //worst case cost scenario (ie. casual car user doing <10k annual miles)
     },
     co2Fn: function co2Fn(j) {
       var dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
@@ -5729,6 +5731,26 @@
     planTravel: planTravel
   };
 
+  var trim$1 = stringTrim.trim;
+
+
+  var $parseFloat = global_1.parseFloat;
+  var FORCED$3 = 1 / $parseFloat(whitespaces + '-0') !== -Infinity;
+
+  // `parseFloat` method
+  // https://tc39.github.io/ecma262/#sec-parsefloat-string
+  var numberParseFloat = FORCED$3 ? function parseFloat(string) {
+    var trimmedString = trim$1(String(string));
+    var result = $parseFloat(trimmedString);
+    return result === 0 && trimmedString.charAt(0) == '-' ? -0 : result;
+  } : $parseFloat;
+
+  // `parseFloat` method
+  // https://tc39.github.io/ecma262/#sec-parsefloat-string
+  _export({ global: true, forced: parseFloat != numberParseFloat }, {
+    parseFloat: numberParseFloat
+  });
+
   function appendDestOptions(state, update) {
     state.destinationDetails.options = state.destinationDetails.options.concat(update);
   }
@@ -5800,7 +5822,7 @@
   }
 
   function updateTimeAtDest(state, update) {
-    state.timeAtDest = Number(update);
+    state.timeAtDest = parseFloat(update);
   }
 
   var mutations = {

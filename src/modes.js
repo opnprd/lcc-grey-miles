@@ -90,7 +90,8 @@ export default [
     },
     costFn(j) {
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
-      const time = Math.ceil(j.isRoundTrip ? (j.driving.time.value * 2 + j.timeAtDest) / 60 : j.driving.time.value / 60); //time in hours, rounded up
+      let time = Math.ceil(j.isRoundTrip ? (j.driving.time.value * 2 + j.timeAtDest) / 60 : j.driving.time.value / 60); //time in hours, rounded up
+      time = Math.max(time, 2); //2 hours minimum
       return ((3.71 * time) + (0.18 * dist)).toFixed(2);
     },
     co2Fn(j) {
@@ -121,7 +122,7 @@ export default [
     },
     costFn(j) {
       const dist = Math.ceil(j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance));
-      return (0.45*toMiles(j.driving.distance)).toFixed(2); //worst case cost scenario (ie. casual car user doing <10k annual miles)
+      return (0.45 * dist).toFixed(2); //worst case cost scenario (ie. casual car user doing <10k annual miles)
     },
     co2Fn(j) {
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
