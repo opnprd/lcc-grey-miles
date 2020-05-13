@@ -67,6 +67,10 @@ export default {
           src: 'src/data',
           dest: `${outputDir}`,
         },
+        {
+          src: 'src/assets/**',
+          dest: `${outputDir}`,
+        },
       ],
       hook: 'buildStart',
     }),

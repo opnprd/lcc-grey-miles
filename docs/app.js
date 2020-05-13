@@ -1910,7 +1910,7 @@
           [
             _c("p", [
               _vm._v(
-                "Can you make your journey cleaner? Move up Leeds City Council's travel hierarchy to reduce your emissions and help tackle the #ClimateEmergency"
+                "This tool shows you the greenest and most efficient way to make your journey. Reduce your emissions to help tackle the #ClimateEmergency."
               )
             ]),
             _vm._v(" "),
@@ -1948,9 +1948,11 @@
       var _h = _vm.$createElement;
       var _c = _vm._self._c || _h;
       return _c("header", [
-        _c("p", [_vm._v("Towards a lower emissions city")]),
+        _c("p", [_vm._v("Find the greenest way to get to your meeting")]),
         _vm._v(" "),
-        _c("h1", [_vm._v("Leeds Council Staff Travel Options")])
+        _c("h1", [_vm._v("Staff Travel Options")]),
+        _vm._v(" "),
+        _c("img", { attrs: { src: "/img/lcc.png", width: "224px" } })
       ])
     }
   ];
