@@ -19,10 +19,10 @@ import SelfDrive from './components/modes/SelfDrive.vue';
  */
 export default [
   {
-    title: 'Tele/videoconference',
+    title: 'Skype Meeting',
     details: Teleconf,
     summarise(j) {
-      return `Skype facilities at ${j.source}`;
+      return `Skype facilities are available at ${j.source}`;
     },
     costFn(j) {
       return 0;
@@ -54,11 +54,10 @@ export default [
     title: 'Bus/train', // should we split this into 2 options? different cost & emissions calculations
     details: BusTrain,
     summarise(j) {
-      return `${formatTime(j.train.time.value)} by train or ${formatTime(j.bus.time.value)} by bus (xx Metro cards are available nearby)`;
+      return `${formatTime(j.train.time.value)} by train or ${formatTime(j.bus.time.value)} by bus (xx Metrocards are available at ${j.source} - <a href="">check availability and booking</a>)`;
     },
     costFn(j) {
-      // TODO Need to calculate cost with/without metro card
-      return 4.30; //price of bus dayrider
+      return '0 (corporate MetroCard) or £4.30 (dayrider ticket)';
     },
     co2Fn(j) {
       const bus =  0.167227 * (j.isRoundTrip ? toMiles(j.bus.distance) * 2 : toMiles(j.bus.distance));
@@ -67,15 +66,15 @@ export default [
     },
   },
   {
-    title: 'Pool vehicle',
+    title: 'Electric pool vehicle',
     details: PoolVehicle,
     summarise(j) {
-      return `${formatTime(j.driving.time.value)} drive (needs booking in advance)`;
+      return `${formatTime(j.driving.time.value)} drive (<a href="">check availability and booking</a>)`;
     },
     costFn(j) {
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
-      const perMile = (19700 / 7 + 1285) / 7500 + 0.04;
-      return (perMile * dist).toFixed(2);
+      // const perMile = (19700 / 7 + 1285) / 7500 + 0.04;  //this is if vehicle and maintainance cost are included
+      return (0.04 * dist).toFixed(2);
     },
     co2Fn(j) {
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
@@ -86,7 +85,7 @@ export default [
     title: 'Car club',
     details: CarClub,
     summarise(j) {
-      return `${formatTime(j.driving.time.value)} drive (xx cars at Cookridge Street)`;
+      return `${formatTime(j.driving.time.value)} drive (xx cars at Cookridge Street - <a href="">check availability and booking</a>)`;
     },
     costFn(j) {
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
@@ -102,12 +101,13 @@ export default [
     title: 'Taxi',
     details: Taxi,
     summarise(j) {
-      return `${formatTime(j.driving.time.value)} (AAA Taxis)`;
+      return `${formatTime(j.driving.time.value)}`;
     },
     costFn(j) {
-      const dist = Math.ceil(j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance));  //round up miles
+      const dist = Math.ceil(toMiles(j.driving.distance));
       const cost =  (3.5 + (1.6 * (dist - 1))); // £3.50 for first mile then £1.60
-      return cost.toFixed(2);
+      const total = j.isRoundTrip ? cost * 2 : cost;
+      return total.toFixed(2);
     },
     co2Fn(j) {
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
@@ -115,7 +115,7 @@ export default [
     },
   },
   {
-    title: 'Self drive',
+    title: 'Drive your own vehicle',
     details: SelfDrive,
     summarise(j) {
       return `${formatTime(j.driving.time.value)}`;

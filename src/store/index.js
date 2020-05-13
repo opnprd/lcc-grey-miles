@@ -13,7 +13,7 @@ export default new Vuex.Store({
     source: '',
     sourceDetails: {
       selected: null, // Index to option. Defaults to 0 when search done.
-      options: [], // Array of { name: string, latLng: array, addr: string } - addr only for council locations
+      options: [], // Array of { name: string, lngLat: array, addr: string } - addr only for council locations
     },
     destination: '',
     destinationDetails: {

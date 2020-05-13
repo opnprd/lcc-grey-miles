@@ -11,10 +11,10 @@
         more info
       </div>
       <h3>{{ title }}</h3>
-      <p>{{ summary }}</p>
+      <p v-html="summary" />
       <p>£{{ cost }}</p>
       <p v-if="emissions">
-        {{ emissions }}kg CO<sub>2</sub> emissions
+        {{ emissions }}kg CO<sub>2</sub> emitted
       </p>
     </div>
     <component
@@ -77,6 +77,15 @@ export default {
     },
     shouldDisplay() {
       return this.displayFn(this.$store.getters.journey);
+    },
+    mapsURL() {
+      const {
+        sourceDetails: { options: srcOptions, selected: selectedSrc },
+        destinationDetails: { options: destOptions, selected: selectedDest },
+      } = this.$store.state;
+      const srcLngLat = srcOptions[selectedSrc].lngLat;
+      const destLngLat = destOptions[selectedDest].lngLat;
+      return `https://www.google.com/maps/dir/?api=1&origin=${srcLngLat[1]},${srcLngLat[0]}&destination=${destLngLat[1]},${destLngLat[0]}&travelmode=`;
     },
   },
   methods: {
