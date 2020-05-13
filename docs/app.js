@@ -1952,7 +1952,7 @@
         _vm._v(" "),
         _c("h1", [_vm._v("Staff Travel Options")]),
         _vm._v(" "),
-        _c("img", { attrs: { src: "/img/lcc.png", width: "224px" } })
+        _c("img", { attrs: { src: "img/lcc.png", width: "224px" } })
       ])
     }
   ];
