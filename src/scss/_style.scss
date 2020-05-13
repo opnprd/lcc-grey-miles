@@ -4,7 +4,7 @@ $background: lightgrey;
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans&display=swap');
 
 %main-flow {
-  max-width: 40em;
+  max-width: 50em;
   margin-left: auto;
   margin-right: auto;
 }
@@ -29,6 +29,45 @@ body {
   }
 }
 
+@mixin small-header {
+  @media only screen and (max-width: 670px){
+    @content;
+  }
+}
+header {
+  margin-top: 1em;
+  background-color: #004166;
+  padding-top: 1em;
+  border-radius: 0.25em;
+  color: white;
+  position: relative;
+
+  @include small-header {
+    text-align: center;
+  }
+
+  h1 {
+    padding-top: 0;
+    display: inline-block;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 2.75em;
+    font-weight: normal;
+  }
+
+  img {
+    display: inline;
+    position: absolute;
+    top: 18px;
+    right: 20px;
+
+    @include small-header {
+      display: block;
+      margin: auto;
+      position: static;
+    }
+  }
+}
+
 h1 {
   font-family: 'Montserrat', sans-serif;
   font-weight: bold;
@@ -39,6 +78,7 @@ h1 {
 
 p {
   padding-bottom: 1em;
+  line-height: 1.5em;
 }
 
 form {

@@ -1,13 +1,17 @@
 <template>
   <article id="app">
     <header>
-      <p>Towards a lower emissions city</p>
-      <h1>Leeds Council Staff Travel Options</h1>
+      <p>Find the greenest way to get to your meeting</p>
+      <h1>Staff Travel Options</h1>
+      <img
+        src="/img/lcc.png"
+        width="224px"
+      >
     </header>
 
     <div id="main">
       <section>
-        <p>Can you make your journey cleaner? Move up Leeds City Council's travel hierarchy to reduce your emissions and help tackle the #ClimateEmergency</p>
+        <p>This tool shows you the greenest and most efficient way to make your journey. Reduce your emissions to help tackle the #ClimateEmergency.</p>
         <search-form />
       </section>
       <ol
