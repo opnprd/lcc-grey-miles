@@ -134,7 +134,8 @@ export default [
       return ((3.71 * time) + (0.18 * dist)).toFixed(2);
     },
     co2Fn(j) {
-      return (0.25885349 * toMiles(j.driving.distance)).toFixed(2);
+      const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
+      return (0.25885349 * dist).toFixed(2);
     },
     timeFn(j) {
       return calculateSegments({
