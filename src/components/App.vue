@@ -15,11 +15,11 @@
         <search-form />
       </section>
       <ol
-        v-if="showModes"
+        v-if="sortedModes.length != 0"
         class="modes"
       >
         <li
-          v-for="(mode, i) in modes"
+          v-for="(mode, i) in sortedModes"
           :key="i"
           :class="'mode' + (i + 1)"
         >
@@ -49,9 +49,12 @@ export default {
     },
   },
   computed: {
-    showModes() {
-      if (this.$store.state.driving != null) return true;
-      else return false;
+    sortedModes() {
+      if (!this.$store.state.driving) return [];
+      else {
+        const j = this.$store.getters.journey;
+        return [...this.modes].sort((a, b) => a.co2Fn(j) - b.co2Fn(j));
+      }
     },
   },
   // created() {
