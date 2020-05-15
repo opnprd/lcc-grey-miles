@@ -3392,12 +3392,6 @@
 	    var _h = _vm.$createElement;
 	    var _c = _vm._self._c || _h;
 	    return _c("section", [
-	      _c("p", [
-	        _vm._v(
-	          "Private hire taxis should only be used in exceptional situations. There needs to be an important business need.  If you do use a taxi you should use our contract if possible."
-	        )
-	      ]),
-	      _vm._v(" "),
 	      _c("ul", { staticClass: "grid" }, [
 	        _c("li", [
 	          _c("a", { attrs: { href: "" } }, [
@@ -3635,7 +3629,7 @@
 	  title: 'Taxi',
 	  details: __vue_component__$a,
 	  summarise: function summarise(j) {
-	    return "".concat(formatTime(j.driving.time.value));
+	    return '<strong>Private hire taxis should only be used in exceptional situations.</strong> There needs to be an important business need.  If you do use a taxi you should use our contract if possible.';
 	  },
 	  costFn: function costFn(j) {
 	    var dist = Math.ceil(toMiles(j.driving.distance));
@@ -3659,7 +3653,7 @@
 	  title: 'Drive your own vehicle',
 	  details: __vue_component__$b,
 	  summarise: function summarise(j) {
-	    return "".concat(formatTime(j.driving.time.value));
+	    return '<strong>Driving your own car should be your last resort</strong>';
 	  },
 	  costFn: function costFn(j) {
 	    var dist = Math.ceil(j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance));

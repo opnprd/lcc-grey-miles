@@ -149,7 +149,7 @@ export default [
     title: 'Taxi',
     details: Taxi,
     summarise(j) {
-      return `${formatTime(j.driving.time.value)}`;
+      return '<strong>Private hire taxis should only be used in exceptional situations.</strong> There needs to be an important business need.  If you do use a taxi you should use our contract if possible.';
     },
     costFn(j) {
       const dist = Math.ceil(toMiles(j.driving.distance));
@@ -173,7 +173,7 @@ export default [
     title: 'Drive your own vehicle',
     details: SelfDrive,
     summarise(j) {
-      return `${formatTime(j.driving.time.value)}`;
+      return '<strong>Driving your own car should be your last resort</strong>';
     },
     costFn(j) {
       const dist = Math.ceil(j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance));
