@@ -129,9 +129,9 @@ export default [
     },
     costFn(j) {
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
-      let time = Math.ceil(j.isRoundTrip ? (j.driving.time.value * 2 + j.timeAtDest) / 60 : j.driving.time.value / 60); //time in hours, rounded up
-      time = Math.max(time, 2); //2 hours minimum
-      return ((3.71 * time) + (0.18 * dist)).toFixed(2);
+      const time = j.isRoundTrip ? (j.driving.time.value * 2 + j.timeAtDest + 30) : (j.driving.time.value + 30);  // always add buffer of 30 minutes
+      const timeBlocks = Math.ceil(time / 15);  //priced in 15 minute blocks
+      return ((timeBlocks * 0.9275) + (dist * 0.18)).toFixed(2);
     },
     co2Fn(j) {
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);

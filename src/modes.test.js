@@ -39,11 +39,11 @@ describe('cost calculations', () => {
   });
 
   test.each([
-    [1, 10, 7.60], //[ distance (mi), time(minutes), expected £ ]
-    [1, 60, 7.60],
-    [4.5, 82, 8.23],
-    [10, 120, 9.22],
-  ])('car club cost should give correct results based on distance and time (min. 2 hours, rounded upwards to nearest hour)', (dist, mins, cost) => {
+    [1, 10, 2.96], //[ distance (mi), time(minutes), expected £ ]
+    [1, 20, 3.89],
+    [0.5, 90, 7.51],
+    [10, 80, 9.22],
+  ])('car club cost should give correct results based on distance and 15 minute time blocks (rounded up with 30 minutes added)', (dist, mins, cost) => {
     let j = {
       driving: {
         distance: { value: dist, unit: 'miles' },
