@@ -9,24 +9,24 @@
         type="text"
         @keyup="handleSourceInput($event)"
       >
-      <div
-        v-show="showSourceOptions"
-        class="search-results"
+    </div>
+    <div
+      v-show="showSourceOptions"
+      class="search-results row"
+    >
+      <location-options
+        :options="sourceOptions"
+        :action="selectSource"
+        :selected="selectedSource"
+        @click="showSourceOptions = false;"
+      />
+      <button
+        v-show="showSourceSearchButton"
+        type="button"
+        @click="lookupExternalSource()"
       >
-        <location-options
-          :options="sourceOptions"
-          :action="selectSource"
-          :selected="selectedSource"
-          @click="showSourceOptions = false;"
-        />
-        <button
-          v-show="showSourceSearchButton"
-          type="button"
-          @click="lookupExternalSource()"
-        >
-          Search for more locations...
-        </button>
-      </div>
+        Search for more locations...
+      </button>
     </div>
     <div class="row">
       <label for="to">To:</label>
@@ -37,26 +37,26 @@
         type="text"
         @keyup="handleDestinationInput($event)"
       >
-      <div
-        v-show="showDestinationOptions"
-        class="search-results"
-      >
-        <location-options
-          :options="destinationOptions"
-          :action="selectDestination"
-          :selected="selectedDestination"
-          @click="showDestinationOptions = false;"
-        />
-        <button
-          v-show="showDestinationSearchButton"
-          type="button"
-          @click="lookupExternalDestination()"
-        >
-          Search for more locations...
-        </button>
-      </div>
     </div>
-    <div class="row" />
+    <div
+      v-show="showDestinationOptions"
+      class="search-results row"
+    >
+      <location-options
+        :options="destinationOptions"
+        :action="selectDestination"
+        :selected="selectedDestination"
+        @click="showDestinationOptions = false;"
+      />
+      <button
+        v-show="showDestinationSearchButton"
+        type="button"
+        @click="lookupExternalDestination()"
+      >
+        Search for more locations...
+      </button>
+    </div>
+    
     <div class="row">
       <input
         id="roundtrip"
@@ -205,33 +205,41 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 input[type=text] {
   width: min(250px, 60%);
 }
 .search-results {
-  position: absolute;
   z-index: 100;
   background-color: white;
   border: 0.5px solid lightgray;
-  max-width: 90vw;
-  margin-top: 20px;
-  margin-left: 95px;
+  flex-wrap: wrap;
+  margin-left: 6em;
+  position: absolute;
+  margin-top: -0.3em;
+  max-width: 44em;
+
+  ul {
+    width: 100%;
+  }
+
+  li {
+    padding: 8px;
+    width: 100%;
+  }
+
+  button {
+    font-size: 100%;
+    font-family: inherit;
+    border: 0;
+    padding: 8px;
+    background: none;
+    text-decoration: underline;
+    color: darkblue;
+  }
+
+  .selected {
+    background-color: #ededed;
+  } 
 }
-.search-results li {
-  padding: 8px;
-  max-width: max-content;
-}
-.search-results button {
-  font-size: 100%;
-  font-family: inherit;
-  border: 0;
-  padding: 8px;
-  background: none;
-  text-decoration: underline;
-  color: darkblue;
-}
-.selected {
-  background-color: #ededed;
-} 
 </style>

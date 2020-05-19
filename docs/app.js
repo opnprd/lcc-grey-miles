@@ -1380,59 +1380,59 @@
 	            _vm.origin = $event.target.value;
 	          }
 	        }
-	      }),
-	      _vm._v(" "),
-	      _c(
-	        "div",
-	        {
-	          directives: [
-	            {
-	              name: "show",
-	              rawName: "v-show",
-	              value: _vm.showSourceOptions,
-	              expression: "showSourceOptions"
+	      })
+	    ]),
+	    _vm._v(" "),
+	    _c(
+	      "div",
+	      {
+	        directives: [
+	          {
+	            name: "show",
+	            rawName: "v-show",
+	            value: _vm.showSourceOptions,
+	            expression: "showSourceOptions"
+	          }
+	        ],
+	        staticClass: "search-results row"
+	      },
+	      [
+	        _c("location-options", {
+	          attrs: {
+	            options: _vm.sourceOptions,
+	            action: _vm.selectSource,
+	            selected: _vm.selectedSource
+	          },
+	          on: {
+	            click: function($event) {
+	              _vm.showSourceOptions = false;
 	            }
-	          ],
-	          staticClass: "search-results"
-	        },
-	        [
-	          _c("location-options", {
-	            attrs: {
-	              options: _vm.sourceOptions,
-	              action: _vm.selectSource,
-	              selected: _vm.selectedSource
-	            },
+	          }
+	        }),
+	        _vm._v(" "),
+	        _c(
+	          "button",
+	          {
+	            directives: [
+	              {
+	                name: "show",
+	                rawName: "v-show",
+	                value: _vm.showSourceSearchButton,
+	                expression: "showSourceSearchButton"
+	              }
+	            ],
+	            attrs: { type: "button" },
 	            on: {
 	              click: function($event) {
-	                _vm.showSourceOptions = false;
+	                return _vm.lookupExternalSource()
 	              }
 	            }
-	          }),
-	          _vm._v(" "),
-	          _c(
-	            "button",
-	            {
-	              directives: [
-	                {
-	                  name: "show",
-	                  rawName: "v-show",
-	                  value: _vm.showSourceSearchButton,
-	                  expression: "showSourceSearchButton"
-	                }
-	              ],
-	              attrs: { type: "button" },
-	              on: {
-	                click: function($event) {
-	                  return _vm.lookupExternalSource()
-	                }
-	              }
-	            },
-	            [_vm._v("\n        Search for more locations...\n      ")]
-	          )
-	        ],
-	        1
-	      )
-	    ]),
+	          },
+	          [_vm._v("\n      Search for more locations...\n    ")]
+	        )
+	      ],
+	      1
+	    ),
 	    _vm._v(" "),
 	    _c("div", { staticClass: "row" }, [
 	      _c("label", { attrs: { for: "to" } }, [_vm._v("To:")]),
@@ -1460,61 +1460,59 @@
 	            _vm.destination = $event.target.value;
 	          }
 	        }
-	      }),
-	      _vm._v(" "),
-	      _c(
-	        "div",
-	        {
-	          directives: [
-	            {
-	              name: "show",
-	              rawName: "v-show",
-	              value: _vm.showDestinationOptions,
-	              expression: "showDestinationOptions"
-	            }
-	          ],
-	          staticClass: "search-results"
-	        },
-	        [
-	          _c("location-options", {
-	            attrs: {
-	              options: _vm.destinationOptions,
-	              action: _vm.selectDestination,
-	              selected: _vm.selectedDestination
-	            },
-	            on: {
-	              click: function($event) {
-	                _vm.showDestinationOptions = false;
-	              }
-	            }
-	          }),
-	          _vm._v(" "),
-	          _c(
-	            "button",
-	            {
-	              directives: [
-	                {
-	                  name: "show",
-	                  rawName: "v-show",
-	                  value: _vm.showDestinationSearchButton,
-	                  expression: "showDestinationSearchButton"
-	                }
-	              ],
-	              attrs: { type: "button" },
-	              on: {
-	                click: function($event) {
-	                  return _vm.lookupExternalDestination()
-	                }
-	              }
-	            },
-	            [_vm._v("\n        Search for more locations...\n      ")]
-	          )
-	        ],
-	        1
-	      )
+	      })
 	    ]),
 	    _vm._v(" "),
-	    _c("div", { staticClass: "row" }),
+	    _c(
+	      "div",
+	      {
+	        directives: [
+	          {
+	            name: "show",
+	            rawName: "v-show",
+	            value: _vm.showDestinationOptions,
+	            expression: "showDestinationOptions"
+	          }
+	        ],
+	        staticClass: "search-results row"
+	      },
+	      [
+	        _c("location-options", {
+	          attrs: {
+	            options: _vm.destinationOptions,
+	            action: _vm.selectDestination,
+	            selected: _vm.selectedDestination
+	          },
+	          on: {
+	            click: function($event) {
+	              _vm.showDestinationOptions = false;
+	            }
+	          }
+	        }),
+	        _vm._v(" "),
+	        _c(
+	          "button",
+	          {
+	            directives: [
+	              {
+	                name: "show",
+	                rawName: "v-show",
+	                value: _vm.showDestinationSearchButton,
+	                expression: "showDestinationSearchButton"
+	              }
+	            ],
+	            attrs: { type: "button" },
+	            on: {
+	              click: function($event) {
+	                return _vm.lookupExternalDestination()
+	              }
+	            }
+	          },
+	          [_vm._v("\n      Search for more locations...\n    ")]
+	        )
+	      ],
+	      1
+	    ),
 	    _vm._v(" "),
 	    _c("div", { staticClass: "row" }, [
 	      _c("input", {
@@ -1705,7 +1703,7 @@
 	  /* style */
 	  const __vue_inject_styles__$1 = function (inject) {
 	    if (!inject) return
-	    inject("data-v-413f00a0_0", { source: "\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  position: absolute;\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  max-width: 90vw;\n  margin-top: 20px;\n  margin-left: 95px;\n}\n.search-results li {\n  padding: 8px;\n  max-width: max-content;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.selected {\n  background-color: #ededed;\n} \n", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/Search.vue"],"names":[],"mappings":";AAgNA;EACA,sBAAA;AACA;AACA;EACA,kBAAA;EACA,YAAA;EACA,uBAAA;EACA,6BAAA;EACA,eAAA;EACA,gBAAA;EACA,iBAAA;AACA;AACA;EACA,YAAA;EACA,sBAAA;AACA;AACA;EACA,eAAA;EACA,oBAAA;EACA,SAAA;EACA,YAAA;EACA,gBAAA;EACA,0BAAA;EACA,eAAA;AACA;AACA;EACA,yBAAA;AACA","file":"Search.vue","sourcesContent":["<template>\n  <form>\n    <div class=\"row\">\n      <label for=\"from\">From:</label>\n      <input\n        id=\"from\"\n        ref=\"from\"\n        v-model=\"origin\"\n        type=\"text\"\n        @keyup=\"handleSourceInput($event)\"\n      >\n      <div\n        v-show=\"showSourceOptions\"\n        class=\"search-results\"\n      >\n        <location-options\n          :options=\"sourceOptions\"\n          :action=\"selectSource\"\n          :selected=\"selectedSource\"\n          @click=\"showSourceOptions = false;\"\n        />\n        <button\n          v-show=\"showSourceSearchButton\"\n          type=\"button\"\n          @click=\"lookupExternalSource()\"\n        >\n          Search for more locations...\n        </button>\n      </div>\n    </div>\n    <div class=\"row\">\n      <label for=\"to\">To:</label>\n      <input\n        id=\"to\"\n        ref=\"to\"\n        v-model=\"destination\"\n        type=\"text\"\n        @keyup=\"handleDestinationInput($event)\"\n      >\n      <div\n        v-show=\"showDestinationOptions\"\n        class=\"search-results\"\n      >\n        <location-options\n          :options=\"destinationOptions\"\n          :action=\"selectDestination\"\n          :selected=\"selectedDestination\"\n          @click=\"showDestinationOptions = false;\"\n        />\n        <button\n          v-show=\"showDestinationSearchButton\"\n          type=\"button\"\n          @click=\"lookupExternalDestination()\"\n        >\n          Search for more locations...\n        </button>\n      </div>\n    </div>\n    <div class=\"row\" />\n    <div class=\"row\">\n      <input\n        id=\"roundtrip\"\n        v-model=\"isRoundTrip\"\n        name=\"roundtrip\"\n        type=\"checkbox\"\n      >\n      <label for=\"roundtrip\">Return Journey</label>\n    </div>\n    <div\n      v-show=\"isRoundTrip\"\n      class=\"row\"\n    >\n      <label for=\"timeatdest\">How long is your meeting (in minutes)?</label>\n      <input\n        id=\"timeatdest\"\n        v-model=\"timeAtDest\"\n        name=\"timeAtDest\"\n        type=\"number\"\n      >\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"presence\"\n        v-model=\"presenceRequired\"\n        name=\"presence\"\n        type=\"checkbox\"\n      >\n      <label for=\"presence\">I need to travel to the destination</label>\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"carrying\"\n        v-model=\"carrying\"\n        name=\"carrying\"\n        type=\"checkbox\"\n      >\n      <label for=\"carrying\">I'm transporting a lot of stuff</label>\n    </div>\n    <button\n      type=\"button\"\n      @click=\"calculate()\"\n    >\n      Calculate\n    </button>\n  </form>\n</template>\n<script>\nimport LocationOptions from './LocationOptions.vue';\nexport default {\n  components: {\n    LocationOptions,\n  },\n  data() {\n    return {\n      showSourceOptions: false,\n      showDestinationOptions: false,\n      showSourceSearchButton: true,\n      showDestinationSearchButton: true,\n    };\n  },\n  computed: {\n    origin: {\n      get() { return this.$store.state.source; },\n      set(value) { this.$store.commit('updateSource', value); },\n    },\n    destination: {\n      get() { return this.$store.state.destination; },\n      set(value) { this.$store.commit('updateDestination', value); },\n    },\n    isRoundTrip: {\n      get() { return this.$store.state.isRoundTrip; },\n      set(value) { this.$store.commit('updateIsRoundTrip', value); },\n    },\n    timeAtDest: {\n      get() { return this.$store.state.timeAtDest; },\n      set(value) { this.$store.commit('updateTimeAtDest', value); },\n    },\n    presenceRequired: {\n      get() { return this.$store.state.presenceRequired; },\n      set(value) { this.$store.commit('updatePresenceRequired', value); },\n    },\n    carrying: {\n      get() { return this.$store.state.carrying; },\n      set(value) { this.$store.commit('updateCarrying', value); },\n    },\n    sourceOptions() { return this.$store.state.sourceDetails.options; },\n    selectedSource() { return this.$store.state.sourceDetails.selected; },\n    destinationOptions() { return this.$store.state.destinationDetails.options; },\n    selectedDestination() { return this.$store.state.destinationDetails.selected; },\n  },\n  methods: {\n    calculate() {\n      this.$store.dispatch('planTravel');\n    },\n    handleDestinationInput(event) {\n      //do nothing if the input field is empty\n      if(!this.destination) this.showDestinationOptions = false;\n\n      //keyboard navigation\n      else if(event.key == 'ArrowDown' && this.selectedDestination < (this.destinationOptions.length - 1)) this.selectDestination(this.selectedDestination + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedDestination > 0) this.selectDestination(this.selectedDestination - 1, false);\n      else if(event.key == 'Enter') this.showDestinationOptions = false;\n\n      //if a character is entered, search the council location list again\n      else if(this.destination.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilDestination');\n        this.showDestinationOptions = true;\n        this.showDestinationSearchButton = true;\n      }\n    },\n    handleSourceInput(event) {\n      if(!this.origin) this.showSourceOptions = false;\n      if(event.key == 'ArrowDown' && this.selectedSource < (this.sourceOptions.length - 1)) this.selectSource(this.selectedSource + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedSource > 0) this.selectSource(this.selectedSource - 1, false);\n      else if(event.key == 'Enter') this.showSourceOptions = false;\n      else if(this.origin.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilSource');\n        this.showSourceOptions = true;\n        this.showSourceSearchButton = true;\n      }\n    },\n    lookupExternalDestination() {\n      this.$store.dispatch('lookupDestination');\n      this.showDestinationOptions = true;\n      this.showDestinationSearchButton = false;\n      this.$refs.to.focus(); //keep focus on the input field so that the keyboard can be used to navigate\n    },\n    lookupExternalSource() {\n      this.$store.dispatch('lookupSource');\n      this.showSourceOptions = true;\n      this.showSourceSearchButton = false;\n      this.$refs.from.focus();\n    },\n    selectDestination(key, hideOptions=true) {\n      this.$store.commit('selectDestination', key);\n      this.destination = this.destinationOptions[key].name;\n      if(hideOptions) this.showDestinationOptions = false;\n    },\n    selectSource(key, hideOptions=true) {\n      this.$store.commit('selectSource', key);\n      this.origin = this.sourceOptions[key].name;\n      if(hideOptions) this.showSourceOptions = false;\n    },\n  },\n};\n</script>\n\n<style>\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  position: absolute;\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  max-width: 90vw;\n  margin-top: 20px;\n  margin-left: 95px;\n}\n.search-results li {\n  padding: 8px;\n  max-width: max-content;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.selected {\n  background-color: #ededed;\n} \n</style>"]}, media: undefined });
+	    inject("data-v-4f8908e0_0", { source: "input[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  flex-wrap: wrap;\n  margin-left: 6em;\n  position: absolute;\n  margin-top: -0.3em;\n  max-width: 44em;\n}\n.search-results ul {\n  width: 100%;\n}\n.search-results li {\n  padding: 8px;\n  width: 100%;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.search-results .selected {\n  background-color: #ededed;\n}\n\n/*# sourceMappingURL=Search.vue.map */", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/Search.vue","Search.vue"],"names":[],"mappings":"AAgNA;EACA,sBAAA;AC/MA;ADiNA;EACA,YAAA;EACA,uBAAA;EACA,6BAAA;EACA,eAAA;EACA,gBAAA;EACA,kBAAA;EACA,kBAAA;EACA,eAAA;AC9MA;ADgNA;EACA,WAAA;AC9MA;ADiNA;EACA,YAAA;EACA,WAAA;AC/MA;ADkNA;EACA,eAAA;EACA,oBAAA;EACA,SAAA;EACA,YAAA;EACA,gBAAA;EACA,0BAAA;EACA,eAAA;AChNA;ADmNA;EACA,yBAAA;ACjNA;;AAEA,qCAAqC","file":"Search.vue","sourcesContent":["<template>\n  <form>\n    <div class=\"row\">\n      <label for=\"from\">From:</label>\n      <input\n        id=\"from\"\n        ref=\"from\"\n        v-model=\"origin\"\n        type=\"text\"\n        @keyup=\"handleSourceInput($event)\"\n      >\n    </div>\n    <div\n      v-show=\"showSourceOptions\"\n      class=\"search-results row\"\n    >\n      <location-options\n        :options=\"sourceOptions\"\n        :action=\"selectSource\"\n        :selected=\"selectedSource\"\n        @click=\"showSourceOptions = false;\"\n      />\n      <button\n        v-show=\"showSourceSearchButton\"\n        type=\"button\"\n        @click=\"lookupExternalSource()\"\n      >\n        Search for more locations...\n      </button>\n    </div>\n    <div class=\"row\">\n      <label for=\"to\">To:</label>\n      <input\n        id=\"to\"\n        ref=\"to\"\n        v-model=\"destination\"\n        type=\"text\"\n        @keyup=\"handleDestinationInput($event)\"\n      >\n    </div>\n    <div\n      v-show=\"showDestinationOptions\"\n      class=\"search-results row\"\n    >\n      <location-options\n        :options=\"destinationOptions\"\n        :action=\"selectDestination\"\n        :selected=\"selectedDestination\"\n        @click=\"showDestinationOptions = false;\"\n      />\n      <button\n        v-show=\"showDestinationSearchButton\"\n        type=\"button\"\n        @click=\"lookupExternalDestination()\"\n      >\n        Search for more locations...\n      </button>\n    </div>\n    \n    <div class=\"row\">\n      <input\n        id=\"roundtrip\"\n        v-model=\"isRoundTrip\"\n        name=\"roundtrip\"\n        type=\"checkbox\"\n      >\n      <label for=\"roundtrip\">Return Journey</label>\n    </div>\n    <div\n      v-show=\"isRoundTrip\"\n      class=\"row\"\n    >\n      <label for=\"timeatdest\">How long is your meeting (in minutes)?</label>\n      <input\n        id=\"timeatdest\"\n        v-model=\"timeAtDest\"\n        name=\"timeAtDest\"\n        type=\"number\"\n      >\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"presence\"\n        v-model=\"presenceRequired\"\n        name=\"presence\"\n        type=\"checkbox\"\n      >\n      <label for=\"presence\">I need to travel to the destination</label>\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"carrying\"\n        v-model=\"carrying\"\n        name=\"carrying\"\n        type=\"checkbox\"\n      >\n      <label for=\"carrying\">I'm transporting a lot of stuff</label>\n    </div>\n    <button\n      type=\"button\"\n      @click=\"calculate()\"\n    >\n      Calculate\n    </button>\n  </form>\n</template>\n<script>\nimport LocationOptions from './LocationOptions.vue';\nexport default {\n  components: {\n    LocationOptions,\n  },\n  data() {\n    return {\n      showSourceOptions: false,\n      showDestinationOptions: false,\n      showSourceSearchButton: true,\n      showDestinationSearchButton: true,\n    };\n  },\n  computed: {\n    origin: {\n      get() { return this.$store.state.source; },\n      set(value) { this.$store.commit('updateSource', value); },\n    },\n    destination: {\n      get() { return this.$store.state.destination; },\n      set(value) { this.$store.commit('updateDestination', value); },\n    },\n    isRoundTrip: {\n      get() { return this.$store.state.isRoundTrip; },\n      set(value) { this.$store.commit('updateIsRoundTrip', value); },\n    },\n    timeAtDest: {\n      get() { return this.$store.state.timeAtDest; },\n      set(value) { this.$store.commit('updateTimeAtDest', value); },\n    },\n    presenceRequired: {\n      get() { return this.$store.state.presenceRequired; },\n      set(value) { this.$store.commit('updatePresenceRequired', value); },\n    },\n    carrying: {\n      get() { return this.$store.state.carrying; },\n      set(value) { this.$store.commit('updateCarrying', value); },\n    },\n    sourceOptions() { return this.$store.state.sourceDetails.options; },\n    selectedSource() { return this.$store.state.sourceDetails.selected; },\n    destinationOptions() { return this.$store.state.destinationDetails.options; },\n    selectedDestination() { return this.$store.state.destinationDetails.selected; },\n  },\n  methods: {\n    calculate() {\n      this.$store.dispatch('planTravel');\n    },\n    handleDestinationInput(event) {\n      //do nothing if the input field is empty\n      if(!this.destination) this.showDestinationOptions = false;\n\n      //keyboard navigation\n      else if(event.key == 'ArrowDown' && this.selectedDestination < (this.destinationOptions.length - 1)) this.selectDestination(this.selectedDestination + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedDestination > 0) this.selectDestination(this.selectedDestination - 1, false);\n      else if(event.key == 'Enter') this.showDestinationOptions = false;\n\n      //if a character is entered, search the council location list again\n      else if(this.destination.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilDestination');\n        this.showDestinationOptions = true;\n        this.showDestinationSearchButton = true;\n      }\n    },\n    handleSourceInput(event) {\n      if(!this.origin) this.showSourceOptions = false;\n      if(event.key == 'ArrowDown' && this.selectedSource < (this.sourceOptions.length - 1)) this.selectSource(this.selectedSource + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedSource > 0) this.selectSource(this.selectedSource - 1, false);\n      else if(event.key == 'Enter') this.showSourceOptions = false;\n      else if(this.origin.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilSource');\n        this.showSourceOptions = true;\n        this.showSourceSearchButton = true;\n      }\n    },\n    lookupExternalDestination() {\n      this.$store.dispatch('lookupDestination');\n      this.showDestinationOptions = true;\n      this.showDestinationSearchButton = false;\n      this.$refs.to.focus(); //keep focus on the input field so that the keyboard can be used to navigate\n    },\n    lookupExternalSource() {\n      this.$store.dispatch('lookupSource');\n      this.showSourceOptions = true;\n      this.showSourceSearchButton = false;\n      this.$refs.from.focus();\n    },\n    selectDestination(key, hideOptions=true) {\n      this.$store.commit('selectDestination', key);\n      this.destination = this.destinationOptions[key].name;\n      if(hideOptions) this.showDestinationOptions = false;\n    },\n    selectSource(key, hideOptions=true) {\n      this.$store.commit('selectSource', key);\n      this.origin = this.sourceOptions[key].name;\n      if(hideOptions) this.showSourceOptions = false;\n    },\n  },\n};\n</script>\n\n<style lang=\"scss\">\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  flex-wrap: wrap;\n  margin-left: 6em;\n  position: absolute;\n  margin-top: -0.3em;\n  max-width: 44em;\n\n  ul {\n    width: 100%;\n  }\n\n  li {\n    padding: 8px;\n    width: 100%;\n  }\n\n  button {\n    font-size: 100%;\n    font-family: inherit;\n    border: 0;\n    padding: 8px;\n    background: none;\n    text-decoration: underline;\n    color: darkblue;\n  }\n\n  .selected {\n    background-color: #ededed;\n  } \n}\n</style>","input[type=text] {\n  width: min(250px, 60%);\n}\n\n.search-results {\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  flex-wrap: wrap;\n  margin-left: 6em;\n  position: absolute;\n  margin-top: -0.3em;\n  max-width: 44em;\n}\n.search-results ul {\n  width: 100%;\n}\n.search-results li {\n  padding: 8px;\n  width: 100%;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.search-results .selected {\n  background-color: #ededed;\n}\n\n/*# sourceMappingURL=Search.vue.map */"]}, media: undefined });
 
 	  };
 	  /* scoped */
@@ -2722,7 +2720,7 @@
 	              _vm._v(" "),
 	              _c("p", { domProps: { innerHTML: _vm._s(_vm.summary) } }),
 	              _vm._v(" "),
-	              _c("p", [_vm._v("£" + _vm._s(_vm.cost))]),
+	              _vm.cost ? _c("p", [_vm._v("£" + _vm._s(_vm.cost))]) : _vm._e(),
 	              _vm._v(" "),
 	              _vm.emissions
 	                ? _c("p", [
@@ -2749,11 +2747,11 @@
 	  /* style */
 	  const __vue_inject_styles__$3 = function (inject) {
 	    if (!inject) return
-	    inject("data-v-3c6868a6_0", { source: "\n.open[data-v-3c6868a6] {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/ModeOfTransport.vue"],"names":[],"mappings":";AA4BA;EACA,qBAAA;EACA,YAAA;EACA,kBAAA;EACA,kBAAA;AACA","file":"ModeOfTransport.vue","sourcesContent":["<template>\n  <section\n    v-if=\"shouldDisplay\"\n    @click=\"toggleView()\"\n  >\n    <div>\n      <div\n        v-if=\"viewState ==='closed'\"\n        class=\"open\"\n      >\n        more info\n      </div>\n      <h3>{{ title }}</h3>\n      <display-timeline :values=\"time\" />\n      <!-- eslint-disable-next-line vue/no-v-html -->\n      <p v-html=\"summary\" />\n      <p>£{{ cost }}</p>\n      <p v-if=\"emissions\">\n        {{ emissions }}kg CO<sub>2</sub> emitted\n      </p>\n    </div>\n    <component\n      :is=\"details\"\n      v-if=\"viewState ==='open'\"\n    />\n  </section>  \n</template>\n<style scoped>\n.open {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n</style>\n<script>\nimport DisplayTimeline from './Timeline.vue';\nexport default {\n  components: {\n    DisplayTimeline,\n  },\n  props: {\n    title: {\n      type: String,\n      required: true,\n    },\n    details: {\n      type: Object,\n      required: false,\n      default: () => {},\n    },\n    summarise: {\n      type: Function,\n      default: () => () => null,\n    },\n    costFn: {\n      type: Function,\n      required: true,\n    },\n    co2Fn: {\n      type: Function,\n      default: () => () => 0,\n    },\n    displayFn: {\n      type: Function,\n      default: () => () => true,\n    },\n    timeFn: {\n      type: Function,\n      default: () => () => 0,\n    },\n  },\n  data: function () {\n    return {\n      viewState: 'closed',\n    };\n  },\n  computed: {\n    summary() {\n      return this.summarise(this.$store.getters.journey);\n    },\n    cost() {\n      return this.costFn(this.$store.getters.journey);\n    },\n    emissions() {\n      return this.co2Fn(this.$store.getters.journey);\n    },\n    shouldDisplay() {\n      return this.displayFn(this.$store.getters.journey);\n    },\n    mapsURL() {\n      const {\n        sourceDetails: { options: srcOptions, selected: selectedSrc },\n        destinationDetails: { options: destOptions, selected: selectedDest },\n      } = this.$store.state;\n      const srcLngLat = srcOptions[selectedSrc].lngLat;\n      const destLngLat = destOptions[selectedDest].lngLat;\n      return `https://www.google.com/maps/dir/?api=1&origin=${srcLngLat[1]},${srcLngLat[0]}&destination=${destLngLat[1]},${destLngLat[0]}&travelmode=`;\n    },\n    time() {\n      const time = this.timeFn(this.$store.getters.journey);\n      return time;\n    },\n  },\n  mounted() {\n    this.$store.dispatch('storeDuration', { mode: this.title, values: this.time });\n  },\n  methods: {\n    toggleView() {\n      const currentState = this.viewState;\n      this.viewState = currentState === 'open' ? 'closed' : 'open';\n    },\n    \n  },\n};\n</script>"]}, media: undefined });
+	    inject("data-v-decc6e6e_0", { source: "\n.open[data-v-decc6e6e] {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/ModeOfTransport.vue"],"names":[],"mappings":";AA4BA;EACA,qBAAA;EACA,YAAA;EACA,kBAAA;EACA,kBAAA;AACA","file":"ModeOfTransport.vue","sourcesContent":["<template>\n  <section\n    v-if=\"shouldDisplay\"\n    @click=\"toggleView()\"\n  >\n    <div>\n      <div\n        v-if=\"viewState ==='closed'\"\n        class=\"open\"\n      >\n        more info\n      </div>\n      <h3>{{ title }}</h3>\n      <display-timeline :values=\"time\" />\n      <!-- eslint-disable-next-line vue/no-v-html -->\n      <p v-html=\"summary\" />\n      <p v-if=\"cost\">£{{ cost }}</p>\n      <p v-if=\"emissions\">\n        {{ emissions }}kg CO<sub>2</sub> emitted\n      </p>\n    </div>\n    <component\n      :is=\"details\"\n      v-if=\"viewState ==='open'\"\n    />\n  </section>  \n</template>\n<style scoped>\n.open {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n</style>\n<script>\nimport DisplayTimeline from './Timeline.vue';\nexport default {\n  components: {\n    DisplayTimeline,\n  },\n  props: {\n    title: {\n      type: String,\n      required: true,\n    },\n    details: {\n      type: Object,\n      required: false,\n      default: () => {},\n    },\n    summarise: {\n      type: Function,\n      default: () => () => null,\n    },\n    costFn: {\n      type: Function,\n      required: true,\n    },\n    co2Fn: {\n      type: Function,\n      default: () => () => 0,\n    },\n    displayFn: {\n      type: Function,\n      default: () => () => true,\n    },\n    timeFn: {\n      type: Function,\n      default: () => () => 0,\n    },\n  },\n  data: function () {\n    return {\n      viewState: 'closed',\n    };\n  },\n  computed: {\n    summary() {\n      return this.summarise(this.$store.getters.journey);\n    },\n    cost() {\n      return this.costFn(this.$store.getters.journey);\n    },\n    emissions() {\n      return this.co2Fn(this.$store.getters.journey);\n    },\n    shouldDisplay() {\n      return this.displayFn(this.$store.getters.journey);\n    },\n    mapsURL() {\n      const {\n        sourceDetails: { options: srcOptions, selected: selectedSrc },\n        destinationDetails: { options: destOptions, selected: selectedDest },\n      } = this.$store.state;\n      const srcLngLat = srcOptions[selectedSrc].lngLat;\n      const destLngLat = destOptions[selectedDest].lngLat;\n      return `https://www.google.com/maps/dir/?api=1&origin=${srcLngLat[1]},${srcLngLat[0]}&destination=${destLngLat[1]},${destLngLat[0]}&travelmode=`;\n    },\n    time() {\n      const time = this.timeFn(this.$store.getters.journey);\n      return time;\n    },\n  },\n  mounted() {\n    this.$store.dispatch('storeDuration', { mode: this.title, values: this.time });\n  },\n  methods: {\n    toggleView() {\n      const currentState = this.viewState;\n      this.viewState = currentState === 'open' ? 'closed' : 'open';\n    },\n    \n  },\n};\n</script>"]}, media: undefined });
 
 	  };
 	  /* scoped */
-	  const __vue_scope_id__$3 = "data-v-3c6868a6";
+	  const __vue_scope_id__$3 = "data-v-decc6e6e";
 	  /* module identifier */
 	  const __vue_module_identifier__$3 = undefined;
 	  /* functional template */
@@ -3656,8 +3654,9 @@
 	    return '<strong>Driving your own car should be your last resort</strong>';
 	  },
 	  costFn: function costFn(j) {
-	    var dist = Math.ceil(j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance));
-	    return (0.45 * dist).toFixed(2); //worst case cost scenario (ie. casual car user doing <10k annual miles)
+	    // const dist = Math.ceil(j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance));
+	    // return (0.45 * dist).toFixed(2); //worst case cost scenario (ie. casual car user doing <10k annual miles)
+	    return null; //don't display cost for self-drive
 	  },
 	  co2Fn: function co2Fn(j) {
 	    var dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
