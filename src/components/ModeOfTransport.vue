@@ -14,7 +14,7 @@
       <display-timeline :values="time" />
       <!-- eslint-disable-next-line vue/no-v-html -->
       <p v-html="summary" />
-      <p>£{{ cost }}</p>
+      <p v-if="cost">£{{ cost }}</p>
       <p v-if="emissions">
         {{ emissions }}kg CO<sub>2</sub> emitted
       </p>

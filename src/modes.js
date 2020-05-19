@@ -176,8 +176,9 @@ export default [
       return '<strong>Driving your own car should be your last resort</strong>';
     },
     costFn(j) {
-      const dist = Math.ceil(j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance));
-      return (0.45 * dist).toFixed(2); //worst case cost scenario (ie. casual car user doing <10k annual miles)
+      // const dist = Math.ceil(j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance));
+      // return (0.45 * dist).toFixed(2); //worst case cost scenario (ie. casual car user doing <10k annual miles)
+      return null;  //don't display cost for self-drive
     },
     co2Fn(j) {
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
