@@ -1,15 +1,17 @@
 <template>
   <article id="app">
     <header>
-      <div>
-        <p>Find the greenest way to get to your meeting</p>
-        <h1>Staff Travel Options</h1>
+      <div id="header-content">
+        <div>
+          <p>Find the greenest way to get to your meeting</p>
+          <h1>Staff Travel Options</h1>
+        </div>
+        <img
+          src="img/lcc.png"
+          width="224px"
+          alt="Leeds City Council logo"
+        >
       </div>
-      <img
-        src="img/lcc.png"
-        width="224px"
-        alt="Leeds City Council logo"
-      >
     </header>
 
     <div id="main">

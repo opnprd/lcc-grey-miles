@@ -1,20 +1,20 @@
 $white: white;
-$background: lightgrey;
+$background: #f2f2f2;
 $lcc-darkblue: #004166;
 $lcc-lightblue: #479bb4;
-$green: #0DBC37;
+$green: #0dbc37;
 
 $breakpoints: 835px, 760px;
 @mixin mq($idx) {
   @media screen and (max-width: nth($breakpoints, $idx)) {
-    @content
+    @content;
   }
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Open+Sans:wght@300;400&display=swap');
 
 %main-flow {
-  max-width: 52em;
+  max-width: 55em;
   margin-left: auto;
   margin-right: auto;
 }
@@ -33,39 +33,36 @@ body {
   font-family: 'Open Sans', sans-serif;
   font-weight: 400;
 
-  > * {
+  > #main {
     @extend %main-flow;
-    padding-left: 1.5em;
-    padding-right: 1.5em;
-
+    background: $white;
+    padding: 1.5em 0 0;
+    margin-bottom: 1em;
+    border-radius: 0 0 0.5em 0.5em;
+    > section {
+      padding: 0 2.5em 1em;
+    }
     @include mq(1) {
       width: 100vw;
       border-radius: 0;
       margin: 0;
     }
   }
-
-  > #main {
-    background: $white;
-    padding: 1em 0;
-    margin-bottom: 2em;
-    border-radius: 0 0 0.5em 0.5em;
-    > section {
-      padding: 0 1.5em;
-    }
-  }
 }
 
 header {
+  width: 100%;
   background-color: $lcc-darkblue;
   color: white;
-  margin-top: 1em;
-  padding: 1.5em 1em;
-  border-radius: 0.5em 0.5em 0 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
+
+  #header-content {
+    @extend %main-flow;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 2em 1em;
+  }
 
   h1 {
     font-size: 3em;
@@ -77,9 +74,15 @@ header {
     padding: 0;
   }
 
+  img {
+    padding-bottom: 0.4em;
+  }
+
   @include mq(2) {
-    justify-content: center;
-    text-align: center;
+    #header-content{
+      justify-content: center;
+      text-align: center;
+    }
     img {
       margin-top: 0.5em;
     }
@@ -134,23 +137,28 @@ form {
   }
   > button {
     border: 0;
-    background-color: $lcc-lightblue;
-    color: white;
     text-decoration: none;
     display: inline-block;
     padding: 0.5em 1em;
-    cursor: pointer;
     line-height: 1.25em;
     width: 10em;
     font-size: 1.1em;
-    box-shadow: 1px 1px #00394d;
     border-radius: 0.2em;
     font-weight: 300;
-    margin: 0.75em auto 0;
+    margin: 1em auto 0;
+    cursor: default;
+    background-color: lightgrey;
+    color: black;
 
-    &:hover {
-      background-color: $lcc-darkblue;
-      transition: 0.2s;
+    &.enabled {
+      cursor: pointer;
+      background-color: $lcc-lightblue;
+      color: white;
+
+      &:hover {
+        background-color: $lcc-darkblue;
+        transition: 0.2s;
+      }
     }
   }
   label {
@@ -174,7 +182,7 @@ form {
   background-color: $green;
 
   > li {
-    padding: 0 1em;
+    padding: 0 1.25em;
 
     > section {
       background-color: white;
@@ -187,17 +195,17 @@ form {
     color: red;
   }
   .mode1 { background-color: rgba(0,0,0,0); }
-	.mode2 { background-color: rgba(0,0,0,0.15); }
-	.mode3 { background-color: rgba(0,0,0,0.30); }
-	.mode4 { background-color: rgba(0,0,0,0.45); }
-	.mode5 { background-color: rgba(0,0,0,0.60); }
-	.mode6 { background-color: rgba(0,0,0,0.75); }
-	.mode7 { background-color: rgba(0,0,0,0.90); }
+  .mode2 { background-color: rgba(0,0,0,0.15); }
+  .mode3 { background-color: rgba(0,0,0,0.3); }
+  .mode4 { background-color: rgba(0,0,0,0.45); }
+  .mode5 { background-color: rgba(0,0,0,0.6); }
+  .mode6 { background-color: rgba(0,0,0,0.75); }
+  .mode7 { background-color: rgba(0,0,0,0.9); }
 }
 
 ul.grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 24.5em));
   grid-auto-rows: auto;
   align-items: center;
   gap: 1em;

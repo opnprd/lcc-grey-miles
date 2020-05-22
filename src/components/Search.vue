@@ -103,6 +103,7 @@
     </div>
     <button
       type="button"
+      :class="{enabled: allowSubmit}"
       @click="calculate()"
     >
       Calculate
@@ -152,10 +153,17 @@ export default {
     selectedSource() { return this.$store.state.sourceDetails.selected; },
     destinationOptions() { return this.$store.state.destinationDetails.options; },
     selectedDestination() { return this.$store.state.destinationDetails.selected; },
+    allowSubmit() {
+      if(this.origin && this.destination && this.sourceOptions.length > 0  && this.destinationOptions.length > 0)
+        return true;
+      else
+        return false;
+    },
   },
   methods: {
     calculate() {
-      this.$store.dispatch('planTravel');
+      if(this.allowSubmit) this.$store.dispatch('planTravel');
+      else alert('Please enter two locations first.');
     },
     handleDestinationInput(event) {
       //do nothing if the input field is empty

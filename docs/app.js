@@ -1241,11 +1241,14 @@
 	    },
 	    selectedDestination: function selectedDestination() {
 	      return this.$store.state.destinationDetails.selected;
+	    },
+	    allowSubmit: function allowSubmit() {
+	      if (this.origin && this.destination && this.sourceOptions.length > 0 && this.destinationOptions.length > 0) return true;else return false;
 	    }
 	  },
 	  methods: {
 	    calculate: function calculate() {
-	      this.$store.dispatch('planTravel');
+	      if (this.allowSubmit) this.$store.dispatch('planTravel');else alert('Please enter two locations first.');
 	    },
 	    handleDestinationInput: function handleDestinationInput(event) {
 	      //do nothing if the input field is empty
@@ -1643,6 +1646,7 @@
 	    _c(
 	      "button",
 	      {
+	        class: { enabled: _vm.allowSubmit },
 	        attrs: { type: "button" },
 	        on: {
 	          click: function($event) {
@@ -2823,19 +2827,21 @@
 	    var _h = _vm.$createElement;
 	    var _c = _vm._self._c || _h;
 	    return _c("header", [
-	      _c("div", [
-	        _c("p", [_vm._v("Find the greenest way to get to your meeting")]),
+	      _c("div", { attrs: { id: "header-content" } }, [
+	        _c("div", [
+	          _c("p", [_vm._v("Find the greenest way to get to your meeting")]),
+	          _vm._v(" "),
+	          _c("h1", [_vm._v("Staff Travel Options")])
+	        ]),
 	        _vm._v(" "),
-	        _c("h1", [_vm._v("Staff Travel Options")])
-	      ]),
-	      _vm._v(" "),
-	      _c("img", {
-	        attrs: {
-	          src: "img/lcc.png",
-	          width: "224px",
-	          alt: "Leeds City Council logo"
-	        }
-	      })
+	        _c("img", {
+	          attrs: {
+	            src: "img/lcc.png",
+	            width: "224px",
+	            alt: "Leeds City Council logo"
+	          }
+	        })
+	      ])
 	    ])
 	  }
 	];
