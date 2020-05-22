@@ -1,7 +1,7 @@
 $white: white;
 $background: lightgrey;
 $lcc-darkblue: #004166;
-$lcc-lightblue: #007297;
+$lcc-lightblue: #479bb4;
 $green: #0DBC37;
 
 $breakpoints: 835px, 760px;
@@ -11,7 +11,7 @@ $breakpoints: 835px, 760px;
   }
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Open+Sans:wght@300;400&display=swap');
 
 %main-flow {
   max-width: 52em;
@@ -95,6 +95,11 @@ h1 {
   font-size: 2em;
   padding-top: 0.5em;
   padding-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.6em;
+  font-weight: 300;
 }
 
 p {
@@ -188,4 +193,36 @@ form {
 	.mode5 { background-color: rgba(0,0,0,0.60); }
 	.mode6 { background-color: rgba(0,0,0,0.75); }
 	.mode7 { background-color: rgba(0,0,0,0.90); }
+}
+
+ul.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-auto-rows: auto;
+  align-items: center;
+  gap: 1em;
+
+  > li {
+    min-height: 150px;
+    padding: 0;
+    background-color: $lcc-lightblue;
+
+    &:hover {
+      background-color: $lcc-darkblue;
+      transition: 0.3s;
+    }
+
+    > a {
+      text-decoration: none;
+      color: white;
+      display: block;
+      padding: 0.5em 1em;
+
+      h3 {
+        font-size: 1.4em;
+        padding: 0.5em 0;
+        line-height: 32px;
+      }
+    }
+  }
 }

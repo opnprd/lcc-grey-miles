@@ -3,10 +3,30 @@
     <p>Walking and cycling are healthy, cheap and carbon neutral. You can claim 20 pence per mile for journeys on your own bike, or there are e-bikes to borrow from some city centre locations.</p>
     <!--<iframe src="https://fourpointmapping.sustrans.org.uk/westyorkshirecyclemap/westyorkshire.html" width="100%" height="300px"></iframe>-->
     <ul class="grid">
-      <li><a href=""><h2>e-Bike</h2><p>Borrow an e-Bike from Merrion House</p></a></li>
-      <li><a :href="$parent.mapsURL + 'walking'"><h2>Directions</h2><p>Google Maps</p></a></li>
-      <li><a href="https://www.cyclecityconnect.co.uk/journey-planner/"><h2>Plan your cycle journey</h2><p>City Connect</p></a></li>
-      <li><a href="https://github.com/odileeds/west-yorkshire-mapping/blob/master/data/leeds/leeds-amenities-bicycle_parking.geojson"><h2>Map of cycle parking facilities</h2></a></li>
+      <li>
+        <a href="">
+          <h3>e-Bike</h3>
+          <p>Borrow an e-Bike from Merrion House</p>
+        </a>
+      </li>
+      <li>
+        <a :href="$parent.mapsURL + 'walking'">
+          <h3>Directions</h3>
+          <p>Get walking or cycling directions from Google Maps</p>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.cyclecityconnect.co.uk/journey-planner/">
+          <h3>Plan your cycle journey</h3>
+          <p>Use City Connect to plan your route</p>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/odileeds/west-yorkshire-mapping/blob/master/data/leeds/leeds-amenities-bicycle_parking.geojson">
+          <h3>Cycle parking facilities</h3>
+          <p>A map of cycle parking facilities all over Leeds</p>
+        </a>
+      </li>
     </ul>
   </section>
 </template>

@@ -9,7 +9,7 @@
           <span v-if="viewState ==='closed'">more info</span>
           <span v-else>close</span>
         </div>
-        <h3>{{ title }}</h3>
+        <h2>{{ title }}</h2>
         <display-timeline :values="time" />
         <!-- eslint-disable-next-line vue/no-v-html -->
         <p v-html="summary" />

@@ -7,10 +7,30 @@
       need to use these vehicles regularly.
     </p>
     <ul class="grid">
-      <li><a :href="$parent.mapsURL + 'driving'"><h2>Driving directions</h2><p>Google Maps</p></a></li>
-      <li><a href=""><p>Check availability and booking</p></a></li>
-      <li><a href=""><p>Book a driver assessment</p></a></li>
-      <li><a href=""><p>Find out more about our pool vehicle scheme</p></a></li>
+      <li>
+        <a :href="$parent.mapsURL + 'driving'">
+          <h3>Directions</h3>
+          <p>Get driving directions from Google Maps</p>
+        </a>
+      </li>
+      <li>
+        <a href="">
+          <h3>Hire a vehicle</h3>
+          <p>Check availability and booking</p>
+        </a>
+      </li>
+      <li>
+        <a href="">
+          <h3>Book a driver assessment</h3>
+          <p>If you haven't used a pool vehicle before, you'll need to do this before your first use.</p>
+        </a>
+      </li>
+      <li>
+        <a href="">
+          <h3>More Info</h3>
+          <p>Find out more about the pool vehicle scheme on our website</p>
+        </a>
+      </li>
     </ul>
   </section>
 </template>

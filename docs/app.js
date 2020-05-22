@@ -2669,7 +2669,7 @@
 	                      : _c("span", [_vm._v("close")])
 	                  ]),
 	                  _vm._v(" "),
-	                  _c("h3", [_vm._v(_vm._s(_vm.title))]),
+	                  _c("h2", [_vm._v(_vm._s(_vm.title))]),
 	                  _vm._v(" "),
 	                  _c("display-timeline", { attrs: { values: _vm.time } }),
 	                  _vm._v(" "),
@@ -2708,7 +2708,7 @@
 	  /* style */
 	  const __vue_inject_styles__$3 = undefined;
 	  /* scoped */
-	  const __vue_scope_id__$3 = "data-v-ddbbca1a";
+	  const __vue_scope_id__$3 = "data-v-1c9cc796";
 	  /* module identifier */
 	  const __vue_module_identifier__$3 = undefined;
 	  /* functional template */
@@ -2829,7 +2829,13 @@
 	        _c("h1", [_vm._v("Staff Travel Options")])
 	      ]),
 	      _vm._v(" "),
-	      _c("img", { attrs: { src: "img/lcc.png", width: "224px" } })
+	      _c("img", {
+	        attrs: {
+	          src: "img/lcc.png",
+	          width: "224px",
+	          alt: "Leeds City Council logo"
+	        }
+	      })
 	    ])
 	  }
 	];
@@ -2898,8 +2904,9 @@
 	    _c("ul", { staticClass: "grid" }, [
 	      _c("li", [
 	        _c("a", { attrs: { href: _vm.$parent.mapsURL + "transit" } }, [
-	          _c("h2", [_vm._v("Plan your journey")]),
-	          _c("p", [_vm._v("Google Maps")])
+	          _c("h3", [_vm._v("Plan your journey")]),
+	          _vm._v(" "),
+	          _c("p", [_vm._v("Get directions using Google Maps")])
 	        ])
 	      ]),
 	      _vm._v(" "),
@@ -2919,12 +2926,10 @@
 	    return _c("li", [
 	      _c(
 	        "a",
-	        {
-	          staticClass: "c12-bg",
-	          attrs: { href: "https://planner.wymetro.com/lts/#/travelInfo" }
-	        },
+	        { attrs: { href: "https://planner.wymetro.com/lts/#/travelInfo" } },
 	        [
-	          _c("h2", [_vm._v("Public transport journey planner")]),
+	          _c("h3", [_vm._v("Public transport journey planner")]),
+	          _vm._v(" "),
 	          _c("p", [_vm._v("WY Metro")])
 	        ]
 	      )
@@ -2935,7 +2940,9 @@
 	    var _h = _vm.$createElement;
 	    var _c = _vm._self._c || _h;
 	    return _c("li", [
-	      _c("a", { attrs: { href: "" } }, [_vm._v("Access a council Metro Card")])
+	      _c("a", { attrs: { href: "" } }, [
+	        _c("h3", [_vm._v("Access a council Metro Card")])
+	      ])
 	    ])
 	  },
 	  function() {
@@ -2944,7 +2951,8 @@
 	    var _c = _vm._self._c || _h;
 	    return _c("li", [
 	      _c("a", { attrs: { href: "" } }, [
-	        _c("h2", [_vm._v("No Metro Card nearby?")]),
+	        _c("h3", [_vm._v("No Metro Card nearby?")]),
+	        _vm._v(" "),
 	        _c("p", [
 	          _vm._v(
 	            "Find out how to request that your department gets a Metro card for bus and train travel within West Yorkshire."
@@ -3002,8 +3010,9 @@
 	    _c("ul", { staticClass: "grid" }, [
 	      _c("li", [
 	        _c("a", { attrs: { href: _vm.$parent.mapsURL + "driving" } }, [
-	          _c("h2", [_vm._v("Driving directions")]),
-	          _c("p", [_vm._v("Google Maps")])
+	          _c("h3", [_vm._v("Directions")]),
+	          _vm._v(" "),
+	          _c("p", [_vm._v("Get driving directions from Google Maps")])
 	        ])
 	      ]),
 	      _vm._v(" "),
@@ -3025,7 +3034,13 @@
 	              "https://www.enterprisecarclub.co.uk/gb/en/programs/regions/north-east-england/leeds.html"
 	          }
 	        },
-	        [_c("p", [_vm._v("Enterprise Car Club")])]
+	        [
+	          _c("h3", [_vm._v("Enterprise Car Club")]),
+	          _vm._v(" "),
+	          _c("p", [
+	            _vm._v("More information about the Enterprise Car Club scheme")
+	          ])
+	        ]
 	      )
 	    ])
 	  }
@@ -3078,8 +3093,9 @@
 	    _c("ul", { staticClass: "grid" }, [
 	      _c("li", [
 	        _c("a", { attrs: { href: _vm.$parent.mapsURL + "driving" } }, [
-	          _c("h2", [_vm._v("Driving directions")]),
-	          _c("p", [_vm._v("Google Maps")])
+	          _c("h3", [_vm._v("Directions")]),
+	          _vm._v(" "),
+	          _c("p", [_vm._v("Get driving directions from Google Maps")])
 	        ])
 	      ]),
 	      _vm._v(" "),
@@ -3098,6 +3114,8 @@
 	    var _c = _vm._self._c || _h;
 	    return _c("li", [
 	      _c("a", { attrs: { href: "" } }, [
+	        _c("h3", [_vm._v("Hire a vehicle")]),
+	        _vm._v(" "),
 	        _c("p", [_vm._v("Check availability and booking")])
 	      ])
 	    ])
@@ -3108,7 +3126,13 @@
 	    var _c = _vm._self._c || _h;
 	    return _c("li", [
 	      _c("a", { attrs: { href: "" } }, [
-	        _c("p", [_vm._v("Book a driver assessment")])
+	        _c("h3", [_vm._v("Book a driver assessment")]),
+	        _vm._v(" "),
+	        _c("p", [
+	          _vm._v(
+	            "If you haven't used a pool vehicle before, you'll need to do this before your first use."
+	          )
+	        ])
 	      ])
 	    ])
 	  },
@@ -3118,7 +3142,11 @@
 	    var _c = _vm._self._c || _h;
 	    return _c("li", [
 	      _c("a", { attrs: { href: "" } }, [
-	        _c("p", [_vm._v("Find out more about our pool vehicle scheme")])
+	        _c("h3", [_vm._v("More Info")]),
+	        _vm._v(" "),
+	        _c("p", [
+	          _vm._v("Find out more about the pool vehicle scheme on our website")
+	        ])
 	      ])
 	    ])
 	  }
@@ -3184,13 +3212,23 @@
 	                href: "https://support.office.com/en-gb/skype-for-business"
 	              }
 	            },
-	            [_c("h2", [_vm._v("Find out how to use Skype")])]
+	            [
+	              _c("h3", [_vm._v("Find out how to use Skype")]),
+	              _vm._v(" "),
+	              _c("p", [
+	                _vm._v(
+	                  "Guidance from Microsoft on how to set up and use Skype for the first time"
+	                )
+	              ])
+	            ]
 	          )
 	        ]),
 	        _vm._v(" "),
 	        _c("li", [
 	          _c("a", { attrs: { href: "" } }, [
-	            _c("h2", [_vm._v("Book Skype facilities")])
+	            _c("h3", [_vm._v("Book Skype facilities")]),
+	            _vm._v(" "),
+	            _c("p", [_vm._v("Book a slot for our dedicated Skype facilities")])
 	          ])
 	        ])
 	      ])
@@ -3247,8 +3285,11 @@
 	      _vm._v(" "),
 	      _c("li", [
 	        _c("a", { attrs: { href: _vm.$parent.mapsURL + "walking" } }, [
-	          _c("h2", [_vm._v("Directions")]),
-	          _c("p", [_vm._v("Google Maps")])
+	          _c("h3", [_vm._v("Directions")]),
+	          _vm._v(" "),
+	          _c("p", [
+	            _vm._v("Get walking or cycling directions from Google Maps")
+	          ])
 	        ])
 	      ]),
 	      _vm._v(" "),
@@ -3265,7 +3306,8 @@
 	    var _c = _vm._self._c || _h;
 	    return _c("li", [
 	      _c("a", { attrs: { href: "" } }, [
-	        _c("h2", [_vm._v("e-Bike")]),
+	        _c("h3", [_vm._v("e-Bike")]),
+	        _vm._v(" "),
 	        _c("p", [_vm._v("Borrow an e-Bike from Merrion House")])
 	      ])
 	    ])
@@ -3281,8 +3323,9 @@
 	          attrs: { href: "https://www.cyclecityconnect.co.uk/journey-planner/" }
 	        },
 	        [
-	          _c("h2", [_vm._v("Plan your cycle journey")]),
-	          _c("p", [_vm._v("City Connect")])
+	          _c("h3", [_vm._v("Plan your cycle journey")]),
+	          _vm._v(" "),
+	          _c("p", [_vm._v("Use City Connect to plan your route")])
 	        ]
 	      )
 	    ])
@@ -3300,7 +3343,11 @@
 	              "https://github.com/odileeds/west-yorkshire-mapping/blob/master/data/leeds/leeds-amenities-bicycle_parking.geojson"
 	          }
 	        },
-	        [_c("h2", [_vm._v("Map of cycle parking facilities")])]
+	        [
+	          _c("h3", [_vm._v("Cycle parking facilities")]),
+	          _vm._v(" "),
+	          _c("p", [_vm._v("A map of cycle parking facilities all over Leeds")])
+	        ]
 	      )
 	    ])
 	  }
@@ -3354,13 +3401,25 @@
 	      _c("ul", { staticClass: "grid" }, [
 	        _c("li", [
 	          _c("a", { attrs: { href: "" } }, [
-	            _c("p", [_vm._v("Find out when you can use a taxi")])
+	            _c("h3", [_vm._v("Find out when you can use a taxi")]),
+	            _vm._v(" "),
+	            _c("p", [
+	              _vm._v(
+	                "View our guidance on when you are allowed to use a taxi. It is important that you check this."
+	              )
+	            ])
 	          ])
 	        ]),
 	        _vm._v(" "),
 	        _c("li", [
 	          _c("a", { attrs: { href: "" } }, [
-	            _c("p", [_vm._v("Book a taxi through our contract")])
+	            _c("h3", [_vm._v("Book a taxi")]),
+	            _vm._v(" "),
+	            _c("p", [
+	              _vm._v(
+	                "If you need to take a taxi, you must use this link to book through our taxi contract where possible."
+	              )
+	            ])
 	          ])
 	        ])
 	      ])
