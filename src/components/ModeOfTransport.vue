@@ -5,11 +5,9 @@
   >
     <div class="content">
       <div>
-        <div
-          v-if="viewState ==='closed'"
-          class="open"
-        >
-          more info
+        <div class="open">
+          <span v-if="viewState ==='closed'">more info</span>
+          <span v-else>close</span>
         </div>
         <h3>{{ title }}</h3>
         <display-timeline :values="time" />

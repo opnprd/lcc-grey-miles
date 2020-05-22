@@ -2663,11 +2663,11 @@
 	              _c(
 	                "div",
 	                [
-	                  _vm.viewState === "closed"
-	                    ? _c("div", { staticClass: "open" }, [
-	                        _vm._v("\n        more info\n      ")
-	                      ])
-	                    : _vm._e(),
+	                  _c("div", { staticClass: "open" }, [
+	                    _vm.viewState === "closed"
+	                      ? _c("span", [_vm._v("more info")])
+	                      : _c("span", [_vm._v("close")])
+	                  ]),
 	                  _vm._v(" "),
 	                  _c("h3", [_vm._v(_vm._s(_vm.title))]),
 	                  _vm._v(" "),
@@ -2708,7 +2708,7 @@
 	  /* style */
 	  const __vue_inject_styles__$3 = undefined;
 	  /* scoped */
-	  const __vue_scope_id__$3 = "data-v-26788459";
+	  const __vue_scope_id__$3 = "data-v-ddbbca1a";
 	  /* module identifier */
 	  const __vue_module_identifier__$3 = undefined;
 	  /* functional template */

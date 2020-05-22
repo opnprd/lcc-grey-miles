@@ -194,14 +194,14 @@ form {
   .modes .mode7 {
     background-color: rgba(0, 0, 0, 0.9); }
 
-.open[data-v-26788459] {
+.open[data-v-ddbbca1a] {
   float: right;
   padding-right: 1em;
   line-height: 1.5em;
   color: blue;
   text-decoration: underline; }
 
-.open[data-v-26788459]:hover {
+.open[data-v-ddbbca1a]:hover {
   cursor: pointer; }
 
 .search-results {
