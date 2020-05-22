@@ -1292,394 +1292,351 @@
 	  }
 	};
 
-	const isOldIE = typeof navigator !== 'undefined' &&
-	    /msie [6-9]\\b/.test(navigator.userAgent.toLowerCase());
-	function createInjector(context) {
-	    return (id, style) => addStyle(id, style);
-	}
-	let HEAD;
-	const styles = {};
-	function addStyle(id, css) {
-	    const group = isOldIE ? css.media || 'default' : id;
-	    const style = styles[group] || (styles[group] = { ids: new Set(), styles: [] });
-	    if (!style.ids.has(id)) {
-	        style.ids.add(id);
-	        let code = css.source;
-	        if (css.map) {
-	            // https://developer.chrome.com/devtools/docs/javascript-debugging
-	            // this makes source maps inside style tags work properly in Chrome
-	            code += '\n/*# sourceURL=' + css.map.sources[0] + ' */';
-	            // http://stackoverflow.com/a/26603875
-	            code +=
-	                '\n/*# sourceMappingURL=data:application/json;base64,' +
-	                    btoa(unescape(encodeURIComponent(JSON.stringify(css.map)))) +
-	                    ' */';
-	        }
-	        if (!style.element) {
-	            style.element = document.createElement('style');
-	            style.element.type = 'text/css';
-	            if (css.media)
-	                style.element.setAttribute('media', css.media);
-	            if (HEAD === undefined) {
-	                HEAD = document.head || document.getElementsByTagName('head')[0];
-	            }
-	            HEAD.appendChild(style.element);
-	        }
-	        if ('styleSheet' in style.element) {
-	            style.styles.push(code);
-	            style.element.styleSheet.cssText = style.styles
-	                .filter(Boolean)
-	                .join('\n');
-	        }
-	        else {
-	            const index = style.ids.size - 1;
-	            const textNode = document.createTextNode(code);
-	            const nodes = style.element.childNodes;
-	            if (nodes[index])
-	                style.element.removeChild(nodes[index]);
-	            if (nodes.length)
-	                style.element.insertBefore(textNode, nodes[index]);
-	            else
-	                style.element.appendChild(textNode);
-	        }
-	    }
-	}
-
 	/* script */
 	const __vue_script__$1 = script$1;
-
 	/* template */
 	var __vue_render__$1 = function() {
 	  var _vm = this;
 	  var _h = _vm.$createElement;
 	  var _c = _vm._self._c || _h;
 	  return _c("form", [
-	    _c("div", { staticClass: "row" }, [
-	      _c("label", { attrs: { for: "from" } }, [_vm._v("From:")]),
-	      _vm._v(" "),
-	      _c("input", {
-	        directives: [
-	          {
-	            name: "model",
-	            rawName: "v-model",
-	            value: _vm.origin,
-	            expression: "origin"
-	          }
-	        ],
-	        ref: "from",
-	        attrs: { id: "from", type: "text" },
-	        domProps: { value: _vm.origin },
-	        on: {
-	          keyup: function($event) {
-	            return _vm.handleSourceInput($event)
-	          },
-	          input: function($event) {
-	            if ($event.target.composing) {
-	              return
-	            }
-	            _vm.origin = $event.target.value;
-	          }
-	        }
-	      })
-	    ]),
-	    _vm._v(" "),
-	    _c(
-	      "div",
-	      {
-	        directives: [
-	          {
-	            name: "show",
-	            rawName: "v-show",
-	            value: _vm.showSourceOptions,
-	            expression: "showSourceOptions"
-	          }
-	        ],
-	        staticClass: "search-results row"
-	      },
-	      [
-	        _c("location-options", {
-	          attrs: {
-	            options: _vm.sourceOptions,
-	            action: _vm.selectSource,
-	            selected: _vm.selectedSource
-	          },
-	          on: {
-	            click: function($event) {
-	              _vm.showSourceOptions = false;
-	            }
-	          }
-	        }),
-	        _vm._v(" "),
-	        _c(
-	          "button",
-	          {
-	            directives: [
-	              {
-	                name: "show",
-	                rawName: "v-show",
-	                value: _vm.showSourceSearchButton,
-	                expression: "showSourceSearchButton"
-	              }
-	            ],
-	            attrs: { type: "button" },
-	            on: {
-	              click: function($event) {
-	                return _vm.lookupExternalSource()
-	              }
-	            }
-	          },
-	          [_vm._v("\n      Search for more locations...\n    ")]
-	        )
-	      ],
-	      1
-	    ),
-	    _vm._v(" "),
-	    _c("div", { staticClass: "row" }, [
-	      _c("label", { attrs: { for: "to" } }, [_vm._v("To:")]),
-	      _vm._v(" "),
-	      _c("input", {
-	        directives: [
-	          {
-	            name: "model",
-	            rawName: "v-model",
-	            value: _vm.destination,
-	            expression: "destination"
-	          }
-	        ],
-	        ref: "to",
-	        attrs: { id: "to", type: "text" },
-	        domProps: { value: _vm.destination },
-	        on: {
-	          keyup: function($event) {
-	            return _vm.handleDestinationInput($event)
-	          },
-	          input: function($event) {
-	            if ($event.target.composing) {
-	              return
-	            }
-	            _vm.destination = $event.target.value;
-	          }
-	        }
-	      })
-	    ]),
-	    _vm._v(" "),
-	    _c(
-	      "div",
-	      {
-	        directives: [
-	          {
-	            name: "show",
-	            rawName: "v-show",
-	            value: _vm.showDestinationOptions,
-	            expression: "showDestinationOptions"
-	          }
-	        ],
-	        staticClass: "search-results row"
-	      },
-	      [
-	        _c("location-options", {
-	          attrs: {
-	            options: _vm.destinationOptions,
-	            action: _vm.selectDestination,
-	            selected: _vm.selectedDestination
-	          },
-	          on: {
-	            click: function($event) {
-	              _vm.showDestinationOptions = false;
-	            }
-	          }
-	        }),
-	        _vm._v(" "),
-	        _c(
-	          "button",
-	          {
-	            directives: [
-	              {
-	                name: "show",
-	                rawName: "v-show",
-	                value: _vm.showDestinationSearchButton,
-	                expression: "showDestinationSearchButton"
-	              }
-	            ],
-	            attrs: { type: "button" },
-	            on: {
-	              click: function($event) {
-	                return _vm.lookupExternalDestination()
-	              }
-	            }
-	          },
-	          [_vm._v("\n      Search for more locations...\n    ")]
-	        )
-	      ],
-	      1
-	    ),
-	    _vm._v(" "),
-	    _c("div", { staticClass: "row" }, [
-	      _c("input", {
-	        directives: [
-	          {
-	            name: "model",
-	            rawName: "v-model",
-	            value: _vm.isRoundTrip,
-	            expression: "isRoundTrip"
-	          }
-	        ],
-	        attrs: { id: "roundtrip", name: "roundtrip", type: "checkbox" },
-	        domProps: {
-	          checked: Array.isArray(_vm.isRoundTrip)
-	            ? _vm._i(_vm.isRoundTrip, null) > -1
-	            : _vm.isRoundTrip
-	        },
-	        on: {
-	          change: function($event) {
-	            var $$a = _vm.isRoundTrip,
-	              $$el = $event.target,
-	              $$c = $$el.checked ? true : false;
-	            if (Array.isArray($$a)) {
-	              var $$v = null,
-	                $$i = _vm._i($$a, $$v);
-	              if ($$el.checked) {
-	                $$i < 0 && (_vm.isRoundTrip = $$a.concat([$$v]));
-	              } else {
-	                $$i > -1 &&
-	                  (_vm.isRoundTrip = $$a
-	                    .slice(0, $$i)
-	                    .concat($$a.slice($$i + 1)));
-	              }
-	            } else {
-	              _vm.isRoundTrip = $$c;
-	            }
-	          }
-	        }
-	      }),
-	      _vm._v(" "),
-	      _c("label", { attrs: { for: "roundtrip" } }, [_vm._v("Return Journey")])
-	    ]),
-	    _vm._v(" "),
-	    _c(
-	      "div",
-	      {
-	        directives: [
-	          {
-	            name: "show",
-	            rawName: "v-show",
-	            value: _vm.isRoundTrip,
-	            expression: "isRoundTrip"
-	          }
-	        ],
-	        staticClass: "row"
-	      },
-	      [
-	        _c("label", { attrs: { for: "timeatdest" } }, [
-	          _vm._v("How long is your meeting (in minutes)?")
-	        ]),
+	    _c("div", { staticClass: "left" }, [
+	      _c("div", { staticClass: "row" }, [
+	        _c("label", { attrs: { for: "from" } }, [_vm._v("From:")]),
 	        _vm._v(" "),
 	        _c("input", {
 	          directives: [
 	            {
 	              name: "model",
 	              rawName: "v-model",
-	              value: _vm.timeAtDest,
-	              expression: "timeAtDest"
+	              value: _vm.origin,
+	              expression: "origin"
 	            }
 	          ],
-	          attrs: { id: "timeatdest", name: "timeAtDest", type: "number" },
-	          domProps: { value: _vm.timeAtDest },
+	          ref: "from",
+	          attrs: {
+	            id: "from",
+	            type: "text",
+	            placeholder:
+	              "Start typing a name, address, or postcode to show results..."
+	          },
+	          domProps: { value: _vm.origin },
 	          on: {
+	            keyup: function($event) {
+	              return _vm.handleSourceInput($event)
+	            },
 	            input: function($event) {
 	              if ($event.target.composing) {
 	                return
 	              }
-	              _vm.timeAtDest = $event.target.value;
+	              _vm.origin = $event.target.value;
 	            }
 	          }
 	        })
-	      ]
-	    ),
-	    _vm._v(" "),
-	    _c("div", { staticClass: "row" }, [
-	      _c("input", {
-	        directives: [
-	          {
-	            name: "model",
-	            rawName: "v-model",
-	            value: _vm.presenceRequired,
-	            expression: "presenceRequired"
-	          }
-	        ],
-	        attrs: { id: "presence", name: "presence", type: "checkbox" },
-	        domProps: {
-	          checked: Array.isArray(_vm.presenceRequired)
-	            ? _vm._i(_vm.presenceRequired, null) > -1
-	            : _vm.presenceRequired
+	      ]),
+	      _vm._v(" "),
+	      _c(
+	        "div",
+	        {
+	          directives: [
+	            {
+	              name: "show",
+	              rawName: "v-show",
+	              value: _vm.showSourceOptions,
+	              expression: "showSourceOptions"
+	            }
+	          ],
+	          staticClass: "search-results row"
 	        },
-	        on: {
-	          change: function($event) {
-	            var $$a = _vm.presenceRequired,
-	              $$el = $event.target,
-	              $$c = $$el.checked ? true : false;
-	            if (Array.isArray($$a)) {
-	              var $$v = null,
-	                $$i = _vm._i($$a, $$v);
-	              if ($$el.checked) {
-	                $$i < 0 && (_vm.presenceRequired = $$a.concat([$$v]));
-	              } else {
-	                $$i > -1 &&
-	                  (_vm.presenceRequired = $$a
-	                    .slice(0, $$i)
-	                    .concat($$a.slice($$i + 1)));
+	        [
+	          _c("location-options", {
+	            attrs: {
+	              options: _vm.sourceOptions,
+	              action: _vm.selectSource,
+	              selected: _vm.selectedSource
+	            },
+	            on: {
+	              click: function($event) {
+	                _vm.showSourceOptions = false;
 	              }
-	            } else {
-	              _vm.presenceRequired = $$c;
+	            }
+	          }),
+	          _vm._v(" "),
+	          _c(
+	            "button",
+	            {
+	              directives: [
+	                {
+	                  name: "show",
+	                  rawName: "v-show",
+	                  value: _vm.showSourceSearchButton,
+	                  expression: "showSourceSearchButton"
+	                }
+	              ],
+	              attrs: { type: "button" },
+	              on: {
+	                click: function($event) {
+	                  return _vm.lookupExternalSource()
+	                }
+	              }
+	            },
+	            [_vm._v("\n        Search for more locations...\n      ")]
+	          )
+	        ],
+	        1
+	      ),
+	      _vm._v(" "),
+	      _c("div", { staticClass: "row" }, [
+	        _c("label", { attrs: { for: "to" } }, [_vm._v("To:")]),
+	        _vm._v(" "),
+	        _c("input", {
+	          directives: [
+	            {
+	              name: "model",
+	              rawName: "v-model",
+	              value: _vm.destination,
+	              expression: "destination"
+	            }
+	          ],
+	          ref: "to",
+	          attrs: { id: "to", type: "text" },
+	          domProps: { value: _vm.destination },
+	          on: {
+	            keyup: function($event) {
+	              return _vm.handleDestinationInput($event)
+	            },
+	            input: function($event) {
+	              if ($event.target.composing) {
+	                return
+	              }
+	              _vm.destination = $event.target.value;
 	            }
 	          }
-	        }
-	      }),
+	        })
+	      ]),
 	      _vm._v(" "),
-	      _c("label", { attrs: { for: "presence" } }, [
-	        _vm._v("I need to travel to the destination")
-	      ])
+	      _c(
+	        "div",
+	        {
+	          directives: [
+	            {
+	              name: "show",
+	              rawName: "v-show",
+	              value: _vm.showDestinationOptions,
+	              expression: "showDestinationOptions"
+	            }
+	          ],
+	          staticClass: "search-results row"
+	        },
+	        [
+	          _c("location-options", {
+	            attrs: {
+	              options: _vm.destinationOptions,
+	              action: _vm.selectDestination,
+	              selected: _vm.selectedDestination
+	            },
+	            on: {
+	              click: function($event) {
+	                _vm.showDestinationOptions = false;
+	              }
+	            }
+	          }),
+	          _vm._v(" "),
+	          _c(
+	            "button",
+	            {
+	              directives: [
+	                {
+	                  name: "show",
+	                  rawName: "v-show",
+	                  value: _vm.showDestinationSearchButton,
+	                  expression: "showDestinationSearchButton"
+	                }
+	              ],
+	              attrs: { type: "button" },
+	              on: {
+	                click: function($event) {
+	                  return _vm.lookupExternalDestination()
+	                }
+	              }
+	            },
+	            [_vm._v("\n        Search for more locations...\n      ")]
+	          )
+	        ],
+	        1
+	      )
 	    ]),
 	    _vm._v(" "),
-	    _c("div", { staticClass: "row" }, [
-	      _c("input", {
-	        directives: [
-	          {
-	            name: "model",
-	            rawName: "v-model",
-	            value: _vm.carrying,
-	            expression: "carrying"
-	          }
-	        ],
-	        attrs: { id: "carrying", name: "carrying", type: "checkbox" },
-	        domProps: {
-	          checked: Array.isArray(_vm.carrying)
-	            ? _vm._i(_vm.carrying, null) > -1
-	            : _vm.carrying
-	        },
-	        on: {
-	          change: function($event) {
-	            var $$a = _vm.carrying,
-	              $$el = $event.target,
-	              $$c = $$el.checked ? true : false;
-	            if (Array.isArray($$a)) {
-	              var $$v = null,
-	                $$i = _vm._i($$a, $$v);
-	              if ($$el.checked) {
-	                $$i < 0 && (_vm.carrying = $$a.concat([$$v]));
+	    _c("div", { staticClass: "right" }, [
+	      _c("div", { staticClass: "row" }, [
+	        _c("input", {
+	          directives: [
+	            {
+	              name: "model",
+	              rawName: "v-model",
+	              value: _vm.isRoundTrip,
+	              expression: "isRoundTrip"
+	            }
+	          ],
+	          attrs: { id: "roundtrip", name: "roundtrip", type: "checkbox" },
+	          domProps: {
+	            checked: Array.isArray(_vm.isRoundTrip)
+	              ? _vm._i(_vm.isRoundTrip, null) > -1
+	              : _vm.isRoundTrip
+	          },
+	          on: {
+	            change: function($event) {
+	              var $$a = _vm.isRoundTrip,
+	                $$el = $event.target,
+	                $$c = $$el.checked ? true : false;
+	              if (Array.isArray($$a)) {
+	                var $$v = null,
+	                  $$i = _vm._i($$a, $$v);
+	                if ($$el.checked) {
+	                  $$i < 0 && (_vm.isRoundTrip = $$a.concat([$$v]));
+	                } else {
+	                  $$i > -1 &&
+	                    (_vm.isRoundTrip = $$a
+	                      .slice(0, $$i)
+	                      .concat($$a.slice($$i + 1)));
+	                }
 	              } else {
-	                $$i > -1 &&
-	                  (_vm.carrying = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+	                _vm.isRoundTrip = $$c;
 	              }
-	            } else {
-	              _vm.carrying = $$c;
 	            }
 	          }
-	        }
-	      }),
+	        }),
+	        _vm._v(" "),
+	        _c("label", { attrs: { for: "roundtrip" } }, [_vm._v("Return Journey")])
+	      ]),
 	      _vm._v(" "),
-	      _c("label", { attrs: { for: "carrying" } }, [
-	        _vm._v("I'm transporting a lot of stuff")
+	      _c(
+	        "div",
+	        {
+	          directives: [
+	            {
+	              name: "show",
+	              rawName: "v-show",
+	              value: _vm.isRoundTrip,
+	              expression: "isRoundTrip"
+	            }
+	          ],
+	          staticClass: "row"
+	        },
+	        [
+	          _c("label", { attrs: { for: "timeatdest" } }, [
+	            _vm._v("How long is your meeting (in minutes)?")
+	          ]),
+	          _vm._v(" "),
+	          _c("input", {
+	            directives: [
+	              {
+	                name: "model",
+	                rawName: "v-model",
+	                value: _vm.timeAtDest,
+	                expression: "timeAtDest"
+	              }
+	            ],
+	            attrs: { id: "timeatdest", name: "timeAtDest", type: "number" },
+	            domProps: { value: _vm.timeAtDest },
+	            on: {
+	              input: function($event) {
+	                if ($event.target.composing) {
+	                  return
+	                }
+	                _vm.timeAtDest = $event.target.value;
+	              }
+	            }
+	          })
+	        ]
+	      ),
+	      _vm._v(" "),
+	      _c("div", { staticClass: "row" }, [
+	        _c("input", {
+	          directives: [
+	            {
+	              name: "model",
+	              rawName: "v-model",
+	              value: _vm.presenceRequired,
+	              expression: "presenceRequired"
+	            }
+	          ],
+	          attrs: { id: "presence", name: "presence", type: "checkbox" },
+	          domProps: {
+	            checked: Array.isArray(_vm.presenceRequired)
+	              ? _vm._i(_vm.presenceRequired, null) > -1
+	              : _vm.presenceRequired
+	          },
+	          on: {
+	            change: function($event) {
+	              var $$a = _vm.presenceRequired,
+	                $$el = $event.target,
+	                $$c = $$el.checked ? true : false;
+	              if (Array.isArray($$a)) {
+	                var $$v = null,
+	                  $$i = _vm._i($$a, $$v);
+	                if ($$el.checked) {
+	                  $$i < 0 && (_vm.presenceRequired = $$a.concat([$$v]));
+	                } else {
+	                  $$i > -1 &&
+	                    (_vm.presenceRequired = $$a
+	                      .slice(0, $$i)
+	                      .concat($$a.slice($$i + 1)));
+	                }
+	              } else {
+	                _vm.presenceRequired = $$c;
+	              }
+	            }
+	          }
+	        }),
+	        _vm._v(" "),
+	        _c("label", { attrs: { for: "presence" } }, [
+	          _vm._v("I need to travel to the destination")
+	        ])
+	      ]),
+	      _vm._v(" "),
+	      _c("div", { staticClass: "row" }, [
+	        _c("input", {
+	          directives: [
+	            {
+	              name: "model",
+	              rawName: "v-model",
+	              value: _vm.carrying,
+	              expression: "carrying"
+	            }
+	          ],
+	          attrs: { id: "carrying", name: "carrying", type: "checkbox" },
+	          domProps: {
+	            checked: Array.isArray(_vm.carrying)
+	              ? _vm._i(_vm.carrying, null) > -1
+	              : _vm.carrying
+	          },
+	          on: {
+	            change: function($event) {
+	              var $$a = _vm.carrying,
+	                $$el = $event.target,
+	                $$c = $$el.checked ? true : false;
+	              if (Array.isArray($$a)) {
+	                var $$v = null,
+	                  $$i = _vm._i($$a, $$v);
+	                if ($$el.checked) {
+	                  $$i < 0 && (_vm.carrying = $$a.concat([$$v]));
+	                } else {
+	                  $$i > -1 &&
+	                    (_vm.carrying = $$a
+	                      .slice(0, $$i)
+	                      .concat($$a.slice($$i + 1)));
+	                }
+	              } else {
+	                _vm.carrying = $$c;
+	              }
+	            }
+	          }
+	        }),
+	        _vm._v(" "),
+	        _c("label", { attrs: { for: "carrying" } }, [
+	          _vm._v("I'm transporting a lot of stuff")
+	        ])
 	      ])
 	    ]),
 	    _vm._v(" "),
@@ -1701,17 +1658,15 @@
 	__vue_render__$1._withStripped = true;
 
 	  /* style */
-	  const __vue_inject_styles__$1 = function (inject) {
-	    if (!inject) return
-	    inject("data-v-4f8908e0_0", { source: "input[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  flex-wrap: wrap;\n  margin-left: 6em;\n  position: absolute;\n  margin-top: -0.3em;\n  max-width: 44em;\n}\n.search-results ul {\n  width: 100%;\n}\n.search-results li {\n  padding: 8px;\n  width: 100%;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.search-results .selected {\n  background-color: #ededed;\n}\n\n/*# sourceMappingURL=Search.vue.map */", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/Search.vue","Search.vue"],"names":[],"mappings":"AAgNA;EACA,sBAAA;AC/MA;ADiNA;EACA,YAAA;EACA,uBAAA;EACA,6BAAA;EACA,eAAA;EACA,gBAAA;EACA,kBAAA;EACA,kBAAA;EACA,eAAA;AC9MA;ADgNA;EACA,WAAA;AC9MA;ADiNA;EACA,YAAA;EACA,WAAA;AC/MA;ADkNA;EACA,eAAA;EACA,oBAAA;EACA,SAAA;EACA,YAAA;EACA,gBAAA;EACA,0BAAA;EACA,eAAA;AChNA;ADmNA;EACA,yBAAA;ACjNA;;AAEA,qCAAqC","file":"Search.vue","sourcesContent":["<template>\n  <form>\n    <div class=\"row\">\n      <label for=\"from\">From:</label>\n      <input\n        id=\"from\"\n        ref=\"from\"\n        v-model=\"origin\"\n        type=\"text\"\n        @keyup=\"handleSourceInput($event)\"\n      >\n    </div>\n    <div\n      v-show=\"showSourceOptions\"\n      class=\"search-results row\"\n    >\n      <location-options\n        :options=\"sourceOptions\"\n        :action=\"selectSource\"\n        :selected=\"selectedSource\"\n        @click=\"showSourceOptions = false;\"\n      />\n      <button\n        v-show=\"showSourceSearchButton\"\n        type=\"button\"\n        @click=\"lookupExternalSource()\"\n      >\n        Search for more locations...\n      </button>\n    </div>\n    <div class=\"row\">\n      <label for=\"to\">To:</label>\n      <input\n        id=\"to\"\n        ref=\"to\"\n        v-model=\"destination\"\n        type=\"text\"\n        @keyup=\"handleDestinationInput($event)\"\n      >\n    </div>\n    <div\n      v-show=\"showDestinationOptions\"\n      class=\"search-results row\"\n    >\n      <location-options\n        :options=\"destinationOptions\"\n        :action=\"selectDestination\"\n        :selected=\"selectedDestination\"\n        @click=\"showDestinationOptions = false;\"\n      />\n      <button\n        v-show=\"showDestinationSearchButton\"\n        type=\"button\"\n        @click=\"lookupExternalDestination()\"\n      >\n        Search for more locations...\n      </button>\n    </div>\n    \n    <div class=\"row\">\n      <input\n        id=\"roundtrip\"\n        v-model=\"isRoundTrip\"\n        name=\"roundtrip\"\n        type=\"checkbox\"\n      >\n      <label for=\"roundtrip\">Return Journey</label>\n    </div>\n    <div\n      v-show=\"isRoundTrip\"\n      class=\"row\"\n    >\n      <label for=\"timeatdest\">How long is your meeting (in minutes)?</label>\n      <input\n        id=\"timeatdest\"\n        v-model=\"timeAtDest\"\n        name=\"timeAtDest\"\n        type=\"number\"\n      >\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"presence\"\n        v-model=\"presenceRequired\"\n        name=\"presence\"\n        type=\"checkbox\"\n      >\n      <label for=\"presence\">I need to travel to the destination</label>\n    </div>\n    <div class=\"row\">\n      <input\n        id=\"carrying\"\n        v-model=\"carrying\"\n        name=\"carrying\"\n        type=\"checkbox\"\n      >\n      <label for=\"carrying\">I'm transporting a lot of stuff</label>\n    </div>\n    <button\n      type=\"button\"\n      @click=\"calculate()\"\n    >\n      Calculate\n    </button>\n  </form>\n</template>\n<script>\nimport LocationOptions from './LocationOptions.vue';\nexport default {\n  components: {\n    LocationOptions,\n  },\n  data() {\n    return {\n      showSourceOptions: false,\n      showDestinationOptions: false,\n      showSourceSearchButton: true,\n      showDestinationSearchButton: true,\n    };\n  },\n  computed: {\n    origin: {\n      get() { return this.$store.state.source; },\n      set(value) { this.$store.commit('updateSource', value); },\n    },\n    destination: {\n      get() { return this.$store.state.destination; },\n      set(value) { this.$store.commit('updateDestination', value); },\n    },\n    isRoundTrip: {\n      get() { return this.$store.state.isRoundTrip; },\n      set(value) { this.$store.commit('updateIsRoundTrip', value); },\n    },\n    timeAtDest: {\n      get() { return this.$store.state.timeAtDest; },\n      set(value) { this.$store.commit('updateTimeAtDest', value); },\n    },\n    presenceRequired: {\n      get() { return this.$store.state.presenceRequired; },\n      set(value) { this.$store.commit('updatePresenceRequired', value); },\n    },\n    carrying: {\n      get() { return this.$store.state.carrying; },\n      set(value) { this.$store.commit('updateCarrying', value); },\n    },\n    sourceOptions() { return this.$store.state.sourceDetails.options; },\n    selectedSource() { return this.$store.state.sourceDetails.selected; },\n    destinationOptions() { return this.$store.state.destinationDetails.options; },\n    selectedDestination() { return this.$store.state.destinationDetails.selected; },\n  },\n  methods: {\n    calculate() {\n      this.$store.dispatch('planTravel');\n    },\n    handleDestinationInput(event) {\n      //do nothing if the input field is empty\n      if(!this.destination) this.showDestinationOptions = false;\n\n      //keyboard navigation\n      else if(event.key == 'ArrowDown' && this.selectedDestination < (this.destinationOptions.length - 1)) this.selectDestination(this.selectedDestination + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedDestination > 0) this.selectDestination(this.selectedDestination - 1, false);\n      else if(event.key == 'Enter') this.showDestinationOptions = false;\n\n      //if a character is entered, search the council location list again\n      else if(this.destination.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilDestination');\n        this.showDestinationOptions = true;\n        this.showDestinationSearchButton = true;\n      }\n    },\n    handleSourceInput(event) {\n      if(!this.origin) this.showSourceOptions = false;\n      if(event.key == 'ArrowDown' && this.selectedSource < (this.sourceOptions.length - 1)) this.selectSource(this.selectedSource + 1, false);\n      else if(event.key == 'ArrowUp' && this.selectedSource > 0) this.selectSource(this.selectedSource - 1, false);\n      else if(event.key == 'Enter') this.showSourceOptions = false;\n      else if(this.origin.length > 2 && (event.key.length === 1 || event.key == 'Backspace')) {\n        this.$store.dispatch('lookupCouncilSource');\n        this.showSourceOptions = true;\n        this.showSourceSearchButton = true;\n      }\n    },\n    lookupExternalDestination() {\n      this.$store.dispatch('lookupDestination');\n      this.showDestinationOptions = true;\n      this.showDestinationSearchButton = false;\n      this.$refs.to.focus(); //keep focus on the input field so that the keyboard can be used to navigate\n    },\n    lookupExternalSource() {\n      this.$store.dispatch('lookupSource');\n      this.showSourceOptions = true;\n      this.showSourceSearchButton = false;\n      this.$refs.from.focus();\n    },\n    selectDestination(key, hideOptions=true) {\n      this.$store.commit('selectDestination', key);\n      this.destination = this.destinationOptions[key].name;\n      if(hideOptions) this.showDestinationOptions = false;\n    },\n    selectSource(key, hideOptions=true) {\n      this.$store.commit('selectSource', key);\n      this.origin = this.sourceOptions[key].name;\n      if(hideOptions) this.showSourceOptions = false;\n    },\n  },\n};\n</script>\n\n<style lang=\"scss\">\ninput[type=text] {\n  width: min(250px, 60%);\n}\n.search-results {\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  flex-wrap: wrap;\n  margin-left: 6em;\n  position: absolute;\n  margin-top: -0.3em;\n  max-width: 44em;\n\n  ul {\n    width: 100%;\n  }\n\n  li {\n    padding: 8px;\n    width: 100%;\n  }\n\n  button {\n    font-size: 100%;\n    font-family: inherit;\n    border: 0;\n    padding: 8px;\n    background: none;\n    text-decoration: underline;\n    color: darkblue;\n  }\n\n  .selected {\n    background-color: #ededed;\n  } \n}\n</style>","input[type=text] {\n  width: min(250px, 60%);\n}\n\n.search-results {\n  z-index: 100;\n  background-color: white;\n  border: 0.5px solid lightgray;\n  flex-wrap: wrap;\n  margin-left: 6em;\n  position: absolute;\n  margin-top: -0.3em;\n  max-width: 44em;\n}\n.search-results ul {\n  width: 100%;\n}\n.search-results li {\n  padding: 8px;\n  width: 100%;\n}\n.search-results button {\n  font-size: 100%;\n  font-family: inherit;\n  border: 0;\n  padding: 8px;\n  background: none;\n  text-decoration: underline;\n  color: darkblue;\n}\n.search-results .selected {\n  background-color: #ededed;\n}\n\n/*# sourceMappingURL=Search.vue.map */"]}, media: undefined });
-
-	  };
+	  const __vue_inject_styles__$1 = undefined;
 	  /* scoped */
 	  const __vue_scope_id__$1 = undefined;
 	  /* module identifier */
 	  const __vue_module_identifier__$1 = undefined;
 	  /* functional template */
 	  const __vue_is_functional_template__$1 = false;
+	  /* style inject */
+	  
 	  /* style inject SSR */
 	  
 	  /* style inject shadow dom */
@@ -1726,7 +1681,7 @@
 	    __vue_is_functional_template__$1,
 	    __vue_module_identifier__$1,
 	    false,
-	    createInjector,
+	    undefined,
 	    undefined,
 	    undefined
 	  );
@@ -2513,7 +2468,6 @@
 
 	/* script */
 	const __vue_script__$2 = script$2;
-
 	/* template */
 	var __vue_render__$2 = function() {
 	  var _vm = this;
@@ -2556,17 +2510,15 @@
 	__vue_render__$2._withStripped = true;
 
 	  /* style */
-	  const __vue_inject_styles__$2 = function (inject) {
-	    if (!inject) return
-	    inject("data-v-420aa5a1_0", { source: ".timeline[data-v-420aa5a1] {\n  height: 4em;\n  margin: 17px 20px;\n  padding-top: 1em;\n}\n.timeline ol[data-v-420aa5a1] {\n  display: flex;\n  list-style: none;\n  padding: 0;\n}\n.timeline ol > li[data-v-420aa5a1] {\n  border-bottom: 6px solid black;\n  position: relative;\n}\n.timeline ol > li.unknown[data-v-420aa5a1] {\n  border-bottom-style: dotted;\n}\n.timeline ol > li.end[data-v-420aa5a1] {\n  border-bottom-style: none;\n}\n.timeline ol > li p[data-v-420aa5a1] {\n  position: absolute;\n  display: block;\n  width: 100%;\n  text-align: center;\n}\n.timeline ol > li p.value[data-v-420aa5a1] {\n  top: 0.5em;\n  font-size: 1.5em;\n}\n.timeline ol > li p.title[data-v-420aa5a1] {\n  top: 2.5em;\n}\n.timeline ol > li .marker[data-v-420aa5a1] {\n  box-sizing: border-box;\n  width: 26px;\n  height: 26px;\n  border-radius: 13px;\n  display: block;\n  border: 6px solid black;\n  background: white;\n  position: absolute;\n  top: -10px;\n  left: -13px;\n}\n\n/*# sourceMappingURL=Timeline.vue.map */", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/Timeline.vue","Timeline.vue"],"names":[],"mappings":"AAiDA;EACA,WAAA;EACA,iBAAA;EACA,gBAAA;AChDA;ADiDA;EACA,aAAA;EACA,gBAAA;EACA,UAAA;AC/CA;ADgDA;EACA,8BAAA;EACA,kBAAA;AC9CA;AD+CA;EACA,2BAAA;AC7CA;AD+CA;EACA,yBAAA;AC7CA;AD+CA;EACA,kBAAA;EACA,cAAA;EACA,WAAA;EACA,kBAAA;AC7CA;AD8CA;EACA,UAAA;EACA,gBAAA;AC5CA;AD8CA;EACA,UAAA;AC5CA;AD+CA;EACA,sBAAA;EACA,WAjCA;EAkCA,YAlCA;EAmCA,mBAAA;EACA,cAAA;EACA,uBAAA;EACA,iBAAA;EACA,kBAAA;EACA,UAAA;EACA,WAAA;AC7CA;;AAEA,uCAAuC","file":"Timeline.vue","sourcesContent":["<template>\n  <section class=\"timeline\">\n    <ol>\n      <li\n        v-for=\"(segment, idx) in segments\"\n        :key=\"idx\"\n        :style=\"segment.style\"\n        :class=\"segment.class\"\n      >\n        <span class=\"marker\" />\n        <p class=\"value\">\n          {{ segment.duration }}\n        </p>\n      </li>\n      <li class=\"end\">\n        <span class=\"marker\" />\n      </li>\n    </ol>\n  </section>\n</template>\n<script>\nimport { mapState } from 'vuex';\nimport { formatTime } from '../utils/formatTime.js';\nimport { UNKNOWN_DURATION } from '../constants';\n\nexport default {\n  props: {\n    values: {\n      type: Array,\n      required: true,\n    },\n  },\n  computed: {\n    segments() {\n      return this.values.map(x => ({\n        duration: x ? formatTime(x) : '',\n        style: `width: ${parseInt(100 * (x || UNKNOWN_DURATION)/this.maxDuration)}%;`,\n        class: x ? undefined : 'unknown',\n      }));\n    },\n    ...mapState([\n      'maxDuration',\n    ]),\n  },\n};\n</script>\n<style lang=\"scss\" scoped>\n$line-weight: 6px;\n$marker-size: 26px;\n.timeline {\n  height: 4em;\n  margin: 17px 20px;\n  padding-top: 1em;\n  ol {\n    display: flex;\n    list-style: none;\n    padding: 0;\n    > li {\n      border-bottom: $line-weight solid black;\n      position: relative;\n      &.unknown {\n        border-bottom-style: dotted;\n      }\n      &.end {\n        border-bottom-style: none;\n      }\n      p {\n        position: absolute;\n        display: block;\n        width: 100%;\n        text-align: center;\n        &.value {\n          top: 0.5em;\n          font-size: 1.5em;\n        }\n        &.title {\n          top: 2.5em;\n        }\n      }\n      .marker {\n        box-sizing: border-box;\n        width: $marker-size;\n        height: $marker-size;\n        border-radius: $marker-size/2;\n        display: block;\n        border: $line-weight solid black;\n        background: white;\n        position: absolute; \n        top: -#{((($marker-size - $line-weight)/2))};\n        left: -#{(($marker-size/2))};\n      }\n    }\n  }\n}\n</style>",".timeline {\n  height: 4em;\n  margin: 17px 20px;\n  padding-top: 1em;\n}\n.timeline ol {\n  display: flex;\n  list-style: none;\n  padding: 0;\n}\n.timeline ol > li {\n  border-bottom: 6px solid black;\n  position: relative;\n}\n.timeline ol > li.unknown {\n  border-bottom-style: dotted;\n}\n.timeline ol > li.end {\n  border-bottom-style: none;\n}\n.timeline ol > li p {\n  position: absolute;\n  display: block;\n  width: 100%;\n  text-align: center;\n}\n.timeline ol > li p.value {\n  top: 0.5em;\n  font-size: 1.5em;\n}\n.timeline ol > li p.title {\n  top: 2.5em;\n}\n.timeline ol > li .marker {\n  box-sizing: border-box;\n  width: 26px;\n  height: 26px;\n  border-radius: 13px;\n  display: block;\n  border: 6px solid black;\n  background: white;\n  position: absolute;\n  top: -10px;\n  left: -13px;\n}\n\n/*# sourceMappingURL=Timeline.vue.map */"]}, media: undefined });
-
-	  };
+	  const __vue_inject_styles__$2 = undefined;
 	  /* scoped */
 	  const __vue_scope_id__$2 = "data-v-420aa5a1";
 	  /* module identifier */
 	  const __vue_module_identifier__$2 = undefined;
 	  /* functional template */
 	  const __vue_is_functional_template__$2 = false;
+	  /* style inject */
+	  
 	  /* style inject SSR */
 	  
 	  /* style inject shadow dom */
@@ -2581,7 +2533,7 @@
 	    __vue_is_functional_template__$2,
 	    __vue_module_identifier__$2,
 	    false,
-	    createInjector,
+	    undefined,
 	    undefined,
 	    undefined
 	  );
@@ -2688,7 +2640,6 @@
 
 	/* script */
 	const __vue_script__$3 = script$3;
-
 	/* template */
 	var __vue_render__$3 = function() {
 	  var _vm = this;
@@ -2707,37 +2658,47 @@
 	        [
 	          _c(
 	            "div",
+	            { staticClass: "content" },
 	            [
-	              _vm.viewState === "closed"
-	                ? _c("div", { staticClass: "open" }, [
-	                    _vm._v("\n      more info\n    ")
-	                  ])
-	                : _vm._e(),
+	              _c(
+	                "div",
+	                [
+	                  _vm.viewState === "closed"
+	                    ? _c("div", { staticClass: "open" }, [
+	                        _vm._v("\n        more info\n      ")
+	                      ])
+	                    : _vm._e(),
+	                  _vm._v(" "),
+	                  _c("h3", [_vm._v(_vm._s(_vm.title))]),
+	                  _vm._v(" "),
+	                  _c("display-timeline", { attrs: { values: _vm.time } }),
+	                  _vm._v(" "),
+	                  _c("p", { domProps: { innerHTML: _vm._s(_vm.summary) } }),
+	                  _vm._v(" "),
+	                  _vm.cost
+	                    ? _c("p", [
+	                        _vm._v("\n        £" + _vm._s(_vm.cost) + "\n      ")
+	                      ])
+	                    : _vm._e(),
+	                  _vm._v(" "),
+	                  _vm.emissions
+	                    ? _c("p", [
+	                        _vm._v("\n        " + _vm._s(_vm.emissions) + "kg CO"),
+	                        _c("sub", [_vm._v("2")]),
+	                        _vm._v(" emitted\n      ")
+	                      ])
+	                    : _vm._e()
+	                ],
+	                1
+	              ),
 	              _vm._v(" "),
-	              _c("h3", [_vm._v(_vm._s(_vm.title))]),
-	              _vm._v(" "),
-	              _c("display-timeline", { attrs: { values: _vm.time } }),
-	              _vm._v(" "),
-	              _c("p", { domProps: { innerHTML: _vm._s(_vm.summary) } }),
-	              _vm._v(" "),
-	              _vm.cost ? _c("p", [_vm._v("£" + _vm._s(_vm.cost))]) : _vm._e(),
-	              _vm._v(" "),
-	              _vm.emissions
-	                ? _c("p", [
-	                    _vm._v("\n      " + _vm._s(_vm.emissions) + "kg CO"),
-	                    _c("sub", [_vm._v("2")]),
-	                    _vm._v(" emitted\n    ")
-	                  ])
+	              _vm.viewState === "open"
+	                ? _c(_vm.details, { tag: "component" })
 	                : _vm._e()
 	            ],
 	            1
-	          ),
-	          _vm._v(" "),
-	          _vm.viewState === "open"
-	            ? _c(_vm.details, { tag: "component" })
-	            : _vm._e()
-	        ],
-	        1
+	          )
+	        ]
 	      )
 	    : _vm._e()
 	};
@@ -2745,17 +2706,15 @@
 	__vue_render__$3._withStripped = true;
 
 	  /* style */
-	  const __vue_inject_styles__$3 = function (inject) {
-	    if (!inject) return
-	    inject("data-v-decc6e6e_0", { source: "\n.open[data-v-decc6e6e] {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n", map: {"version":3,"sources":["/Users/patrick/Projects/lcc-grey-miles/src/components/ModeOfTransport.vue"],"names":[],"mappings":";AA4BA;EACA,qBAAA;EACA,YAAA;EACA,kBAAA;EACA,kBAAA;AACA","file":"ModeOfTransport.vue","sourcesContent":["<template>\n  <section\n    v-if=\"shouldDisplay\"\n    @click=\"toggleView()\"\n  >\n    <div>\n      <div\n        v-if=\"viewState ==='closed'\"\n        class=\"open\"\n      >\n        more info\n      </div>\n      <h3>{{ title }}</h3>\n      <display-timeline :values=\"time\" />\n      <!-- eslint-disable-next-line vue/no-v-html -->\n      <p v-html=\"summary\" />\n      <p v-if=\"cost\">£{{ cost }}</p>\n      <p v-if=\"emissions\">\n        {{ emissions }}kg CO<sub>2</sub> emitted\n      </p>\n    </div>\n    <component\n      :is=\"details\"\n      v-if=\"viewState ==='open'\"\n    />\n  </section>  \n</template>\n<style scoped>\n.open {\n  display: inline-block;\n  float: right;\n  padding-right: 1em;\n  line-height: 1.5em;\n}\n</style>\n<script>\nimport DisplayTimeline from './Timeline.vue';\nexport default {\n  components: {\n    DisplayTimeline,\n  },\n  props: {\n    title: {\n      type: String,\n      required: true,\n    },\n    details: {\n      type: Object,\n      required: false,\n      default: () => {},\n    },\n    summarise: {\n      type: Function,\n      default: () => () => null,\n    },\n    costFn: {\n      type: Function,\n      required: true,\n    },\n    co2Fn: {\n      type: Function,\n      default: () => () => 0,\n    },\n    displayFn: {\n      type: Function,\n      default: () => () => true,\n    },\n    timeFn: {\n      type: Function,\n      default: () => () => 0,\n    },\n  },\n  data: function () {\n    return {\n      viewState: 'closed',\n    };\n  },\n  computed: {\n    summary() {\n      return this.summarise(this.$store.getters.journey);\n    },\n    cost() {\n      return this.costFn(this.$store.getters.journey);\n    },\n    emissions() {\n      return this.co2Fn(this.$store.getters.journey);\n    },\n    shouldDisplay() {\n      return this.displayFn(this.$store.getters.journey);\n    },\n    mapsURL() {\n      const {\n        sourceDetails: { options: srcOptions, selected: selectedSrc },\n        destinationDetails: { options: destOptions, selected: selectedDest },\n      } = this.$store.state;\n      const srcLngLat = srcOptions[selectedSrc].lngLat;\n      const destLngLat = destOptions[selectedDest].lngLat;\n      return `https://www.google.com/maps/dir/?api=1&origin=${srcLngLat[1]},${srcLngLat[0]}&destination=${destLngLat[1]},${destLngLat[0]}&travelmode=`;\n    },\n    time() {\n      const time = this.timeFn(this.$store.getters.journey);\n      return time;\n    },\n  },\n  mounted() {\n    this.$store.dispatch('storeDuration', { mode: this.title, values: this.time });\n  },\n  methods: {\n    toggleView() {\n      const currentState = this.viewState;\n      this.viewState = currentState === 'open' ? 'closed' : 'open';\n    },\n    \n  },\n};\n</script>"]}, media: undefined });
-
-	  };
+	  const __vue_inject_styles__$3 = undefined;
 	  /* scoped */
-	  const __vue_scope_id__$3 = "data-v-decc6e6e";
+	  const __vue_scope_id__$3 = "data-v-26788459";
 	  /* module identifier */
 	  const __vue_module_identifier__$3 = undefined;
 	  /* functional template */
 	  const __vue_is_functional_template__$3 = false;
+	  /* style inject */
+	  
 	  /* style inject SSR */
 	  
 	  /* style inject shadow dom */
@@ -2770,7 +2729,7 @@
 	    __vue_is_functional_template__$3,
 	    __vue_module_identifier__$3,
 	    false,
-	    createInjector,
+	    undefined,
 	    undefined,
 	    undefined
 	  );
@@ -2864,9 +2823,11 @@
 	    var _h = _vm.$createElement;
 	    var _c = _vm._self._c || _h;
 	    return _c("header", [
-	      _c("p", [_vm._v("Find the greenest way to get to your meeting")]),
-	      _vm._v(" "),
-	      _c("h1", [_vm._v("Staff Travel Options")]),
+	      _c("div", [
+	        _c("p", [_vm._v("Find the greenest way to get to your meeting")]),
+	        _vm._v(" "),
+	        _c("h1", [_vm._v("Staff Travel Options")])
+	      ]),
 	      _vm._v(" "),
 	      _c("img", { attrs: { src: "img/lcc.png", width: "224px" } })
 	    ])

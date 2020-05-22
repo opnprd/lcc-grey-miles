@@ -1,7 +1,17 @@
 $white: white;
 $background: lightgrey;
+$lcc-darkblue: #004166;
+$lcc-lightblue: #007297;
+$green: #0DBC37;
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans&display=swap');
+$breakpoints: 835px, 760px;
+@mixin mq($idx) {
+  @media screen and (max-width: nth($breakpoints, $idx)) {
+    @content
+  }
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Open+Sans&display=swap');
 
 %main-flow {
   max-width: 52em;
@@ -9,68 +19,79 @@ $background: lightgrey;
   margin-right: auto;
 }
 
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 body {
   background: $background;
+  font-size: 16px;
 }
 
 #app {
   font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
 
   > * {
     @extend %main-flow;
-    padding-left: 1em;
-    padding-right: 1em;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+
+    @include mq(1) {
+      width: 100vw;
+      border-radius: 0;
+      margin: 0;
+    }
   }
 
   > #main {
     background: $white;
-    padding-top: 1em;
-    padding-bottom: 1em;
+    padding: 1em 0;
+    margin-bottom: 2em;
+    border-radius: 0 0 0.5em 0.5em;
+    > section {
+      padding: 0 1.5em;
+    }
   }
 }
 
-@mixin small-header {
-  @media only screen and (max-width: 670px){
-    @content;
-  }
-}
 header {
-  margin-top: 1em;
-  background-color: #004166;
-  padding-top: 1em;
-  border-radius: 0.25em;
+  background-color: $lcc-darkblue;
   color: white;
-  position: relative;
-
-  @include small-header {
-    text-align: center;
-  }
+  margin-top: 1em;
+  padding: 1.5em 1em;
+  border-radius: 0.5em 0.5em 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
 
   h1 {
-    padding-top: 0;
-    display: inline-block;
-    font-family: 'Helvetica Neue', sans-serif;
-    font-size: 2.75em;
-    font-weight: normal;
+    font-size: 3em;
+    padding: 0.25em 0 0;
   }
 
-  img {
-    display: inline;
-    position: absolute;
-    top: 18px;
-    right: 20px;
+  p {
+    font-style: italic;
+    padding: 0;
+  }
 
-    @include small-header {
-      display: block;
-      margin: auto;
-      position: static;
+  @include mq(2) {
+    justify-content: center;
+    text-align: center;
+    img {
+      margin-top: 0.5em;
+    }
+    div {
+      width: 100%;
     }
   }
 }
 
 h1 {
   font-family: 'Montserrat', sans-serif;
-  font-weight: bold;
+  font-weight: 300;
   font-size: 2em;
   padding-top: 0.5em;
   padding-bottom: 0.5em;
@@ -78,28 +99,93 @@ h1 {
 
 p {
   padding-bottom: 1em;
-  line-height: 1.5em;
+  line-height: 26px;
 }
 
 form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  .left, .right {
+    min-width: 0;
+  }
   .row {
     display: flex;
-    padding-bottom: 0.3em;
+    padding-bottom: 0.4em;
+    align-items: center;
   }
-}
-label {
-  min-width: 6em;
-  display: block;
+  input {
+    &[type=text] {
+      line-height: 2em;
+      margin-right: 3em;
+      width: 30em;
+      min-width: 0;
+    }
+    &[type=number] {
+      width: 5em;
+      margin-left: 1em;
+    }
+  }
+  > button {
+    border: 0;
+    background-color: $lcc-lightblue;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    padding: 0.5em 1em;
+    cursor: pointer;
+    line-height: 1.25em;
+    width: 10em;
+    font-size: 1.1em;
+    box-shadow: 1px 1px #00394d;
+    border-radius: 0.2em;
+    font-weight: 300;
+    margin: 0.75em auto 0;
+
+    &:hover {
+      background-color: $lcc-darkblue;
+      transition: 0.2s;
+    }
+  }
+  label {
+    min-width: 5em;
+    display: block;
+  }
+
+  @include mq(2) {
+    input[type=text] {
+      margin-right: 0;
+    }
+    .left, .right {
+      width: 100%;
+    }
+  }
 }
 
 .modes {
   margin-top: 1em;
+  padding: 0;
+  background-color: $green;
+
   > li {
-    padding: 2em 0;
-    border-top: 4px solid darkgrey;
+    padding: 0 1em;
+
+    > section {
+      background-color: white;
+      padding: 2em 1em;
+      border-top: 2px solid lightgrey;
+    }
   }
   strong {
     font-weight: bold;
     color: red;
   }
+  .mode1 { background-color: rgba(0,0,0,0); }
+	.mode2 { background-color: rgba(0,0,0,0.15); }
+	.mode3 { background-color: rgba(0,0,0,0.30); }
+	.mode4 { background-color: rgba(0,0,0,0.45); }
+	.mode5 { background-color: rgba(0,0,0,0.60); }
+	.mode6 { background-color: rgba(0,0,0,0.75); }
+	.mode7 { background-color: rgba(0,0,0,0.90); }
 }

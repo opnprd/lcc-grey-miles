@@ -3,34 +3,42 @@
     v-if="shouldDisplay"
     @click="toggleView()"
   >
-    <div>
-      <div
-        v-if="viewState ==='closed'"
-        class="open"
-      >
-        more info
+    <div class="content">
+      <div>
+        <div
+          v-if="viewState ==='closed'"
+          class="open"
+        >
+          more info
+        </div>
+        <h3>{{ title }}</h3>
+        <display-timeline :values="time" />
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <p v-html="summary" />
+        <p v-if="cost">
+          £{{ cost }}
+        </p>
+        <p v-if="emissions">
+          {{ emissions }}kg CO<sub>2</sub> emitted
+        </p>
       </div>
-      <h3>{{ title }}</h3>
-      <display-timeline :values="time" />
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <p v-html="summary" />
-      <p v-if="cost">£{{ cost }}</p>
-      <p v-if="emissions">
-        {{ emissions }}kg CO<sub>2</sub> emitted
-      </p>
+      <component
+        :is="details"
+        v-if="viewState ==='open'"
+      />
     </div>
-    <component
-      :is="details"
-      v-if="viewState ==='open'"
-    />
   </section>  
 </template>
 <style scoped>
 .open {
-  display: inline-block;
   float: right;
   padding-right: 1em;
   line-height: 1.5em;
+  color: blue;
+  text-decoration: underline;
+}
+.open:hover {
+  cursor: pointer;
 }
 </style>
 <script>

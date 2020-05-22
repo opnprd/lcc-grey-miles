@@ -1,8 +1,10 @@
 <template>
   <article id="app">
     <header>
-      <p>Find the greenest way to get to your meeting</p>
-      <h1>Staff Travel Options</h1>
+      <div>
+        <p>Find the greenest way to get to your meeting</p>
+        <h1>Staff Travel Options</h1>
+      </div>
       <img
         src="img/lcc.png"
         width="224px"

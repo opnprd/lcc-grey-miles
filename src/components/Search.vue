@@ -1,100 +1,105 @@
 <template>
   <form>
-    <div class="row">
-      <label for="from">From:</label>
-      <input
-        id="from"
-        ref="from"
-        v-model="origin"
-        type="text"
-        @keyup="handleSourceInput($event)"
+    <div class="left">
+      <div class="row">
+        <label for="from">From:</label>
+        <input
+          id="from"
+          ref="from"
+          v-model="origin"
+          type="text"
+          placeholder="Start typing a name, address, or postcode to show results..."
+          @keyup="handleSourceInput($event)"
+        >
+      </div>
+      <div
+        v-show="showSourceOptions"
+        class="search-results row"
       >
-    </div>
-    <div
-      v-show="showSourceOptions"
-      class="search-results row"
-    >
-      <location-options
-        :options="sourceOptions"
-        :action="selectSource"
-        :selected="selectedSource"
-        @click="showSourceOptions = false;"
-      />
-      <button
-        v-show="showSourceSearchButton"
-        type="button"
-        @click="lookupExternalSource()"
+        <location-options
+          :options="sourceOptions"
+          :action="selectSource"
+          :selected="selectedSource"
+          @click="showSourceOptions = false;"
+        />
+        <button
+          v-show="showSourceSearchButton"
+          type="button"
+          @click="lookupExternalSource()"
+        >
+          Search for more locations...
+        </button>
+      </div>
+      <div class="row">
+        <label for="to">To:</label>
+        <input
+          id="to"
+          ref="to"
+          v-model="destination"
+          type="text"
+          @keyup="handleDestinationInput($event)"
+        >
+      </div>
+      <div
+        v-show="showDestinationOptions"
+        class="search-results row"
       >
-        Search for more locations...
-      </button>
-    </div>
-    <div class="row">
-      <label for="to">To:</label>
-      <input
-        id="to"
-        ref="to"
-        v-model="destination"
-        type="text"
-        @keyup="handleDestinationInput($event)"
-      >
-    </div>
-    <div
-      v-show="showDestinationOptions"
-      class="search-results row"
-    >
-      <location-options
-        :options="destinationOptions"
-        :action="selectDestination"
-        :selected="selectedDestination"
-        @click="showDestinationOptions = false;"
-      />
-      <button
-        v-show="showDestinationSearchButton"
-        type="button"
-        @click="lookupExternalDestination()"
-      >
-        Search for more locations...
-      </button>
+        <location-options
+          :options="destinationOptions"
+          :action="selectDestination"
+          :selected="selectedDestination"
+          @click="showDestinationOptions = false;"
+        />
+        <button
+          v-show="showDestinationSearchButton"
+          type="button"
+          @click="lookupExternalDestination()"
+        >
+          Search for more locations...
+        </button>
+      </div>
     </div>
     
-    <div class="row">
-      <input
-        id="roundtrip"
-        v-model="isRoundTrip"
-        name="roundtrip"
-        type="checkbox"
+    <div class="right">
+      <div class="row">
+        <input
+          id="roundtrip"
+          v-model="isRoundTrip"
+          name="roundtrip"
+          type="checkbox"
+        >
+        <label for="roundtrip">Return Journey</label>
+      </div>
+      <div
+        v-show="isRoundTrip"
+        class="row"
       >
-      <label for="roundtrip">Return Journey</label>
-    </div>
-    <div
-      v-show="isRoundTrip"
-      class="row"
-    >
-      <label for="timeatdest">How long is your meeting (in minutes)?</label>
-      <input
-        id="timeatdest"
-        v-model="timeAtDest"
-        name="timeAtDest"
-        type="number"
-      >
-    </div>
-    <div class="row">
-      <input
-        id="presence"
-        v-model="presenceRequired"
-        name="presence"
-        type="checkbox"
-      >
-      <label for="presence">I need to travel to the destination</label>
-    </div>
-    <div class="row">
-      <input
-        id="carrying"
-        v-model="carrying"
-        name="carrying"
-        type="checkbox"
-      >
-      <label for="carrying">I'm transporting a lot of stuff</label>
+        <label for="timeatdest">How long is your meeting (in minutes)?</label>
+        <input
+          id="timeatdest"
+          v-model="timeAtDest"
+          name="timeAtDest"
+          type="number"
+        >
+      </div>
+      <div class="row">
+        <input
+          id="presence"
+          v-model="presenceRequired"
+          name="presence"
+          type="checkbox"
+        >
+        <label for="presence">I need to travel to the destination</label>
+      </div>
+      <div class="row">
+        <input
+          id="carrying"
+          v-model="carrying"
+          name="carrying"
+          type="checkbox"
+        >
+        <label for="carrying">I'm transporting a lot of stuff</label>
+      </div>
     </div>
     <button
       type="button"
@@ -206,17 +211,14 @@ export default {
 </script>
 
 <style lang="scss">
-input[type=text] {
-  width: min(250px, 60%);
-}
 .search-results {
   z-index: 100;
   background-color: white;
   border: 0.5px solid lightgray;
   flex-wrap: wrap;
-  margin-left: 6em;
+  margin-left: 5em;
   position: absolute;
-  margin-top: -0.3em;
+  margin-top: -0.4em;
   max-width: 44em;
 
   ul {

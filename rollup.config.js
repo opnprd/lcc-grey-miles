@@ -34,7 +34,9 @@ export default {
     }),
     resolve(),
     commonjs(),
-    vue(),
+    vue({
+      css: false,
+    }),
     babel({
       configFile: false,
       exclude: 'node_modules/**',
@@ -48,6 +50,7 @@ export default {
     scss({
       output: `${outputDir}/style.css`,
       includePaths: ['./src/scss'],
+      watch: ['src/scss'],
     }),
     copy({
       targets: [
