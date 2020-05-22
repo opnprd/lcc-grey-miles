@@ -71,7 +71,7 @@ export default {
           dest: `${outputDir}`,
         },
         {
-          src: 'src/assets/**',
+          src: 'src/assets/*',
           dest: `${outputDir}`,
         },
       ],
