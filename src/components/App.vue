@@ -8,6 +8,7 @@
       <img
         src="img/lcc.png"
         width="224px"
+        alt="Leeds City Council logo"
       >
     </header>
 
