@@ -223,6 +223,16 @@ ul.grid {
         padding: 0.5em 0;
         line-height: 32px; }
 
+.open[data-v-651ed140] {
+  float: right;
+  padding-right: 1em;
+  line-height: 1.5em;
+  color: blue;
+  text-decoration: underline; }
+
+.open[data-v-651ed140]:hover {
+  cursor: pointer; }
+
 .search-results {
   z-index: 100;
   background-color: white;
@@ -253,16 +263,6 @@ ul.grid {
   background-color: #ededed; }
 
 /*# sourceMappingURL=Search.vue.map */
-.open[data-v-651ed140] {
-  float: right;
-  padding-right: 1em;
-  line-height: 1.5em;
-  color: blue;
-  text-decoration: underline; }
-
-.open[data-v-651ed140]:hover {
-  cursor: pointer; }
-
 .timeline[data-v-8044c168] {
   height: 4em;
   margin: 17px 20px;
