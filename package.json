@@ -52,7 +52,7 @@
     "vue-template-compiler": "^2.6.11"
   },
   "scripts": {
-    "bundle": "NODE_ENV=development rollup --config rollup.config.js",
+    "bundle": "rollup --config rollup.config.js",
     "dev": "NODE_ENV=development npm run bundle -- --watch",
     "prepare": "gulp",
     "lint": "eslint src",

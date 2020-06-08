@@ -61,7 +61,7 @@ export default {
         },
         {
           src: [
-            `node_modules/vue/dist/vue${jsMin}.js`,
+            `node_modules/vue/dist/vue.runtime${jsMin}.js`,
             `node_modules/vuex/dist/vuex${jsMin}.js`,
           ],
           dest: `${outputDir}/vendor`,
