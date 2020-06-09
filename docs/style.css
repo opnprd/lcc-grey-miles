@@ -223,16 +223,6 @@ ul.grid {
         padding: 0.5em 0;
         line-height: 32px; }
 
-.open[data-v-651ed140] {
-  float: right;
-  padding-right: 1em;
-  line-height: 1.5em;
-  color: blue;
-  text-decoration: underline; }
-
-.open[data-v-651ed140]:hover {
-  cursor: pointer; }
-
 .search-results {
   z-index: 100;
   background-color: white;
@@ -263,40 +253,50 @@ ul.grid {
   background-color: #ededed; }
 
 /*# sourceMappingURL=Search.vue.map */
-.timeline[data-v-8044c168] {
+.open[data-v-1c9cc796] {
+  float: right;
+  padding-right: 1em;
+  line-height: 1.5em;
+  color: blue;
+  text-decoration: underline; }
+
+.open[data-v-1c9cc796]:hover {
+  cursor: pointer; }
+
+.timeline[data-v-420aa5a1] {
   height: 4em;
   margin: 17px 20px;
   padding-top: 1em; }
 
-.timeline ol[data-v-8044c168] {
+.timeline ol[data-v-420aa5a1] {
   display: flex;
   list-style: none;
   padding: 0; }
 
-.timeline ol > li[data-v-8044c168] {
+.timeline ol > li[data-v-420aa5a1] {
   border-bottom: 6px solid black;
   position: relative; }
 
-.timeline ol > li.unknown[data-v-8044c168] {
+.timeline ol > li.unknown[data-v-420aa5a1] {
   border-bottom-style: dotted; }
 
-.timeline ol > li.end[data-v-8044c168] {
+.timeline ol > li.end[data-v-420aa5a1] {
   border-bottom-style: none; }
 
-.timeline ol > li p[data-v-8044c168] {
+.timeline ol > li p[data-v-420aa5a1] {
   position: absolute;
   display: block;
   width: 100%;
   text-align: center; }
 
-.timeline ol > li p.value[data-v-8044c168] {
+.timeline ol > li p.value[data-v-420aa5a1] {
   top: 0.5em;
   font-size: 1.5em; }
 
-.timeline ol > li p.title[data-v-8044c168] {
+.timeline ol > li p.title[data-v-420aa5a1] {
   top: 2.5em; }
 
-.timeline ol > li .marker[data-v-8044c168] {
+.timeline ol > li .marker[data-v-420aa5a1] {
   box-sizing: border-box;
   width: 26px;
   height: 26px;
