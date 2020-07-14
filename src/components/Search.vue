@@ -74,7 +74,7 @@
         v-show="isRoundTrip"
         class="row"
       >
-        <label for="timeatdest">How long is your meeting (in minutes)?</label>
+        <label for="timeatdest">How long is your meeting (minutes)?</label>
         <input
           id="timeatdest"
           v-model="timeAtDest"
@@ -89,7 +89,7 @@
           name="presence"
           type="checkbox"
         >
-        <label for="presence">I need to do this meeting in person</label>
+        <label for="presence">I need to attend this meeting in person</label>
       </div>
       <div class="row">
         <input

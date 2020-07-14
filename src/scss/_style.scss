@@ -115,6 +115,7 @@ form {
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: center;
+  gap: 0;
   .left, .right {
     min-width: 0;
   }
@@ -126,13 +127,13 @@ form {
   input {
     &[type=text] {
       line-height: 2em;
-      margin-right: 3em;
-      width: 30em;
+      margin-right: 2em;
+      width: 26em;
       min-width: 0;
     }
     &[type=number] {
-      width: 5em;
-      margin-left: 1em;
+      width: 3.5em;
+      margin-left: 0.5em;
     }
   }
   > button {
