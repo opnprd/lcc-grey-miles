@@ -5,13 +5,19 @@
     </p>
     <ul class="grid">
       <li>
-        <a :href="$parent.mapsURL + 'driving'">
+        <a
+          target="_blank"
+          :href="$parent.mapsURL + 'driving'"
+        >
           <h3>Directions</h3>
           <p>Get driving directions from Google Maps</p>
         </a>
       </li>
       <li>
-        <a href="https://www.enterprisecarclub.co.uk/gb/en/programs/regions/north-east-england/leeds.html">
+        <a
+          target="_blank"
+          href="https://www.enterprisecarclub.co.uk/gb/en/programs/regions/north-east-england/leeds.html"
+        >
           <h3>Enterprise Car Club</h3>
           <p>More information about the Enterprise Car Club scheme</p>
         </a>
