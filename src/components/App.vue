@@ -19,8 +19,14 @@
         <p>This tool shows you the greenest and most efficient way to make your journey. Reduce your emissions to help tackle the #ClimateEmergency.</p>
         <search-form />
       </section>
+      <p
+        v-if="sortedModes.length !== 0"
+        class="note"
+      >
+        The modes of transport are shown below in order of CO2 emissions (lowest to highest).
+      </p>
       <ol
-        v-if="sortedModes.length != 0"
+        v-if="sortedModes.length !== 0"
         class="modes"
       >
         <li
@@ -67,3 +73,11 @@ export default {
   // },
 };
 </script>
+
+<style>
+p.note {
+  text-align: center;
+  color: darkgreen;
+  padding-bottom: 0;
+}
+</style>

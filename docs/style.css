@@ -223,6 +223,11 @@ ul.grid {
         padding: 0.5em 0;
         line-height: 32px; }
 
+p.note {
+  text-align: center;
+  color: darkgreen;
+  padding-bottom: 0; }
+
 .search-results {
   z-index: 100;
   background-color: white;
