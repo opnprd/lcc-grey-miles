@@ -1,6 +1,6 @@
 <template>
   <section>
-    <p>Walking and cycling are healthy, cheap and carbon neutral. You can claim 20 pence per mile for journeys on your own bike, or there are e-bikes to borrow from some city centre locations.</p>
+    <p>Cycling is healthy, cheap and carbon neutral. You can claim 20 pence per mile for journeys on your own bike, or there are e-bikes to borrow from some city centre locations.</p>
     <!--<iframe src="https://fourpointmapping.sustrans.org.uk/westyorkshirecyclemap/westyorkshire.html" width="100%" height="300px"></iframe>-->
     <ul class="grid">
       <li>
@@ -12,10 +12,10 @@
       <li>
         <a
           target="_blank"
-          :href="$parent.mapsURL + 'walking'"
+          :href="$parent.mapsURL + 'bicycling'"
         >
           <h3>Directions</h3>
-          <p>Get walking or cycling directions from Google Maps</p>
+          <p>Get cycling directions from Google Maps</p>
         </a>
       </li>
       <li>

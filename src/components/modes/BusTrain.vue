@@ -1,6 +1,6 @@
 <template>
   <section>
-    <p>Public transport is a low carbon option for your travel. Metrocards are available to borrow and use free of charge from most council building receptions. </p>
+    <p>Public transport is a low carbon option for your travel. Metrocards are available to borrow and use free of charge from most council building receptions. The travel time shown above is based on leaving now, and is a best-case scenario which may use the bus, train, or both. Use the Google Maps link below for full details.</p>
     <ul class="grid">
       <li>
         <a

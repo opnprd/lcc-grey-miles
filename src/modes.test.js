@@ -6,12 +6,13 @@ jest.mock('./components/modes/BusTrain.vue', () => {});
 jest.mock('./components/modes/CarClub.vue', () => {});
 jest.mock('./components/modes/PoolVehicle.vue', () => {});
 jest.mock('./components/modes/Teleconf.vue', () => {});
-jest.mock('./components/modes/WalkCycle.vue', () => {});
+jest.mock('./components/modes/Cycle.vue', () => {});
 jest.mock('./components/modes/Taxi.vue', () => {});
 jest.mock('./components/modes/SelfDrive.vue', () => {});
+jest.mock('./components/modes/Walk.vue', () => {});
 
 describe('cost calculations', () => {
-  const [ teleConf, walkCycle, busTrain, pool, carClub, taxi, selfDrive ] = modes;
+  const [ teleConf, walk, cycle, busTrain, pool, carClub, taxi, selfDrive ] = modes;
 
   test('pool vehicle cost should be £0.04 per mile', () => {
     const dist = Math.random() * 100 + 1;

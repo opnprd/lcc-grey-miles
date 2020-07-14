@@ -25,8 +25,7 @@ export default new Vuex.Store({
     timeAtDest: 60,
     presenceRequired: false,
     carrying: false,
-    bus: null,
-    train: null,
+    publicTransport: null,
     driving: null,
     cycling: null,
     walking: null,
@@ -35,8 +34,8 @@ export default new Vuex.Store({
   },
   getters: {
     journey: (state) => {
-      const { source, destination, isRoundTrip, timeAtDest, presenceRequired, carrying, bus, train, driving, cycling, walking } = state;
-      return { source, destination, isRoundTrip, timeAtDest, presenceRequired, carrying, bus, train, driving, cycling, walking };
+      const { source, destination, isRoundTrip, timeAtDest, presenceRequired, carrying, publicTransport, driving, cycling, walking } = state;
+      return { source, destination, isRoundTrip, timeAtDest, presenceRequired, carrying, publicTransport, driving, cycling, walking };
     },
   },
 });

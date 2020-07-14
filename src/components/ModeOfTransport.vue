@@ -13,10 +13,10 @@
         <display-timeline :values="time" />
         <!-- eslint-disable-next-line vue/no-v-html -->
         <p v-html="summary" />
-        <p v-if="cost">
+        <p v-if="cost !== null">
           £{{ cost }}
         </p>
-        <p v-if="emissions">
+        <p>
           {{ emissions }}kg CO<sub>2</sub> emitted
         </p>
       </div>
@@ -89,7 +89,11 @@ export default {
       return this.costFn(this.$store.getters.journey);
     },
     emissions() {
-      return this.co2Fn(this.$store.getters.journey);
+      const emissions = this.co2Fn(this.$store.getters.journey);
+      if(Array.isArray(emissions)) {
+        return `${emissions[0]}kg to ${emissions[1]}`;
+      }
+      else return emissions;
     },
     shouldDisplay() {
       return this.displayFn(this.$store.getters.journey);

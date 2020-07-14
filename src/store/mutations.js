@@ -32,12 +32,11 @@ function setModeDuration(state, { modeName, duration }) {
 }
 
 function setTravelDetails(state, update) {
-  const { driving, cycling, walking, bus, train } = update;
+  const { driving, cycling, walking, publicTransport } = update;
   state.cycling = cycling;
   state.driving = driving;
   state.walking = walking;
-  state.bus = bus;
-  state.train = train;
+  state.publicTransport = publicTransport;
 }
 
 function updateCarrying(state, update) {

@@ -188,17 +188,19 @@ form {
   .modes .mode1 {
     background-color: rgba(0, 0, 0, 0); }
   .modes .mode2 {
-    background-color: rgba(0, 0, 0, 0.15); }
+    background-color: rgba(0, 0, 0, 0.14); }
   .modes .mode3 {
-    background-color: rgba(0, 0, 0, 0.3); }
+    background-color: rgba(0, 0, 0, 0.28); }
   .modes .mode4 {
-    background-color: rgba(0, 0, 0, 0.45); }
+    background-color: rgba(0, 0, 0, 0.42); }
   .modes .mode5 {
-    background-color: rgba(0, 0, 0, 0.6); }
+    background-color: rgba(0, 0, 0, 0.56); }
   .modes .mode6 {
-    background-color: rgba(0, 0, 0, 0.75); }
+    background-color: rgba(0, 0, 0, 0.7); }
   .modes .mode7 {
-    background-color: rgba(0, 0, 0, 0.9); }
+    background-color: rgba(0, 0, 0, 0.84); }
+  .modes .mode8 {
+    background-color: rgba(0, 0, 0, 0.98); }
 
 ul.grid {
   display: grid;
@@ -258,14 +260,14 @@ p.note {
   background-color: #ededed; }
 
 /*# sourceMappingURL=Search.vue.map */
-.open[data-v-c21ffd3c] {
+.open[data-v-10355ad4] {
   float: right;
   padding-right: 1em;
   line-height: 1.5em;
   color: blue;
   text-decoration: underline; }
 
-.open[data-v-c21ffd3c]:hover {
+.open[data-v-10355ad4]:hover {
   cursor: pointer; }
 
 .timeline[data-v-420aa5a1] {

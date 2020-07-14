@@ -4,9 +4,10 @@ import BusTrain from './components/modes/BusTrain.vue';
 import CarClub from './components/modes/CarClub.vue';
 import PoolVehicle from './components/modes/PoolVehicle.vue';
 import Teleconf from './components/modes/Teleconf.vue';
-import WalkCycle from './components/modes/WalkCycle.vue';
+import Cycle from './components/modes/Cycle.vue';
 import Taxi from './components/modes/Taxi.vue';
 import SelfDrive from './components/modes/SelfDrive.vue';
+import Walk from './components/modes/Walk.vue';
 import { formatTime } from './utils/formatTime';
 
 const calculateSegments = ({ travelTime, meetingTime, isRoundTrip = false}) => {
@@ -50,10 +51,10 @@ export default [
     },
   },
   {
-    title: 'Walk/Cycle',
-    details: WalkCycle,
+    title: 'Walk',
+    details: Walk,
     summarise(j) {
-      return `${formatTime(j.walking.time.value)} walking or ${formatTime(j.cycling.time.value)} by bike (xx ebikes nearby at ${j.source})`;
+      return `${formatTime(j.walking.time.value)} walking`;
     },
     costFn(j) {
       return 0;
@@ -67,29 +68,52 @@ export default [
     timeFn(j) {
       return calculateSegments({
         meetingTime: j.timeAtDest,
+        travelTime: j.walking.time.value,
+        isRoundTrip: j.isRoundTrip,
+      });
+    },
+  },
+  {
+    title: 'Cycle',
+    details: Cycle,
+    summarise(j) {
+      return `${formatTime(j.cycling.time.value)} by bike (xx ebikes nearby at ${j.source})`;
+    },
+    costFn(j) {
+      return 0;
+    },
+    co2Fn(j) {
+      return 0;
+    },
+    displayFn(j) {
+      return !j.carrying;
+    },
+    timeFn(j) {
+      return calculateSegments({
+        meetingTime: j.timeAtDest,
         travelTime: j.cycling.time.value,
         isRoundTrip: j.isRoundTrip,
       });
     },
   },
   {
-    title: 'Bus/train', // should we split this into 2 options? different cost & emissions calculations
+    title: 'Public Transport', // should we split this into 2 options? different cost & emissions calculations
     details: BusTrain,
     summarise(j) {
-      return `${formatTime(j.train.time.value)} by train or ${formatTime(j.bus.time.value)} by bus (xx Metrocards are available at ${j.source} - <a href="">check availability and booking</a>)`;
+      return `${formatTime(j.publicTransport.time.value)} by public transport (xx Metrocards are available at ${j.source} - <a>check availability and booking</a>)`;
     },
     costFn(j) {
-      return '0 (corporate MetroCard) or £4.30 (dayrider ticket)';
+      return '0 (corporate MetroCard) or ~£4.30 (estimate based on price of a dayrider ticket). Prices may vary.';
     },
     co2Fn(j) {
-      const bus =  0.167227 * (j.isRoundTrip ? toMiles(j.bus.distance) * 2 : toMiles(j.bus.distance));
-      const train = 0.065613 * (j.isRoundTrip ? toMiles(j.train.distance) * 2 : toMiles(j.train.distance));
-      return ((bus + train) / 2).toFixed(2);  //take the average for now
+      const bus =  0.167227 * (j.isRoundTrip ? toMiles(j.publicTransport.distance) * 2 : toMiles(j.publicTransport.distance));
+      const train = 0.065613 * (j.isRoundTrip ? toMiles(j.publicTransport.distance) * 2 : toMiles(j.publicTransport.distance));
+      return [train.toFixed(2), bus.toFixed(2)];
     },
     timeFn(j) {
       return calculateSegments({
         meetingTime: j.timeAtDest,
-        travelTime: j.bus.time.value,
+        travelTime: j.publicTransport.time.value,
         isRoundTrip: j.isRoundTrip,
       });
     },

@@ -89,7 +89,7 @@
           name="presence"
           type="checkbox"
         >
-        <label for="presence">I need to travel to the destination</label>
+        <label for="presence">I need to do this meeting in person</label>
       </div>
       <div class="row">
         <input
