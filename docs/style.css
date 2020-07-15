@@ -220,7 +220,8 @@ ul.grid {
       text-decoration: none;
       color: white;
       display: block;
-      padding: 0.5em 1em; }
+      padding: 0.5em 1em;
+      cursor: pointer; }
       ul.grid > li > a h3 {
         font-size: 1.4em;
         padding: 0.5em 0;
