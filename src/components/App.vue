@@ -64,13 +64,14 @@ export default {
       if (!this.$store.state.driving) return [];
       else {
         const j = this.$store.getters.journey;
-        return [...this.modes].sort((a, b) => a.co2Fn(j).value - b.co2Fn(j).value);
+        return [...this.modes].sort((a, b) => { 
+          const diff = a.co2Fn(j).value - b.co2Fn(j).value;
+          if (diff !== 0) return diff;
+          else return (a.timeFn(j)[0] | 0) - (b.timeFn(j)[0] | 0);  //if the emissions are the same, sort by shortest time.
+        });
       }
     },
   },
-  // created() {
-  //   this.$store.dispatch('getCouncilLocations');
-  // },
 };
 </script>
 

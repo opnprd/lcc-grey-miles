@@ -106,17 +106,17 @@ export default [
     title: 'Public Transport',
     details: BusTrain,
     summarise(j) {
-      return `${formatTime(j.publicTransport.time.value)} by public transport (xx Metrocards are available at ${j.source} - <a>check availability and booking</a>)`;
+      return `${formatTime(j.publicTransport.time.value)} by public transport (includes walking time)`;
     },
     costFn(j) {
-      return '0 (corporate MetroCard) or ~£4.30 (dayrider ticket). Prices may vary.';
+      return '0 (corporate MetroCard) or ~£4.30 (dayrider ticket)';
     },
     co2Fn(j) {
       const bus =  0.167227 * (j.isRoundTrip ? toMiles(j.publicTransport.distance) * 2 : toMiles(j.publicTransport.distance));
       const train = 0.065613 * (j.isRoundTrip ? toMiles(j.publicTransport.distance) * 2 : toMiles(j.publicTransport.distance));
       return {
         value: train,
-        message: `${train.toFixed(2)} - ${bus.toFixed(2)}kg CO2 emitted (dependant on mode of public transport)`,
+        message: `${train.toFixed(2)} - ${bus.toFixed(2)}kg CO2 emitted (dependant on mode)`,
       };
     },
     timeFn(j) {
