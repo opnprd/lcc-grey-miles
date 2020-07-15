@@ -3,6 +3,7 @@ import browsersync from 'rollup-plugin-browsersync';
 import clear from 'rollup-plugin-clear';
 import commonjs from 'rollup-plugin-commonjs';
 import copy from 'rollup-plugin-copy';
+import json from 'rollup-plugin-json';
 import resolve from 'rollup-plugin-node-resolve';
 import scss from 'rollup-plugin-scss';
 import vue from 'rollup-plugin-vue';
@@ -34,6 +35,7 @@ export default {
     }),
     resolve(),
     commonjs(),
+    json(),
     vue({
       css: false,
     }),
@@ -67,8 +69,8 @@ export default {
           dest: `${outputDir}/vendor`,
         },
         {
-          src: 'src/data',
-          dest: `${outputDir}`,
+          src: 'src/data/council-locations.json',
+          dest: `${outputDir}/data/`,
         },
         {
           src: 'src/assets/*',

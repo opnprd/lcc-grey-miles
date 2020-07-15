@@ -231,6 +231,16 @@ p.note {
   color: darkgreen;
   padding-bottom: 0; }
 
+.open[data-v-2278763f] {
+  float: right;
+  padding-right: 1em;
+  line-height: 1.5em;
+  color: blue;
+  text-decoration: underline; }
+
+.open[data-v-2278763f]:hover {
+  cursor: pointer; }
+
 .search-results {
   z-index: 100;
   background-color: white;
@@ -261,16 +271,57 @@ p.note {
   background-color: #ededed; }
 
 /*# sourceMappingURL=Search.vue.map */
-.open[data-v-10355ad4] {
-  float: right;
-  padding-right: 1em;
-  line-height: 1.5em;
-  color: blue;
-  text-decoration: underline; }
+.popup {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(160, 160, 160, 0.75);
+  padding: 0 1em;
+  overflow: scroll; }
 
-.open[data-v-10355ad4]:hover {
+.popup > div {
+  position: relative;
+  padding: 2em 1em;
+  background-color: white;
+  margin: 2em auto;
+  border-radius: 1em;
+  max-width: 50em;
+  overflow-y: scroll; }
+
+.popup .close {
+  position: absolute;
+  top: 1.5em;
+  right: 1em;
+  color: blue;
+  text-decoration: underline;
   cursor: pointer; }
 
+.popup h1 {
+  font-size: 2em;
+  padding-bottom: 1em; }
+
+.popup th {
+  font-weight: bold; }
+
+.popup th, .popup td {
+  line-height: 20px;
+  border: 1px solid lightgray;
+  padding: 0.5em;
+  vertical-align: middle; }
+
+.popup ul {
+  padding-left: 1em; }
+
+.popup li {
+  list-style-type: disc;
+  padding-bottom: 0.25em; }
+
+/*# sourceMappingURL=PopupTable.vue.map */
 .timeline[data-v-420aa5a1] {
   height: 4em;
   margin: 17px 20px;

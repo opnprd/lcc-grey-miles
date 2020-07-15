@@ -1,12 +1,18 @@
 <template>
   <section>
+    <popup-table
+      v-if="popupOpen"
+      title="E-Bike Booking Info"
+      :table-data="eBikeInfo"
+      @close="popupOpen = false;"
+    />
     <p>Cycling is healthy, cheap and carbon neutral. You can claim 20 pence per mile for journeys on your own bike, or there are e-bikes to borrow from some city centre locations.</p>
     <!--<iframe src="https://fourpointmapping.sustrans.org.uk/westyorkshirecyclemap/westyorkshire.html" width="100%" height="300px"></iframe>-->
     <ul class="grid">
       <li>
-        <a>
+        <a @click="popupOpen = true;">
           <h3>e-Bike</h3>
-          <p>Borrow an e-Bike from Merrion House</p>
+          <p>Find out where we have e-bikes and how you can book one.</p>
         </a>
       </li>
       <li>
@@ -39,3 +45,20 @@
     </ul>
   </section>
 </template>
+
+<script>
+import PopupTable from '../PopupTable.vue';
+import eBikeInfo from '../../data/e-bike-info.json';
+
+export default {
+  components: {
+    PopupTable,
+  },
+  data() {
+    return {
+      eBikeInfo,
+      popupOpen: false,
+    };
+  },
+};
+</script>

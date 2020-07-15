@@ -1,0 +1,36 @@
+[
+  {
+    "Building": "Merrion House",
+    "Outlook calendar": [
+      "Merrion House EBike 1",
+      "Merrion House EBike 2",
+      "Merrion House EBike 3"
+    ],
+    "Bike location": "Ground floor bike stores – Electric bike room",
+    "Keys & equipment": "Collect keys from reception. Batteries charged in adjacent room to electric bike store. All other equipment in electric bike store"
+  },
+  {
+    "Building": "St George House",
+    "Outlook calendar": [
+      "St George House – Ebike 1",
+      "St George House – Ebike 2"
+    ],
+    "Bike location": "Cycle stores in under croft car park",
+    "Keys & equipment": "Collect keys and batteries from reception. Equipment stored within changing village"
+  },
+  {
+    "Building": "Farnley Hall",
+    "Outlook calendar": [
+      "Farnley Hall E-Bike1",
+      "Farnley Hall E-Bike2"
+    ],
+    "Bike location": "Cycle store in rear car park",
+    "Keys & equipment": "Collect keys from reception. Batteries and equipment stored in lockers near rear exit"
+  },
+  {
+    "Building": "Apex Centre",
+    "Outlook calendar": "Apex E-Bike 1",
+    "Bike location": "Cycle store in main car park",
+    "Keys & equipment": "Collect keys, batteries and equipment from reception"
+  }
+]

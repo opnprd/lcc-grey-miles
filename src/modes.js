@@ -38,7 +38,9 @@ export default [
       return 0;
     },
     co2Fn(j) {
-      return 0;
+      return {
+        value: 0,
+      };
     },
     displayFn(j) {
       return !j.presenceRequired; //hide if presence is required
@@ -60,7 +62,9 @@ export default [
       return 0;
     },
     co2Fn(j) {
-      return 0;
+      return {
+        value: 0,
+      };
     },
     displayFn(j) {
       return !j.carrying; //hide if user is carrying lots of stuff
@@ -83,7 +87,9 @@ export default [
       return 0;
     },
     co2Fn(j) {
-      return 0;
+      return {
+        value: 0,
+      };
     },
     displayFn(j) {
       return !j.carrying;
@@ -97,18 +103,21 @@ export default [
     },
   },
   {
-    title: 'Public Transport', // should we split this into 2 options? different cost & emissions calculations
+    title: 'Public Transport',
     details: BusTrain,
     summarise(j) {
       return `${formatTime(j.publicTransport.time.value)} by public transport (xx Metrocards are available at ${j.source} - <a>check availability and booking</a>)`;
     },
     costFn(j) {
-      return '0 (corporate MetroCard) or ~£4.30 (estimate based on price of a dayrider ticket). Prices may vary.';
+      return '0 (corporate MetroCard) or ~£4.30 (dayrider ticket). Prices may vary.';
     },
     co2Fn(j) {
       const bus =  0.167227 * (j.isRoundTrip ? toMiles(j.publicTransport.distance) * 2 : toMiles(j.publicTransport.distance));
       const train = 0.065613 * (j.isRoundTrip ? toMiles(j.publicTransport.distance) * 2 : toMiles(j.publicTransport.distance));
-      return [train.toFixed(2), bus.toFixed(2)];
+      return {
+        value: train,
+        message: `${train.toFixed(2)} - ${bus.toFixed(2)}kg CO2 emitted (dependant on mode of public transport)`,
+      };
     },
     timeFn(j) {
       return calculateSegments({
@@ -131,17 +140,17 @@ export default [
     },
     co2Fn(j) {
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
-      return (0.09612 * dist).toFixed(2); // Assumes vehicle is an EV
+      return {
+        value: 0.09612 * dist, // Assumes vehicle is an EV
+      };
     },
     timeFn(j) {
       return [
-        null,
         ...calculateSegments({
           meetingTime: j.timeAtDest,
           travelTime: j.driving.time.value,
           isRoundTrip: j.isRoundTrip,
         }),
-        null,
       ];
     },
   },
@@ -160,7 +169,9 @@ export default [
     },
     co2Fn(j) {
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
-      return (0.25885349 * dist).toFixed(2);
+      return {
+        value: 0.25885349 * dist,
+      };
     },
     timeFn(j) {
       return calculateSegments({
@@ -174,7 +185,7 @@ export default [
     title: 'Taxi',
     details: Taxi,
     summarise(j) {
-      return '<strong>Private hire taxis should only be used in exceptional situations.</strong> There needs to be an important business need.  If you do use a taxi you should use our contract if possible.';
+      return '<strong>Private hire taxis should only be used in exceptional situations.</strong> There needs to be an important business need.  If you do use a taxi you should use our contract if possible. Information on this and details for our policy can be found <a>here</a>.';
     },
     costFn(j) {
       const dist = Math.ceil(toMiles(j.driving.distance));
@@ -184,7 +195,9 @@ export default [
     },
     co2Fn(j) {
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
-      return (0.24020217 * dist).toFixed(2);
+      return {
+        value: 0.24020217 * dist,
+      };
     },
     timeFn(j) {
       return calculateSegments({
@@ -198,7 +211,7 @@ export default [
     title: 'Drive your own vehicle',
     details: SelfDrive,
     summarise(j) {
-      return '<strong>Driving your own car should be your last resort</strong>';
+      return '<strong>Driving your own petrol or diesel car should be your last resort</strong>';
     },
     costFn(j) {
       // const dist = Math.ceil(j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance));
@@ -207,7 +220,13 @@ export default [
     },
     co2Fn(j) {
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
-      return (0.28591256 * dist).toFixed(2);
+      const petrolEmissions = 0.28591256 * dist;
+      const hybridEmissions =  0.18259 * dist;
+      const evEmissions = 0.09612 * dist;
+      return {
+        value: petrolEmissions,
+        message: `${petrolEmissions.toFixed(2)}kg / ${hybridEmissions.toFixed(2)}kg / ${evEmissions.toFixed(2)}kg (petrol / hybrid / electric vehicle) CO2 emitted`,
+      };
     },
     timeFn(j) {
       return calculateSegments({

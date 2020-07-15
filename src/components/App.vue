@@ -64,12 +64,7 @@ export default {
       if (!this.$store.state.driving) return [];
       else {
         const j = this.$store.getters.journey;
-        return [...this.modes].sort((a, b) => {
-          let [aCo2, bCo2] = [a.co2Fn(j), b.co2Fn(j)];
-          if (Array.isArray(aCo2)) aCo2 = aCo2[0];
-          if (Array.isArray(bCo2)) bCo2 = bCo2[0];
-          return aCo2 - bCo2;
-        });
+        return [...this.modes].sort((a, b) => a.co2Fn(j).value - b.co2Fn(j).value);
       }
     },
   },

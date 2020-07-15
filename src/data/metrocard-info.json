@@ -1,0 +1,73 @@
+[
+  {
+    "Building": "Merrion House",
+    "Number of cards available": 9,
+    "How do I book?": "Via Outlook calendar. Once booked, collect from Merrion House reception.",
+    "Outlook calendars": [
+      "Merrion House Metro Card 1",
+      "Merrion House Metro Card 2",
+      "Merrion House Metro Card 3",
+      "Merrion House Metro Card 4",
+      "Merrion House Metro Card 5",
+      "Merrion House Metro Card 6",
+      "Merrion House Metro Card 7",
+      "Merrion House Metro Card 8",
+      "Merrion House Metro Card 9"
+    ]
+  },
+  {
+    "Building": "Civic Hall",
+    "Number of cards available": 2,
+    "How do I book?": "Via Outlook calendar. Once you've made your booking, collect from the antechamber reception.",
+    "Outlook calendars": [
+      "Metro Card 1 Civic Hall",
+      "Metro Card 2 Civic Hall"
+    ]
+  },
+  {
+    "Building": "St George House",
+    "Number of cards available": 3,
+    "How do I book?": "Via Outlook calendar. Once you've made your booking, collect from the St George House reception.",
+    "Outlook calendars": [
+      "STGH Metro Card 1",
+      "STGH Metro Card 2",
+      "STGH Metro Card 3"
+    ]
+  },
+  {
+    "Building": "Enterprise House",
+    "Number of cards available": 2,
+    "How do I book?": "Via Outlook calendar. Once you've made your booking, collect from the ground floor reception at Enterprise House.",
+    "Outlook calendars": [
+      "Enterprise Metro Card 1",
+      "Enterprise Metro Card 2"
+    ]
+  },
+  {
+    "Building": "Technorth",
+    "Number of cards available": 2,
+    "How do I book?": "Via Outlook calendar. Once you've made your booking, collect from reception at Technorth.",
+    "Outlook calendars": [
+      "Technorth Travel Card 1",
+      "Technorth Travel Card 2"
+    ]
+  },
+  {
+    "Building": "Apex Centre",
+    "Number of cards available": 2,
+    "How do I book?": "Via Outlook calendar.",
+    "Outlook calendars": [
+      "Metro Bus Permit Apex",
+      "Metro Bus Permit Evolution House"
+    ]
+  },
+  {
+    "Building": "Compton Centre",
+    "Number of cards available": 2,
+    "How do I book?": "Via Outlook calendar. Once booked please collect your metrocard from Customer Services.",
+    "Outlook calendars": [
+      "Compton Centre Metrocard 1",
+      "Compton Centre Metrocard 2"
+    ]
+  }
+]

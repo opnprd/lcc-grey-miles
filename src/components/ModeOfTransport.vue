@@ -1,11 +1,11 @@
 <template>
-  <section
-    v-if="shouldDisplay"
-    @click="toggleView()"
-  >
+  <section v-if="shouldDisplay">
     <div class="content">
       <div>
-        <div class="open">
+        <div
+          class="open"
+          @click="toggleView()"
+        >
           <span v-if="viewState ==='closed'">more info</span>
           <span v-else>close</span>
         </div>
@@ -17,7 +17,7 @@
           £{{ cost }}
         </p>
         <p>
-          {{ emissions }}kg CO<sub>2</sub> emitted
+          {{ emissions }}
         </p>
       </div>
       <component
@@ -90,10 +90,8 @@ export default {
     },
     emissions() {
       const emissions = this.co2Fn(this.$store.getters.journey);
-      if(Array.isArray(emissions)) {
-        return `${emissions[0]}kg to ${emissions[1]}`;
-      }
-      else return emissions;
+      if (emissions.message) return emissions.message;
+      else return `${emissions.value.toFixed(2)} kg CO2 emitted`;
     },
     shouldDisplay() {
       return this.displayFn(this.$store.getters.journey);
