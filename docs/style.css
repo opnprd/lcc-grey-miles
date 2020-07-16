@@ -232,16 +232,6 @@ p.note {
   color: darkgreen;
   padding-bottom: 0; }
 
-.open[data-v-0e26b61b] {
-  float: right;
-  padding-right: 1em;
-  line-height: 1.5em;
-  color: blue;
-  text-decoration: underline; }
-
-.open[data-v-0e26b61b]:hover {
-  cursor: pointer; }
-
 .search-results {
   z-index: 100;
   background-color: white;
@@ -272,6 +262,16 @@ p.note {
   background-color: #ededed; }
 
 /*# sourceMappingURL=Search.vue.map */
+.open[data-v-0e26b61b] {
+  float: right;
+  padding-right: 1em;
+  line-height: 1.5em;
+  color: blue;
+  text-decoration: underline; }
+
+.open[data-v-0e26b61b]:hover {
+  cursor: pointer; }
+
 .popup {
   position: fixed;
   top: 0px;
