@@ -87,6 +87,7 @@ export default {
     },
     cost() {
       const cost = this.costFn(this.$store.getters.journey);
+      if(cost === null) return null; 
       if (cost.message) return cost.message;
       else return `£${cost.value.toFixed(2)}`;
     },

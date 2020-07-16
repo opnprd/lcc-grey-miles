@@ -36,7 +36,9 @@ export default [
       return `Skype facilities are available at ${j.source}`;
     },
     costFn(j) {
-      return 0;
+      return {
+        value: 0,
+      };
     },
     co2Fn(j) {
       return {
@@ -139,7 +141,7 @@ export default [
     title: 'Electric pool vehicle',
     details: PoolVehicle,
     summarise(j) {
-      return `${formatTime(j.driving.time.value)} drive (<a href="">check availability and booking</a>)`;
+      return `${formatTime(j.driving.time.value)} drive`;
     },
     costFn(j) {
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
@@ -168,7 +170,7 @@ export default [
     title: 'Car club',
     details: CarClub,
     summarise(j) {
-      return `${formatTime(j.driving.time.value)} drive (xx cars at Cookridge Street - <a href="">check availability and booking</a>)`;
+      return `${formatTime(j.driving.time.value)} drive (<a target="_blank" href="https://www.enterprisecarclub.co.uk/gb/en/programs/regions/north-east-england/leeds.html">check availability and booking</a>)`;
     },
     costFn(j) {
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
