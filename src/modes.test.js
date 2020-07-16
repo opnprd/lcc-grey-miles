@@ -22,7 +22,7 @@ describe('cost calculations', () => {
 
     const j2 = { driving: { distance: { value: dist * 1.609344, unit: 'km'} } }; // check km is converted correctly.
     const result2 = pool.costFn(j2).value;
-    expect(result2).toBe(result);
+    expect(result2).toBeCloseTo(result);
   });
 
   test.each([
@@ -35,8 +35,8 @@ describe('cost calculations', () => {
     const result = taxi.costFn(j).value;
     j.isRoundTrip = true;
     const roundTripResult = taxi.costFn(j).value;
-    expect(result).toBe(cost);
-    expect(roundTripResult).toBe(cost * 2);
+    expect(result).toBeCloseTo(cost);
+    expect(roundTripResult).toBeCloseTo(cost * 2);
   });
 
   test.each([
