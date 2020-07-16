@@ -9,6 +9,7 @@ import Taxi from './components/modes/Taxi.vue';
 import SelfDrive from './components/modes/SelfDrive.vue';
 import Walk from './components/modes/Walk.vue';
 import { formatTime } from './utils/formatTime';
+import { toMiles } from './utils/convertDistance';
 
 const calculateSegments = ({ travelTime, meetingTime, isRoundTrip = false}) => {
   return [
@@ -24,7 +25,7 @@ const calculateSegments = ({ travelTime, meetingTime, isRoundTrip = false}) => {
  * * details: A Vue component to render for detailed information
  * * summarise: A function to present the summary of the function
  * * costFn: A function to calculate the cost of travel in £
- * * co2Fn: A function to calculate the CO2 emissions in kg for that mode of transport
+ * * co2Fn: A function to calculate the CO2 emissions in kg. Returns an object in the form {value: Number, message?: String}. If no message is supplied the default is just 'xxx kg CO2 emitted'
  * * displayFn: If applicable, function to determine whether the mode should be displayed. Defaults to true.
  */
 export default [
@@ -59,7 +60,9 @@ export default [
       return `${formatTime(j.walking.time.value)} walking`;
     },
     costFn(j) {
-      return 0;
+      return {
+        value: 0,
+      };
     },
     co2Fn(j) {
       return {
@@ -84,7 +87,9 @@ export default [
       return `${formatTime(j.cycling.time.value)} by bike (xx ebikes nearby at ${j.source})`;
     },
     costFn(j) {
-      return 0;
+      return {
+        value: 0,
+      };
     },
     co2Fn(j) {
       return {
@@ -109,7 +114,10 @@ export default [
       return `${formatTime(j.publicTransport.time.value)} by public transport (includes walking time)`;
     },
     costFn(j) {
-      return '0 (corporate MetroCard) or ~£4.30 (dayrider ticket)';
+      return {
+        value: 0,
+        message: '£0 (corporate MetroCard) or ~£4.30 (dayrider ticket)',
+      };
     },
     co2Fn(j) {
       const bus =  0.167227 * (j.isRoundTrip ? toMiles(j.publicTransport.distance) * 2 : toMiles(j.publicTransport.distance));
@@ -136,7 +144,9 @@ export default [
     costFn(j) {
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
       // const perMile = (19700 / 7 + 1285) / 7500 + 0.04;  //this is if vehicle and maintainance cost are included
-      return (0.04 * dist).toFixed(2);
+      return {
+        value: 0.04 * dist,
+      };
     },
     co2Fn(j) {
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
@@ -165,7 +175,8 @@ export default [
       let time = j.isRoundTrip ? ((j.driving.time.value * 2) + j.timeAtDest) : j.driving.time.value;  // always add buffer of 30 minutes
       time += 30;
       const timeBlocks = Math.ceil(time / 15);  //priced in 15 minute blocks
-      return ((timeBlocks * 0.9275) + (dist * 0.18)).toFixed(2);
+      const value = ((timeBlocks * 0.9275) + (dist * 0.18));
+      return { value };
     },
     co2Fn(j) {
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
@@ -190,8 +201,8 @@ export default [
     costFn(j) {
       const dist = Math.ceil(toMiles(j.driving.distance));
       const cost =  (3.5 + (1.6 * (dist - 1))); // £3.50 for first mile then £1.60
-      const total = j.isRoundTrip ? cost * 2 : cost;
-      return total.toFixed(2);
+      const value = j.isRoundTrip ? cost * 2 : cost;
+      return { value };
     },
     co2Fn(j) {
       const dist = j.isRoundTrip ? toMiles(j.driving.distance) * 2 : toMiles(j.driving.distance);
@@ -237,7 +248,3 @@ export default [
     },
   },
 ];
-
-// helper functions
-const toMiles = dist => dist.unit == 'km' ? dist.value / 1.609344 : dist.value;
-

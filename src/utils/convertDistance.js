@@ -1,0 +1,1 @@
+export const toMiles = dist => dist.unit == 'km' ? dist.value / 1.609344 : dist.value;

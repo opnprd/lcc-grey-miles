@@ -10,7 +10,7 @@
       <li>
         <a>
           <h3>Book a taxi</h3>
-          <p>If you need to take a taxi, you must use this link to book through our taxi contract where possible.</p>
+          <p>If you need to take a taxi, you must use this link to book through our contract where possible.</p>
         </a>
       </li>
     </ul>

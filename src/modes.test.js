@@ -17,11 +17,11 @@ describe('cost calculations', () => {
   test('pool vehicle cost should be £0.04 per mile', () => {
     const dist = Math.random() * 100 + 1;
     const j = { driving: { distance: { value: dist, unit: 'miles'} } };
-    const result = Number(pool.costFn(j));
+    const result = pool.costFn(j).value;
     expect(result).toBeCloseTo(dist * 0.04);
 
     const j2 = { driving: { distance: { value: dist * 1.609344, unit: 'km'} } }; // check km is converted correctly.
-    const result2 = Number(pool.costFn(j2));
+    const result2 = pool.costFn(j2).value;
     expect(result2).toBe(result);
   });
 
@@ -32,9 +32,9 @@ describe('cost calculations', () => {
     [4.1, 9.9],
   ])('taxi cost fn should give correct results (rounding up distance)', (dist, cost) => {
     let j = { driving: { distance: { value: dist, unit: 'miles'} } };
-    const result = Number(taxi.costFn(j));
+    const result = taxi.costFn(j).value;
     j.isRoundTrip = true;
-    const roundTripResult = Number(taxi.costFn(j));
+    const roundTripResult = taxi.costFn(j).value;
     expect(result).toBe(cost);
     expect(roundTripResult).toBe(cost * 2);
   });
@@ -51,7 +51,7 @@ describe('cost calculations', () => {
         time: { value: mins, unit: 'mins' },
       },
     };
-    const result = Number(carClub.costFn(j));
-    expect(result).toBe(cost);
+    const result = carClub.costFn(j).value;
+    expect(result).toBeCloseTo(cost);
   });
 });

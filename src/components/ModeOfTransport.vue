@@ -14,7 +14,7 @@
         <!-- eslint-disable-next-line vue/no-v-html -->
         <p v-html="summary" />
         <p v-if="cost !== null">
-          £{{ cost }}
+          {{ cost }}
         </p>
         <p>
           {{ emissions }}
@@ -86,7 +86,9 @@ export default {
       return this.summarise(this.$store.getters.journey);
     },
     cost() {
-      return this.costFn(this.$store.getters.journey);
+      const cost = this.costFn(this.$store.getters.journey);
+      if (cost.message) return cost.message;
+      else return `£${cost.value.toFixed(2)}`;
     },
     emissions() {
       const emissions = this.co2Fn(this.$store.getters.journey);
