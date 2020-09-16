@@ -2,7 +2,7 @@
    v2.0 | 20110126
    License: none (public domain)
 */
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Open+Sans:wght@300;400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Open+Sans:wght@300;400;500;600&display=swap");
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -186,6 +186,9 @@ form {
   .modes strong {
     font-weight: bold;
     color: red; }
+  .modes span.note {
+    font-weight: 600;
+    color: darkgreen; }
   .modes .mode1 {
     background-color: rgba(0, 0, 0, 0); }
   .modes .mode2 {
@@ -232,16 +235,6 @@ p.note {
   color: darkgreen;
   padding-bottom: 0; }
 
-.open[data-v-184ccf44] {
-  float: right;
-  padding-right: 1em;
-  line-height: 1.5em;
-  color: blue;
-  text-decoration: underline; }
-
-.open[data-v-184ccf44]:hover {
-  cursor: pointer; }
-
 .search-results {
   z-index: 100;
   background-color: white;
@@ -272,6 +265,16 @@ p.note {
   background-color: #ededed; }
 
 /*# sourceMappingURL=Search.vue.map */
+.open[data-v-184ccf44] {
+  float: right;
+  padding-right: 1em;
+  line-height: 1.5em;
+  color: blue;
+  text-decoration: underline; }
+
+.open[data-v-184ccf44]:hover {
+  cursor: pointer; }
+
 .popup {
   position: fixed;
   top: 0px;

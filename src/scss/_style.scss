@@ -11,7 +11,7 @@ $breakpoints: 835px, 760px;
   }
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Open+Sans:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Open+Sans:wght@300;400;500;600&display=swap');
 
 %main-flow {
   max-width: 55em;
@@ -194,6 +194,10 @@ form {
   strong {
     font-weight: bold;
     color: red;
+  }
+  span.note { 
+    font-weight: 600;
+    color: darkgreen; 
   }
   .mode1 { background-color: rgba(0,0,0,0); }
   .mode2 { background-color: rgba(0,0,0,0.14); }
