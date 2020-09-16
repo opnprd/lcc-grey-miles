@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form autocomplete="off">
     <div class="left">
       <div class="row">
         <label for="from">From:</label>
