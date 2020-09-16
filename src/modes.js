@@ -126,7 +126,7 @@ export default [
       const train = 0.065613 * (j.isRoundTrip ? toMiles(j.publicTransport.distance) * 2 : toMiles(j.publicTransport.distance));
       return {
         value: train,
-        message: `${train.toFixed(2)} - ${bus.toFixed(2)}kg CO2 emitted (dependant on mode)`,
+        message: `${train.toFixed(2)} - ${bus.toFixed(2)}kg CO2 emitted (dependent on mode)`,
       };
     },
     timeFn(j) {
